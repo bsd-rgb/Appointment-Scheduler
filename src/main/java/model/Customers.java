@@ -1,19 +1,21 @@
 package model;
 
-import java.time.LocalDateTime;
-
 public class Customers {
 
     private int customerId;
     private String customerName;
     private String address;
     private String postalCode;
-    private LocalDateTime createDate;
-    private String createdBy;
-    private LocalDateTime lastUpdate;
-    private String lastUpdatedBy;
+    private String phone;
     private int divisionId;
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public int getCustomerId() {
         return customerId;
@@ -47,37 +49,6 @@ public class Customers {
         this.postalCode = postalCode;
     }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public LocalDateTime getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(LocalDateTime lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
-    }
-
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
-    }
 
     public int getDivisionId() {
         return divisionId;
@@ -87,17 +58,12 @@ public class Customers {
         this.divisionId = divisionId;
     }
 
-    public Customers(int customerId, String customerName, String address, String postalCode, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdatedBy, int divisionId) {
+    public Customers(int customerId, String customerName, String address, String postalCode, String phone, int divisionId) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
         this.postalCode = postalCode;
-        this.createDate = createDate;
-        this.createdBy = createdBy;
-        this.lastUpdate = lastUpdate;
-        this.lastUpdatedBy = lastUpdatedBy;
+        this.phone = phone;
         this.divisionId = divisionId;
     }
-
-
 }

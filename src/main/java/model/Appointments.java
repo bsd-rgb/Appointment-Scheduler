@@ -13,30 +13,10 @@ public class Appointments {
     private String type;
     private LocalDateTime start;
     private LocalDateTime end;
-    private LocalDateTime createDate;
-    private String createdBy;
-    private LocalDateTime lastUpdate;
-    private String lastUpdatedBy;
     private int customerId;
     private int userId;
     private int contactId;
 
-    public Appointments(int appointmentId, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdatedBy, int customerId, int userId, int contactId) {
-        this.appointmentId = appointmentId;
-        this.title = title;
-        this.description = description;
-        this.location = location;
-        this.type = type;
-        this.start = start;
-        this.end = end;
-        this.createDate = createDate;
-        this.createdBy = createdBy;
-        this.lastUpdate = lastUpdate;
-        this.lastUpdatedBy = lastUpdatedBy;
-        this.customerId = customerId;
-        this.userId = userId;
-        this.contactId = contactId;
-    }
 
     public int getAppointmentId() {
         return appointmentId;
@@ -94,38 +74,6 @@ public class Appointments {
         this.end = end;
     }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public LocalDateTime getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(LocalDateTime lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
-    }
-
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
-    }
-
     public int getCustomerId() {
         return customerId;
     }
@@ -147,6 +95,19 @@ public class Appointments {
     }
 
     public void setContactId(int contactId) {
+        this.contactId = contactId;
+    }
+
+    public Appointments(int appointmentId, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId) {
+        this.appointmentId = appointmentId;
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.type = type;
+        this.start = start;
+        this.end = end;
+        this.customerId = customerId;
+        this.userId = userId;
         this.contactId = contactId;
     }
 }
