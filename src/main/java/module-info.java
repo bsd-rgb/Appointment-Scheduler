@@ -1,11 +1,11 @@
-module com.bd_c195 {
+module com.bd {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
 
 
-    opens com.bd_c195 to javafx.fxml;
-    exports com.bd_c195;
+    opens com.bd to javafx.fxml;
+    exports com.bd;
     exports controller;
     opens controller to javafx.fxml;
 }

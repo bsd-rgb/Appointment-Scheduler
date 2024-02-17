@@ -1,4 +1,4 @@
-package com.bd_c195;
+package com.bd;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,9 +9,9 @@ import java.io.IOException;
 public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("LoginScreen.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Hello!");
+        stage.setTitle("Login Screen");
         stage.setScene(scene);
         stage.show();
     }
