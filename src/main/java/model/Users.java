@@ -8,7 +8,7 @@ public class Users {
     private String userName;
     private String password;
 
-    public Users(int userId, String userName, String password, LocalDateTime createDate, String createdBy, LocalDateTime lastUpdate, String lastUpdatedBy) {
+    public Users(int userId, String userName, String password) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;

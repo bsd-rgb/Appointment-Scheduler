@@ -1,5 +1,6 @@
 package com.bd;
 
+import dao.DBConnection;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -17,6 +18,8 @@ public class Application extends javafx.application.Application {
     }
 
     public static void main(String[] args) {
+        DBConnection.openConnection();
         launch();
+        DBConnection.closeConnection();
     }
 }
