@@ -3,11 +3,16 @@ package controller;
 import dao.UsersDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.Users;
 
-public class LoginScreenController {
+import java.net.URL;
+import java.time.ZoneId;
+import java.util.ResourceBundle;
+
+public class LoginScreenController implements Initializable {
 
     @FXML
     private TextField passwordTxtField;
@@ -17,6 +22,17 @@ public class LoginScreenController {
 
     @FXML
     private TextField usernameTxtField;
+
+    private boolean french = false;
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        ZoneId zoneId = ZoneId.systemDefault();
+        locationLbl.setText(zoneId.toString());
+
+    }
 
     @FXML
     void onActionLogin(ActionEvent event) {
@@ -44,5 +60,6 @@ public class LoginScreenController {
 
 
     }
+
 
 }
