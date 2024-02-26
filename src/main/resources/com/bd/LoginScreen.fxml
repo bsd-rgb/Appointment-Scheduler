@@ -4,25 +4,33 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="410.0" prefWidth="425.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginScreenController">
+<AnchorPane prefHeight="424.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginScreenController">
    <children>
-      <Label layoutX="41.0" layoutY="94.0" text="Username:">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="43.0" layoutY="133.0" text="Password:">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <TextField fx:id="usernameTxtField" layoutX="114.0" layoutY="91.0" prefHeight="25.0" prefWidth="211.0" />
-      <TextField fx:id="passwordTxtField" layoutX="114.0" layoutY="130.0" prefHeight="25.0" prefWidth="211.0" />
-      <Button layoutX="298.0" layoutY="180.0" mnemonicParsing="false" onAction="#onActionLogin" text="Submit" />
-      <Label fx:id="locationLbl" layoutX="139.0" layoutY="284.0" text="LocationLabel" />
-      <Button layoutX="300.0" layoutY="356.0" mnemonicParsing="false" onAction="#onActionExitProgram" text="Exit Program" />
-      <Button layoutX="48.0" layoutY="180.0" mnemonicParsing="false" onAction="#onActionClearFields" text="Clear" />
+      <Button fx:id="submitBtn" layoutX="390.0" layoutY="187.0" mnemonicParsing="false" onAction="#onActionLogin" text="Submit" />
+      <Label fx:id="locationLbl" layoutX="225.0" layoutY="287.0" text="LocationLabel" />
+      <Button fx:id="exitBtn" layoutX="417.0" layoutY="385.0" mnemonicParsing="false" onAction="#onActionExitProgram" text="Exit Program" />
+      <VBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="84.0" prefHeight="84.0" prefWidth="147.0" spacing="22.0">
+         <children>
+            <Label fx:id="usernameLbl" text="Username">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="passwordLbl" text="Password">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox layoutX="175.0" layoutY="90.0" prefHeight="71.0" prefWidth="312.0" spacing="21.0">
+         <children>
+            <TextField fx:id="usernameTxtField" prefHeight="25.0" prefWidth="211.0" />
+            <TextField fx:id="passwordTxtField" prefHeight="25.0" prefWidth="211.0" />
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

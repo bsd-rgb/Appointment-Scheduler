@@ -5,18 +5,18 @@ import java.util.ResourceBundle;
 
 public class LocaleHelper {
 
-    public static ResourceBundle getDefaultLocale() {
+   public static ResourceBundle getDefaultLocale() {
         return ResourceBundle.getBundle("Nat", Locale.getDefault());
     }
 
-    public boolean isFrench(String language) {
+    public static boolean isFrench(String language) {
         //temporarily set while I take a break;
         //Need to be able to check the default locale
         //should I include french in the name? Is there a way to dynamically check?
-        return true;
+        if(Locale.getDefault().getLanguage().equals("fr")) {
+            return true;
+        } else {
+            return false;
+        }
     }
-
-
-
-   //if
 }
