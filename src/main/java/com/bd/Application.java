@@ -21,7 +21,7 @@ public class Application extends javafx.application.Application {
     public static void main(String[] args) {
 
         //For testing purposes
-        Locale.setDefault(new Locale("fr"));
+        //Locale.setDefault(new Locale("fr"));
 
         DBConnection.openConnection();
         launch();

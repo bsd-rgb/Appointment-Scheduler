@@ -1,11 +1,15 @@
 package controller;
 
+import com.bd.Application;
 import dao.UsersDao;
 import helper.LocaleHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import model.Users;
 
 import java.net.URL;
@@ -83,6 +87,12 @@ public class LoginScreenController implements Initializable {
 
             if(UsersDao.selectUser(userName,password) != null ) {
                 System.out.println(rb.getString("Found"));
+
+                Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+                FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("NavigationScreen.fxml"));
+                Scene scene = new Scene(fxmlLoader.load());
+                stage.setScene(scene);
+                stage.show();
             } else {
                 //once I have the structure, do this in french.
                     errorAlert.setTitle(rb.getString("Error"));
