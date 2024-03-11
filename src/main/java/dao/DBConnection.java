@@ -2,6 +2,8 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class DBConnection {
 
@@ -14,6 +16,10 @@ public class DBConnection {
     private static final String userName = "sqlUser"; // Username
     private static String password = "Passw0rd!"; // Password
     public static Connection connection;  // Connection Interface
+
+    private static String sql;
+    private static PreparedStatement ps;
+    private static ResultSet result;
 
     public static void openConnection()
     {
@@ -38,5 +44,16 @@ public class DBConnection {
         {
             System.out.println("Error:" + e.getMessage());
         }
+    }
+
+    public static void createQuery(String query) {
+
+        sql = query;
+        try {
+            ps = (PreparedStatement) connection.createStatement();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 }

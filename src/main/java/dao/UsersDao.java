@@ -12,9 +12,11 @@ public class UsersDao {
     public static Users selectUser(String userName, String password) throws SQLException {
 
         String sql = "SELECT * FROM users WHERE User_Name = '" + userName + "' AND Password = '" +password + "'";
+
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         Users userResult;
+
 
         while(rs.next()) {
             int userId = rs.getInt("User_ID");

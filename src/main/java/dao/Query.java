@@ -15,6 +15,7 @@ public class Query {
     public static void createQuery(String sqlQuery)  {
         sql = sqlQuery;
         try {
+
             if (sql.toLowerCase().startsWith("select")) {
                 result = ps.executeQuery();
             }
