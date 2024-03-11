@@ -9,4 +9,6 @@ module com.bd {
     exports com.bd;
     exports controller;
     opens controller to javafx.fxml;
+    opens model to javafx.fxml;
+    exports model;
 }

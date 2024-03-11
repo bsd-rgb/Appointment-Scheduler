@@ -1,11 +1,13 @@
 package com.bd;
 
+import dao.CustomersDao;
 import dao.DBConnection;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -22,7 +24,6 @@ public class Application extends javafx.application.Application {
 
         //For testing purposes
         //Locale.setDefault(new Locale("fr"));
-
         DBConnection.openConnection();
         launch();
         DBConnection.closeConnection();

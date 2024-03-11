@@ -18,20 +18,14 @@ public class ViewCustomerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        try {
-            CustomersDao.selectCustomers();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
         customerTable.setItems(Customers.getAllCustomers());
-        System.out.println(Customers.getAllCustomers());
 
-        /*customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        divisionCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));*/
+        divisionCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
 
     }
 
