@@ -61,8 +61,18 @@ public class Customers {
         this.divisionId = divisionId;
     }
 
+    //used for retrieving
     public Customers(int customerId, String customerName, String address, String postalCode, String phone, int divisionId) {
         this.customerId = customerId;
+        this.customerName = customerName;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.phone = phone;
+        this.divisionId = divisionId;
+    }
+
+    //used for creating
+    public Customers( String customerName, String address, String postalCode, String phone, int divisionId) {
         this.customerName = customerName;
         this.address = address;
         this.postalCode = postalCode;

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane prefHeight="549.0" prefWidth="501.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddCustomerController">
+   <children>
+      <VBox layoutX="168.0" layoutY="100.0" prefHeight="126.0" prefWidth="247.0" spacing="15.0">
+         <children>
+            <TextField fx:id="customerNameTxtField" />
+            <TextField fx:id="addressTxtField" />
+            <TextField fx:id="postalCodeTxtField" />
+            <TextField fx:id="phoneTxtField" />
+         </children>
+      </VBox>
+      <VBox layoutX="53.0" layoutY="97.0" prefHeight="160.0" prefWidth="100.0" spacing="20.0">
+         <children>
+            <Label text="Customer Name" />
+            <Label text="Address" />
+            <Label text="Postal Code">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+            <Label text="Phone Number">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="10.0" top="10.0" />
+         </padding>
+      </VBox>
+      <ComboBox fx:id="divisionComboBox" layoutX="168.0" layoutY="290.0" prefWidth="150.0" promptText="First-level Division" />
+   </children>
+</AnchorPane>
