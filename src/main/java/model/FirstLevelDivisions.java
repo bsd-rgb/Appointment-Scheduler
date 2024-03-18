@@ -1,10 +1,27 @@
 package model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class FirstLevelDivisions {
 
     private int divisionId;
     private String division;
     private int countryId;
+
+    public static ObservableList<FirstLevelDivisions> selectedDivisions = FXCollections.observableArrayList();
+
+    public static void addDivisions(FirstLevelDivisions division) {
+        selectedDivisions.add(division);
+    }
+
+    public static void clearDivisions() {
+        selectedDivisions.clear();
+    }
+    @Override
+    public String toString() {
+        return division;
+    }
 
     public int getDivisionId() {
         return divisionId;
@@ -37,4 +54,6 @@ public class FirstLevelDivisions {
         this.division = division;
         this.countryId = countryId;
     }
+
+
 }

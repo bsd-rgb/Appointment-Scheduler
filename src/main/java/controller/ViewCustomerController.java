@@ -1,14 +1,20 @@
 package controller;
 
+import com.bd.Application;
 import dao.CustomersDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import model.Customers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -50,8 +56,13 @@ public class ViewCustomerController implements Initializable {
     private TableColumn<Customers, String> postalCodeCol;
 
     @FXML
-    void onActionAddCustomer(ActionEvent event) {
+    void onActionAddCustomer(ActionEvent event) throws IOException {
 
+        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("AddCustomer.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
@@ -63,6 +74,8 @@ public class ViewCustomerController implements Initializable {
     void onActionModifyCustomer(ActionEvent event) {
 
     }
+
+
 
 
 }

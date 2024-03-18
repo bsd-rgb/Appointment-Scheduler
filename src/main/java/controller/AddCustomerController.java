@@ -1,24 +1,116 @@
 package controller;
 
+import com.bd.Application;
+import dao.CountriesDao;
+import dao.CustomersDao;
+import dao.FirstLevelDivisionsDao;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import model.Countries;
+import model.Customers;
+import model.FirstLevelDivisions;
 
-public class AddCustomerController {
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ResourceBundle;
+
+public class AddCustomerController implements Initializable {
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        countryCombo.setItems(Countries.allCountries);
+
+    }
 
     @FXML
     private TextField addressTxtField;
 
     @FXML
+    private ComboBox<Countries> countryCombo;
+
+    @FXML
     private TextField customerNameTxtField;
 
     @FXML
-    private ComboBox<?> divisionComboBox;
+    private ComboBox<FirstLevelDivisions> divisionCombo;
 
     @FXML
     private TextField phoneTxtField;
 
     @FXML
     private TextField postalCodeTxtField;
+
+    @FXML
+    void onActionAddCustomer(ActionEvent event) {
+
+    //create variables to hold the text field values
+        // insert customer into DB(customername, first level division, phone, address, postal code )
+        //exit to ViewCustomers Fxml
+        try {
+            String customerName = customerNameTxtField.toString();
+            String address = addressTxtField.toString();
+            String phone = phoneTxtField.toString();
+            String postalCode = postalCodeTxtField.toString();
+            int divisionId = divisionCombo.getValue().getDivisionId();
+            LocalDateTime createdDate = LocalDateTime.now();
+            LocalDateTime lastUpdated = LocalDateTime.now();
+
+            CustomersDao.insertCustomer(customerName, address, postalCode, phone, divisionId);
+            System.out.println("Customer Inserted.");
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+
+
+
+
+
+    }
+
+    //if there is no selection in the country combo box, the division combo box should be empty until a choice is made
+    @FXML
+    void onActionCountrySelected(ActionEvent event)  {
+
+        //start here after break. We want to test this. Lets see if we can print the country ID when selecting a country
+        divisionCombo.setValue(null);
+        FirstLevelDivisions.clearDivisions();
+        Countries selectedCountry = countryCombo.getValue();
+        System.out.println(selectedCountry);
+
+        try {
+            FirstLevelDivisionsDao.selectDivisionFromCountry(CountriesDao.getCountryId(String.valueOf(selectedCountry)));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        divisionCombo.setItems(FirstLevelDivisions.selectedDivisions);
+
+
+    }
+
+    @FXML
+    void onActionCancel(ActionEvent event) throws IOException {
+
+        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewCustomer.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setScene(scene);
+        stage.show();
+
+    }
+
+
 
 }

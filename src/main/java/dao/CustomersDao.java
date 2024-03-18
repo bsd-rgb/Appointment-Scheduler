@@ -7,6 +7,8 @@ import model.Customers;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class CustomersDao {
 
@@ -39,6 +41,24 @@ public class CustomersDao {
 
     public static boolean deleteCustomer(Customers selectedCustomer) {
         return false;
+    }
+
+    public static void insertCustomer (String customerName, String address, String postalCode, String phone, int divisionId) throws SQLException {
+
+        String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES(?, ?, ?, ?, ?)";
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+        ps.setString(1, customerName);
+        ps.setString(2, address);
+        ps.setString(3, postalCode);
+        ps.setString(4, phone);
+        /*ps.setTimestamp(5, Timestamp.valueOf(createDate));
+        ps.setTimestamp(6, Timestamp.valueOf(lastUpdated));*/
+        ps.setInt(5, divisionId);
+        ps.executeUpdate();
+
+
+      /*  int rowsAffected = ps.executeUpdate();
+        return rowsAffected;*/
     }
 
 

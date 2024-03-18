@@ -1,10 +1,12 @@
 package com.bd;
 
+import dao.CountriesDao;
 import dao.CustomersDao;
 import dao.DBConnection;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.Countries;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -20,11 +22,12 @@ public class Application extends javafx.application.Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
         //For testing purposes
         //Locale.setDefault(new Locale("fr"));
         DBConnection.openConnection();
+        CountriesDao.selectAllCountries();
         launch();
         DBConnection.closeConnection();
     }
