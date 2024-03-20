@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -25,7 +26,11 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
+
+
 public class AddCustomerController implements Initializable {
+
+    Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -55,9 +60,6 @@ public class AddCustomerController implements Initializable {
     @FXML
     void onActionAddCustomer(ActionEvent event) {
 
-    //create variables to hold the text field values
-        // insert customer into DB(customername, first level division, phone, address, postal code )
-        //exit to ViewCustomers Fxml
         try {
             String customerName = customerNameTxtField.getText();
             String address = addressTxtField.getText();
@@ -69,28 +71,25 @@ public class AddCustomerController implements Initializable {
             String loggedInUser = Users.getLoggedInUser().getUserName();
 
             CustomersDao.insertCustomer(customerName, address, postalCode, phone, createdDate, loggedInUser, lastUpdated, loggedInUser, divisionId);
-            System.out.println("Customer inserted successfully.");
+            CustomersDao.selectCustomers();
 
-
-
+            //dialog box that
+            informationAlert.setContentText("Customer successfully added.");
+            informationAlert.showAndWait();
+            Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewCustomer.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.show();
 
         } catch (Exception e) {
             System.out.println("Error inserting customer.");
             System.out.println(e.getMessage());
         }
-
-
-
-
-
-
     }
 
-    //if there is no selection in the country combo box, the division combo box should be empty until a choice is made
     @FXML
     void onActionCountrySelected(ActionEvent event)  {
-
-        //start here after break. We want to test this. Lets see if we can print the country ID when selecting a country
         divisionCombo.setValue(null);
         FirstLevelDivisions.clearDivisions();
         Countries selectedCountry = countryCombo.getValue();
@@ -103,8 +102,6 @@ public class AddCustomerController implements Initializable {
         }
 
         divisionCombo.setItems(FirstLevelDivisions.selectedDivisions);
-
-
     }
 
     @FXML
@@ -115,9 +112,6 @@ public class AddCustomerController implements Initializable {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.show();
-
     }
-
-
 
 }

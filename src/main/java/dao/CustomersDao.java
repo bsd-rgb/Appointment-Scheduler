@@ -1,5 +1,6 @@
 package dao;
 
+import controller.AddCustomerController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customers;
@@ -14,6 +15,9 @@ public class CustomersDao {
 
 
     public static void selectCustomers() throws SQLException {
+
+        Customers.customers.clear();
+
         String sql = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID FROM customers";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();

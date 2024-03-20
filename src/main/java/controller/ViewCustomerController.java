@@ -66,6 +66,17 @@ public class ViewCustomerController implements Initializable {
     }
 
     @FXML
+    void onActionGoBack(ActionEvent event) throws IOException {
+
+        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("NavigationScreen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setScene(scene);
+        stage.show();
+
+    }
+
+    @FXML
     void onActionDeleteCustomer(ActionEvent event) {
 
     }
