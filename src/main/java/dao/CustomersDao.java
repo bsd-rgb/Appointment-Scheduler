@@ -43,22 +43,24 @@ public class CustomersDao {
         return false;
     }
 
-    public static void insertCustomer (String customerName, String address, String postalCode, String phone, int divisionId) throws SQLException {
+        //add the created by and last updated by fields and put that into the project.
+    public static int insertCustomer (String customerName, String address, String postalCode,String phone, LocalDateTime createDate,
+                                      String createdBy, LocalDateTime lastUpdated, String updatedBy, int divisionId) throws SQLException {
 
-        String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) VALUES(?, ?, ?, ?, ?,?,?,?,?)";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ps.setString(1, customerName);
         ps.setString(2, address);
         ps.setString(3, postalCode);
         ps.setString(4, phone);
-        /*ps.setTimestamp(5, Timestamp.valueOf(createDate));
-        ps.setTimestamp(6, Timestamp.valueOf(lastUpdated));*/
-        ps.setInt(5, divisionId);
-        ps.executeUpdate();
+        ps.setTimestamp(5, Timestamp.valueOf(createDate));
+        ps.setString(6, createdBy);
+        ps.setTimestamp(7, Timestamp.valueOf(lastUpdated));
+        ps.setString(8, updatedBy);
+        ps.setInt(9, divisionId);
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
 
-
-      /*  int rowsAffected = ps.executeUpdate();
-        return rowsAffected;*/
     }
 
 

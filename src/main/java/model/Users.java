@@ -1,5 +1,7 @@
 package model;
 
+import dao.UsersDao;
+
 import java.time.LocalDateTime;
 
 public class Users {
@@ -12,6 +14,18 @@ public class Users {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
+    }
+
+    public Users() {
+
+    }
+    @Override
+    public String toString(){
+        return userName;
+    }
+
+    public static Users getLoggedInUser() {
+        return UsersDao.getCurrentUser();
     }
 
     public int getUserId() {

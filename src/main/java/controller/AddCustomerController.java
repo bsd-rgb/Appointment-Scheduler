@@ -4,6 +4,7 @@ import com.bd.Application;
 import dao.CountriesDao;
 import dao.CustomersDao;
 import dao.FirstLevelDivisionsDao;
+import dao.UsersDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 import model.Countries;
 import model.Customers;
 import model.FirstLevelDivisions;
+import model.Users;
 
 import java.io.IOException;
 import java.net.URL;
@@ -57,18 +59,23 @@ public class AddCustomerController implements Initializable {
         // insert customer into DB(customername, first level division, phone, address, postal code )
         //exit to ViewCustomers Fxml
         try {
-            String customerName = customerNameTxtField.toString();
-            String address = addressTxtField.toString();
-            String phone = phoneTxtField.toString();
-            String postalCode = postalCodeTxtField.toString();
+            String customerName = customerNameTxtField.getText();
+            String address = addressTxtField.getText();
+            String phone = phoneTxtField.getText();
+            String postalCode = postalCodeTxtField.getText();
             int divisionId = divisionCombo.getValue().getDivisionId();
             LocalDateTime createdDate = LocalDateTime.now();
             LocalDateTime lastUpdated = LocalDateTime.now();
+            String loggedInUser = Users.getLoggedInUser().getUserName();
 
-            CustomersDao.insertCustomer(customerName, address, postalCode, phone, divisionId);
-            System.out.println("Customer Inserted.");
+            CustomersDao.insertCustomer(customerName, address, postalCode, phone, createdDate, loggedInUser, lastUpdated, loggedInUser, divisionId);
+            System.out.println("Customer inserted successfully.");
+
+
+
 
         } catch (Exception e) {
+            System.out.println("Error inserting customer.");
             System.out.println(e.getMessage());
         }
 
