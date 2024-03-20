@@ -1,5 +1,6 @@
 package model;
 
+import dao.CustomersDao;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -83,6 +84,7 @@ public class Customers {
     public static ObservableList<Customers> customers = FXCollections.observableArrayList();
 
     public static void addCustomer(Customers newCustomer) {
+
         customers.add(newCustomer);
     }
 
