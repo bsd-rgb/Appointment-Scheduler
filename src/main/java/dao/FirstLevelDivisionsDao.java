@@ -44,5 +44,20 @@ public class FirstLevelDivisionsDao {
         return 0;
     }
 
+    public static int getCountryIdFromDivision(int divisionId) throws SQLException {
+        //query against first level divisions to get the country ID
+        String sql = "SELECT Country_ID FROM first_level_divisions where Division_ID = ?";
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+        ps.setInt(1, divisionId);
+        ResultSet rs = ps.executeQuery();
+        int countryId;
+
+        while(rs.next()) {
+            countryId = rs.getInt("Country_ID");
+            return countryId;
+        }
+        return 0;
+    }
+
 
 }

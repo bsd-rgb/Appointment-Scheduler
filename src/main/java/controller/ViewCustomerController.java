@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -82,7 +83,19 @@ public class ViewCustomerController implements Initializable {
     }
 
     @FXML
-    void onActionModifyCustomer(ActionEvent event) {
+    void onActionModifyCustomer(ActionEvent event) throws IOException, SQLException {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Application.class.getResource("UpdateCustomer.fxml"));
+        loader.load();
+
+        UpdateCustomerController updateCustomerController = loader.getController();
+        updateCustomerController.sendCustomer(customerTable.getSelectionModel().getSelectedItem());
+
+        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        Parent scene = loader.getRoot();
+        stage.setScene(new Scene(scene));
+        stage.show();
 
     }
 

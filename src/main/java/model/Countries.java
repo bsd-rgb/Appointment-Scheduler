@@ -15,6 +15,10 @@ public class Countries {
         allCountries.add(country);
 
     }
+
+    public ObservableList<Countries> getCountries() {
+        return allCountries;
+    }
     @Override
     public String toString() {
         return country;

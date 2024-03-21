@@ -1,9 +1,7 @@
 package dao;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Countries;
-import model.Customers;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +23,7 @@ public class CountriesDao {
             countryResult = new Countries(countryId, country);
             Countries.loadCountries(countryResult);
         }
+       // return null;
     }
 
     public static int getCountryId(String selectedCountry) throws SQLException {
@@ -42,6 +41,8 @@ public class CountriesDao {
         }
         return 0;
     }
+
+
 
 
 }
