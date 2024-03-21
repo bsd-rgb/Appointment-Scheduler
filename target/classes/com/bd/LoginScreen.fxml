@@ -4,13 +4,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="424.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginScreenController">
+<AnchorPane prefHeight="424.0" prefWidth="524.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginScreenController">
    <children>
       <Button fx:id="submitBtn" layoutX="390.0" layoutY="187.0" mnemonicParsing="false" onAction="#onActionLogin" text="Submit" />
-      <Label fx:id="locationLbl" layoutX="225.0" layoutY="287.0" text="LocationLabel" />
       <Button fx:id="exitBtn" layoutX="417.0" layoutY="385.0" mnemonicParsing="false" onAction="#onActionExitProgram" text="Exit Program" />
       <VBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="84.0" prefHeight="84.0" prefWidth="147.0" spacing="22.0">
          <children>
@@ -32,5 +32,11 @@
             <TextField fx:id="passwordTxtField" prefHeight="25.0" prefWidth="211.0" />
          </children>
       </VBox>
+      <HBox alignment="TOP_CENTER" layoutX="162.0" layoutY="264.0" prefHeight="36.0" prefWidth="200.0" spacing="10.0">
+         <children>
+            <Label fx:id="timeZoneLbl" text="Timezone:" />
+            <Label fx:id="locationLbl" text="LocationLabel" />
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

@@ -72,6 +72,7 @@ public class AddCustomerController implements Initializable {
 
             CustomersDao.insertCustomer(customerName, address, postalCode, phone, createdDate, loggedInUser, lastUpdated, loggedInUser, divisionId);
             CustomersDao.selectCustomers();
+            System.out.println("DivisionID: " + divisionId + " " + divisionCombo.getValue());
 
             //dialog box that
             informationAlert.setContentText("Customer successfully added.");

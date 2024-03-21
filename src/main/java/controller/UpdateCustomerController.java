@@ -91,12 +91,14 @@ public class UpdateCustomerController implements Initializable {
             FirstLevelDivisionsDao.selectDivisionFromCountry(selectedCountryID);
             for(FirstLevelDivisions division :tempDivisions) {
                if(division.getDivisionId() == customer.getDivisionId()) {
-                   System.out.println("Match found! " + division.getDivisionId());
-                   updateCustDivision.setValue(tempDivisions.get(division.getDivisionId()));
+                   System.out.println("Match found! " + division.getDivisionId() + " " + customer.getDivisionId() + " " + division.getDivision());
+                   updateCustDivision.setValue(division);
+                   break;
                }
             }
         }catch (Exception e) {
             System.out.println(e.getMessage());
+            System.out.println(e.getCause());
         }
         try {
             ObservableList<Countries> allCountries = Countries.allCountries;
