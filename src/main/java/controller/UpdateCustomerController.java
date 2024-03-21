@@ -1,17 +1,24 @@
 package controller;
 
+import com.bd.Application;
 import dao.CountriesDao;
 import dao.FirstLevelDivisionsDao;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import model.Countries;
 import model.Customers;
 import model.FirstLevelDivisions;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -38,16 +45,25 @@ public class UpdateCustomerController implements Initializable {
 
     @FXML
     private TextField updateCustPostalCode;
-
+    Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         updateCustId.setDisable(true);
-
+        updateCustCountryCombo.setItems(Countries.allCountries);
+        updateCustDivision.setItems(FirstLevelDivisions.selectedDivisions);
     }
 
     @FXML
-    void onActionCancel(ActionEvent event) {
+    void onActionCancel(ActionEvent event) throws IOException {
+
+        //Create confirmation dialog
+        //confirmationAlert.setContentText("Cancel this customer update and go back?");
+
+        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewCustomer.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setScene(scene);
+        stage.show();
 
     }
 
@@ -68,86 +84,32 @@ public class UpdateCustomerController implements Initializable {
         updateCustAddress.setText(customer.getAddress());
         updateCustPostalCode.setText(customer.getPostalCode());
         updateCustPhone.setText(customer.getPhone());
-        //to get the division I'll need to pass the selected customer object
+        int selectedCountryID = FirstLevelDivisionsDao.getCountryIdFromDivision(customer.getDivisionId());
+
         try {
-            updateCustDivision.setValue(FirstLevelDivisions.selectedDivisions.get(customer.getDivisionId()));
-            //updateCustDivision.setValue();
-            //Maybe try looping through the selected division list to match the division ID to the customer?
+            ObservableList<FirstLevelDivisions> tempDivisions = FirstLevelDivisions.selectedDivisions;
+            FirstLevelDivisionsDao.selectDivisionFromCountry(selectedCountryID);
+            for(FirstLevelDivisions division :tempDivisions) {
+               if(division.getDivisionId() == customer.getDivisionId()) {
+                   System.out.println("Match found! " + division.getDivisionId());
+                   updateCustDivision.setValue(tempDivisions.get(division.getDivisionId()));
+               }
+            }
         }catch (Exception e) {
-            System.out.println("Error with getting the division ID in combobox");
             System.out.println(e.getMessage());
-
         }
-
-        //to get the Country data I'll need to take the first level division and get the Country from that
-        //Function that takes the division ID and turns it into country Data
-        //get the division ID
-        //query against first level divisions to get the country ID
-        //then I can select all countries(from CountriesDao, put that in an observable list and then loop through to to match the country ID
-        //kind of like the Auto gen part ID
         try {
             ObservableList<Countries> allCountries = Countries.allCountries;
-            int selectedCountryID = FirstLevelDivisionsDao.getCountryIdFromDivision(customer.getDivisionId());
             for (Countries country : allCountries) {
 
                 if (country.getCountryId() == selectedCountryID) {
 
                     updateCustCountryCombo.setValue(country);
-                } else {
-                    updateCustCountryCombo.setValue(null);
                 }
             }
         }catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-
-
-
-        /*Here's what I did in the other project:
-        *
-        *
-        *  public void SendPart(Part part) {
-            modPartIDTxt.setText(String.valueOf(part.getId()));
-            modPartNameTxt.setText(part.getName());
-            modPartInvTxt.setText(String.valueOf(part.getStock()));
-            modPartPriceTxt.setText(String.valueOf(part.getPrice()));
-            modPartMinTxt.setText(String.valueOf(part.getMin()));
-            modPartMaxTxt.setText(String.valueOf(part.getMax()));
-
-            if(part instanceof InHouse) {
-
-               modinHouseRadio.setSelected(true);
-                modPartMachineId.setText(String.valueOf(((InHouse) part).getMachineId()));
-                companyMachineVisibility();
-
-            } else if(part instanceof Outsourced) {
-                modOutsourcedRadio.setSelected(true);
-                modPartCompanyName.setText(((Outsourced) part).getCompanyName());
-                companyMachineVisibility();
-            }
-            *
-            *
-            * void onActionModifyPart(ActionEvent event) throws IOException {
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Application.class.getResource("Modify_Part_Screen.fxml"));
-        loader.load();
-
-        ModifyPartController modifyPartController = loader.getController();
-        modifyPartController.SendPart(partsTable.getSelectionModel().getSelectedItem());
-
-
-        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        Parent scene = loader.getRoot();
-        stage.setScene(new Scene(scene));
-        stage.show();
-    }
-            *
-            *
-            * */
-
-
     }
 
 

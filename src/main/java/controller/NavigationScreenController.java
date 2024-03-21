@@ -16,8 +16,12 @@ import java.sql.SQLException;
 public class NavigationScreenController {
 
     @FXML
-    void onActionLogOff(ActionEvent event) {
-
+    void onActionLogOff(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("LoginScreen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML

@@ -36,6 +36,8 @@ public class LoginScreenController implements Initializable {
 
     @FXML
     private Label usernameLbl;
+    @FXML
+    private Label timeZoneLbl;
 
     @FXML
     private TextField usernameTxtField;
@@ -63,6 +65,7 @@ public class LoginScreenController implements Initializable {
                passwordLbl.setText(rb.getString("Password"));
                exitBtn.setText(rb.getString("Exit"));
                submitBtn.setText(rb.getString("Submit"));
+               timeZoneLbl.setText(rb.getString("Timezone"));
            } catch (Exception e) {
                System.out.println(e.getMessage());
            }
