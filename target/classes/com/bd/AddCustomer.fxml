@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="549.0" prefWidth="501.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddCustomerController">
+<AnchorPane prefHeight="549.0" prefWidth="501.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddCustomerController">
    <children>
       <VBox layoutX="138.0" layoutY="101.0" prefHeight="126.0" prefWidth="247.0" spacing="15.0">
          <children>
@@ -38,8 +38,8 @@
             <Insets left="10.0" top="10.0" />
          </padding>
       </VBox>
-      <ComboBox fx:id="divisionCombo" layoutX="129.0" layoutY="316.0" prefWidth="150.0" promptText="First-level Division" />
-      <ComboBox fx:id="countryCombo" layoutX="129.0" layoutY="275.0" onAction="#onActionCountrySelected" prefWidth="150.0" promptText="Country" />
+      <ComboBox fx:id="divisionCombo" layoutX="129.0" layoutY="316.0" prefHeight="25.0" prefWidth="178.0" promptText="First-level Division" />
+      <ComboBox fx:id="countryCombo" layoutX="129.0" layoutY="275.0" onAction="#onActionCountrySelected" prefHeight="25.0" prefWidth="178.0" promptText="Country" />
       <Button layoutX="204.0" layoutY="419.0" mnemonicParsing="false" onAction="#onActionAddCustomer" text="Add Customer" />
       <Button layoutX="389.0" layoutY="419.0" mnemonicParsing="false" onAction="#onActionCancel" text="Cancel" />
       <Label layoutX="187.0" layoutY="37.0" text="Add Customer" textAlignment="CENTER">

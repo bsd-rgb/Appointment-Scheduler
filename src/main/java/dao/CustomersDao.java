@@ -39,8 +39,21 @@ public class CustomersDao {
     }
 
 
-    public static void updateCustomer(int id, Customers newCustomer) {
+    public static void updateCustomer(int id, String customerName, String address, String postalCode,String phone, LocalDateTime lastUpdated, String updatedBy, int divisionId) throws SQLException {
 
+        //String sql = "UPDATE fruits SET Fruit_Name = ? WHERE Fruit_ID = ?";
+        String sql = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?";
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+
+        ps.setString(1, customerName);
+        ps.setString(2, address);
+        ps.setString(3, postalCode);
+        ps.setString(4, phone);
+        ps.setTimestamp(5, Timestamp.valueOf(lastUpdated));
+        ps.setString(6, updatedBy);
+        ps.setInt(7, divisionId);
+        ps.setInt(8, id);
+        ps.executeUpdate();
     }
 
     public static boolean deleteCustomer(Customers selectedCustomer) {

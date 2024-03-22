@@ -25,6 +25,11 @@ public class ViewCustomerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        try {
+            CustomersDao.selectCustomers();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
         customerTable.setItems(Customers.getAllCustomers());
 
         customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));

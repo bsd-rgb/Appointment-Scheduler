@@ -10,10 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Countries;
 import model.Customers;
@@ -56,6 +53,8 @@ public class AddCustomerController implements Initializable {
 
     @FXML
     private TextField postalCodeTxtField;
+
+    Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
 
     @FXML
     void onActionAddCustomer(ActionEvent event) {
@@ -101,18 +100,26 @@ public class AddCustomerController implements Initializable {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
+        divisionCombo.getSelectionModel().selectFirst();
         divisionCombo.setItems(FirstLevelDivisions.selectedDivisions);
     }
 
     @FXML
     void onActionCancel(ActionEvent event) throws IOException {
 
-        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewCustomer.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.show();
+        confirmationAlert.setContentText("Are you sure you want to cancel? All changes will be lost.");
+        confirmationAlert.showAndWait();
+        if(confirmationAlert.getResult() == ButtonType.OK) {
+            Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewCustomer.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.show();
+        }else {
+            return;
+        }
+
+
     }
 
 }

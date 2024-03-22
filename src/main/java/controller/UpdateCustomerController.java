@@ -2,6 +2,7 @@ package controller;
 
 import com.bd.Application;
 import dao.CountriesDao;
+import dao.CustomersDao;
 import dao.FirstLevelDivisionsDao;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,18 +10,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Countries;
 import model.Customers;
 import model.FirstLevelDivisions;
+import model.Users;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class UpdateCustomerController implements Initializable {
@@ -46,6 +46,7 @@ public class UpdateCustomerController implements Initializable {
     @FXML
     private TextField updateCustPostalCode;
     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+    Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         updateCustId.setDisable(true);
@@ -56,24 +57,69 @@ public class UpdateCustomerController implements Initializable {
     @FXML
     void onActionCancel(ActionEvent event) throws IOException {
 
-        //Create confirmation dialog
-        //confirmationAlert.setContentText("Cancel this customer update and go back?");
+        confirmationAlert.setContentText("Are you sure you want to cancel? All changes will be lost.");
+        confirmationAlert.showAndWait();
+        //((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Go Back");
+        if(confirmationAlert.getResult() == ButtonType.OK) {
+            Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewCustomer.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.show();
 
-        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewCustomer.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.show();
+        }else {
+            return;
+        }
 
     }
 
     @FXML
     void onActionCountrySelected(ActionEvent event) {
 
+        FirstLevelDivisions.clearDivisions();
+        Countries selectedCountry = updateCustCountryCombo.getValue();
+        System.out.println(selectedCountry);
+
+        try {
+            FirstLevelDivisionsDao.selectDivisionFromCountry(CountriesDao.getCountryId(String.valueOf(selectedCountry)));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        updateCustDivision.getSelectionModel().selectFirst();
+        updateCustDivision.setItems(FirstLevelDivisions.selectedDivisions);
     }
 
     @FXML
     void onActionUpdateCustomer(ActionEvent event) {
+
+        try {
+
+            String customerName = updateCustName.getText();
+            String address = updateCustAddress.getText();
+            String postalCode = updateCustPostalCode.getText();
+            String phone = updateCustPhone.getText();
+            int divisionId = updateCustDivision.getValue().getDivisionId();
+            int customerId = Integer.parseInt(updateCustId.getText());
+            LocalDateTime lastUpdated = LocalDateTime.now();
+            String loggedInUser = Users.getLoggedInUser().getUserName();
+
+            CustomersDao.updateCustomer(customerId, customerName, address, postalCode, phone, lastUpdated, loggedInUser, divisionId);
+            informationAlert.setContentText("Customer updated successfully.");
+            informationAlert.showAndWait();
+
+            Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewCustomer.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.show();
+
+
+
+
+
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 
