@@ -55,37 +55,44 @@ public class AddCustomerController implements Initializable {
     private TextField postalCodeTxtField;
 
     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
 
     @FXML
     void onActionAddCustomer(ActionEvent event) {
 
         //add the statement to see if the text fields are empty
-        //if(customerNameTxtField.getText().isEmpty() || )
+        if (customerNameTxtField.getText().isEmpty() || addressTxtField.getText().isEmpty() || phoneTxtField.getText().isEmpty() || postalCodeTxtField.getText().isEmpty()
+                || divisionCombo.getValue() == null) {
 
-        try {
-            String customerName = customerNameTxtField.getText();
-            String address = addressTxtField.getText();
-            String phone = phoneTxtField.getText();
-            String postalCode = postalCodeTxtField.getText();
-            int divisionId = divisionCombo.getValue().getDivisionId();
-            LocalDateTime createdDate = LocalDateTime.now();
-            LocalDateTime lastUpdated = LocalDateTime.now();
-            String loggedInUser = Users.getLoggedInUser().getUserName();
+            errorAlert.setContentText("ERROR: One or more fields are empty. Please check values and try again.");
+            errorAlert.showAndWait();
+        } else {
 
-            CustomersDao.insertCustomer(customerName, address, postalCode, phone, createdDate, loggedInUser, lastUpdated, loggedInUser, divisionId);
-            CustomersDao.selectCustomers();
+            try {
+                String customerName = customerNameTxtField.getText();
+                String address = addressTxtField.getText();
+                String phone = phoneTxtField.getText();
+                String postalCode = postalCodeTxtField.getText();
+                int divisionId = divisionCombo.getValue().getDivisionId();
+                LocalDateTime createdDate = LocalDateTime.now();
+                LocalDateTime lastUpdated = LocalDateTime.now();
+                String loggedInUser = Users.getLoggedInUser().getUserName();
 
-            informationAlert.setContentText("Customer successfully added.");
-            informationAlert.showAndWait();
-            Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewCustomer.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            stage.setScene(scene);
-            stage.show();
-        } catch (Exception e) {
-            informationAlert.setContentText("Error adding customer.");
-            informationAlert.showAndWait();
-            System.out.println(e.getMessage());
+                CustomersDao.insertCustomer(customerName, address, postalCode, phone, createdDate, loggedInUser, lastUpdated, loggedInUser, divisionId);
+                CustomersDao.selectCustomers();
+
+                informationAlert.setContentText("Customer successfully added.");
+                informationAlert.showAndWait();
+                Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewCustomer.fxml"));
+                Scene scene = new Scene(fxmlLoader.load());
+                stage.setScene(scene);
+                stage.show();
+            } catch (Exception e) {
+                errorAlert.setContentText("Error adding customer.");
+                errorAlert.showAndWait();
+                System.out.println(e.getMessage());
+            }
         }
     }
 

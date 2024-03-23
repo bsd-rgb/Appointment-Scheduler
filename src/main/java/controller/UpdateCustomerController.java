@@ -47,6 +47,7 @@ public class UpdateCustomerController implements Initializable {
     private TextField updateCustPostalCode;
     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
     Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
+    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         updateCustId.setDisable(true);
@@ -89,27 +90,34 @@ public class UpdateCustomerController implements Initializable {
     @FXML
     void onActionUpdateCustomer(ActionEvent event) {
 
-        try {
-            String customerName = updateCustName.getText();
-            String address = updateCustAddress.getText();
-            String postalCode = updateCustPostalCode.getText();
-            String phone = updateCustPhone.getText();
-            int divisionId = updateCustDivision.getValue().getDivisionId();
-            int customerId = Integer.parseInt(updateCustId.getText());
-            LocalDateTime lastUpdated = LocalDateTime.now();
-            String loggedInUser = Users.getLoggedInUser().getUserName();
+        if (updateCustName.getText().isEmpty() || updateCustAddress.getText().isEmpty() || updateCustPostalCode.getText().isEmpty() ||
+                updateCustDivision.getValue() == null || updateCustCountryCombo.getValue() == null) {
+            errorAlert.setContentText("ERROR: One or more fields are empty. Please check values and try again.");
+            errorAlert.showAndWait();
+        } else {
 
-            CustomersDao.updateCustomer(customerId, customerName, address, postalCode, phone, lastUpdated, loggedInUser, divisionId);
-            informationAlert.setContentText("Customer updated successfully.");
-            informationAlert.showAndWait();
+            try {
+                String customerName = updateCustName.getText();
+                String address = updateCustAddress.getText();
+                String postalCode = updateCustPostalCode.getText();
+                String phone = updateCustPhone.getText();
+                int divisionId = updateCustDivision.getValue().getDivisionId();
+                int customerId = Integer.parseInt(updateCustId.getText());
+                LocalDateTime lastUpdated = LocalDateTime.now();
+                String loggedInUser = Users.getLoggedInUser().getUserName();
 
-            Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewCustomer.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            stage.setScene(scene);
-            stage.show();
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
+                CustomersDao.updateCustomer(customerId, customerName, address, postalCode, phone, lastUpdated, loggedInUser, divisionId);
+                informationAlert.setContentText("Customer updated successfully.");
+                informationAlert.showAndWait();
+
+                Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewCustomer.fxml"));
+                Scene scene = new Scene(fxmlLoader.load());
+                stage.setScene(scene);
+                stage.show();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -127,7 +135,6 @@ public class UpdateCustomerController implements Initializable {
             FirstLevelDivisionsDao.selectDivisionFromCountry(selectedCountryID);
             for(FirstLevelDivisions division :tempDivisions) {
                if(division.getDivisionId() == customer.getDivisionId()) {
-                   System.out.println("Match found! " + division.getDivisionId() + " " + customer.getDivisionId() + " " + division.getDivision());
                    updateCustDivision.setValue(division);
                    break;
                }
