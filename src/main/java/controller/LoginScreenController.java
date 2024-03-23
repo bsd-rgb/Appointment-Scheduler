@@ -49,17 +49,15 @@ public class LoginScreenController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //get and set zoneId
+
         ZoneId zoneId = ZoneId.systemDefault();
         locationLbl.setText(zoneId.toString());
-
 
        if(Locale.getDefault().getLanguage().equals("fr")) {
            french = true;
        }
 
        if(french) {
-           System.out.println("This is french");
            try {
                usernameLbl.setText(rb.getString("Username"));
                passwordLbl.setText(rb.getString("Password"));
@@ -69,10 +67,7 @@ public class LoginScreenController implements Initializable {
            } catch (Exception e) {
                System.out.println(e.getMessage());
            }
-       } else {
-           System.out.println("This is not french.");
        }
-
     }
 
     @FXML
@@ -90,20 +85,17 @@ public class LoginScreenController implements Initializable {
 
             if(UsersDao.selectUser(userName,password) != null ) {
                 System.out.println(rb.getString("Found"));
-
                 Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
                 FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("NavigationScreen.fxml"));
                 Scene scene = new Scene(fxmlLoader.load());
                 stage.setScene(scene);
                 stage.show();
             } else {
-                //once I have the structure, do this in french.
                     errorAlert.setTitle(rb.getString("Error"));
                     errorAlert.setContentText(rb.getString("Incorrect"));
                     passwordTxtField.clear();
                     errorAlert.showAndWait();
                     return;
-
             }
             usernameTxtField.clear();
             passwordTxtField.clear();
@@ -123,5 +115,4 @@ public class LoginScreenController implements Initializable {
             System.exit(0);
         } else return;
     }
-
 }

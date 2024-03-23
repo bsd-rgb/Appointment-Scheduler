@@ -6,7 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import model.Customers;
 
@@ -14,14 +16,24 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class NavigationScreenController {
+    Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
 
     @FXML
     void onActionLogOff(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("LoginScreen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.show();
+
+
+        confirmationAlert.setContentText("Are you sure you would like to log off?");
+        confirmationAlert.showAndWait();
+        ((Button) confirmationAlert.getDialogPane().lookupButton(ButtonType.OK)).setText("Log Off");
+        if(confirmationAlert.getResult() == ButtonType.OK) {
+            Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("LoginScreen.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.show();
+        } else {
+            return;
+        }
     }
 
     @FXML
@@ -34,8 +46,6 @@ public class NavigationScreenController {
 
         try {
             CustomersDao.selectCustomers();
-            System.out.println("The try block was successful.");
-            System.out.println(Customers.getAllCustomers());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -46,7 +56,6 @@ public class NavigationScreenController {
         stage.setScene(scene);
         stage.show();
     }
-
     @FXML
     void onActionViewReports(ActionEvent event) {
 

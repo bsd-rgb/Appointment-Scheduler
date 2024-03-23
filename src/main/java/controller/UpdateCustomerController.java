@@ -59,18 +59,15 @@ public class UpdateCustomerController implements Initializable {
 
         confirmationAlert.setContentText("Are you sure you want to cancel? All changes will be lost.");
         confirmationAlert.showAndWait();
-        //((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Go Back");
         if(confirmationAlert.getResult() == ButtonType.OK) {
             Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewCustomer.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
             stage.show();
-
         }else {
             return;
         }
-
     }
 
     @FXML
@@ -93,7 +90,6 @@ public class UpdateCustomerController implements Initializable {
     void onActionUpdateCustomer(ActionEvent event) {
 
         try {
-
             String customerName = updateCustName.getText();
             String address = updateCustAddress.getText();
             String postalCode = updateCustPostalCode.getText();
@@ -112,15 +108,9 @@ public class UpdateCustomerController implements Initializable {
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
             stage.show();
-
-
-
-
-
         }catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     public void sendCustomer(Customers customer) throws SQLException {

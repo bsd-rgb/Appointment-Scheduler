@@ -59,6 +59,9 @@ public class AddCustomerController implements Initializable {
     @FXML
     void onActionAddCustomer(ActionEvent event) {
 
+        //add the statement to see if the text fields are empty
+        //if(customerNameTxtField.getText().isEmpty() || )
+
         try {
             String customerName = customerNameTxtField.getText();
             String address = addressTxtField.getText();
@@ -71,9 +74,7 @@ public class AddCustomerController implements Initializable {
 
             CustomersDao.insertCustomer(customerName, address, postalCode, phone, createdDate, loggedInUser, lastUpdated, loggedInUser, divisionId);
             CustomersDao.selectCustomers();
-            System.out.println("DivisionID: " + divisionId + " " + divisionCombo.getValue());
 
-            //dialog box that
             informationAlert.setContentText("Customer successfully added.");
             informationAlert.showAndWait();
             Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
@@ -81,9 +82,9 @@ public class AddCustomerController implements Initializable {
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
             stage.show();
-
         } catch (Exception e) {
-            System.out.println("Error inserting customer.");
+            informationAlert.setContentText("Error adding customer.");
+            informationAlert.showAndWait();
             System.out.println(e.getMessage());
         }
     }
@@ -118,8 +119,5 @@ public class AddCustomerController implements Initializable {
         }else {
             return;
         }
-
-
     }
-
 }

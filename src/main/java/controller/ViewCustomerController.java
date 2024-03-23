@@ -8,9 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Customers;
@@ -21,25 +19,6 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ViewCustomerController implements Initializable {
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        try {
-            CustomersDao.selectCustomers();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        customerTable.setItems(Customers.getAllCustomers());
-
-        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-        addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
-        postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
-        phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        divisionCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
-
-    }
 
     @FXML
     private TableColumn<Customers, String> customerNameCol;
@@ -60,6 +39,28 @@ public class ViewCustomerController implements Initializable {
 
     @FXML
     private TableColumn<Customers, String> postalCodeCol;
+    Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        try {
+            CustomersDao.selectCustomers();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        customerTable.setItems(Customers.getAllCustomers());
+
+        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+        postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        divisionCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
+
+    }
+
+
 
     @FXML
     void onActionAddCustomer(ActionEvent event) throws IOException {
@@ -84,6 +85,24 @@ public class ViewCustomerController implements Initializable {
 
     @FXML
     void onActionDeleteCustomer(ActionEvent event) {
+
+        Customers customer = customerTable.getSelectionModel().getSelectedItem();
+        confirmationAlert.setContentText("Are you sure you would like to delete the selected customer?");
+        confirmationAlert.showAndWait();
+        if(confirmationAlert.getResult() == ButtonType.OK) {
+            try {
+                CustomersDao.deleteCustomer(customer.getCustomerId());
+                CustomersDao.selectCustomers();
+                customerTable.setItems(Customers.getAllCustomers());
+            }catch(Exception e) {
+                System.out.println("Error deleting customer.\n" + e.getMessage());
+            }
+        } else {
+            return;
+        }
+
+
+
 
     }
 
