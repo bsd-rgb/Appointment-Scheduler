@@ -37,7 +37,13 @@ public class NavigationScreenController {
     }
 
     @FXML
-    void onActionViewAppointments(ActionEvent event) {
+    void onActionViewAppointments(ActionEvent event) throws IOException {
+
+        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewAppointments.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setScene(scene);
+        stage.show();
 
     }
 
