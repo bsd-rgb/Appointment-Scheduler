@@ -34,6 +34,7 @@ public class CustomersDao {
 
             customerResult = new Customers(customerId,customerName, customerAddress, postalCode, phoneNumber, divisionId);
             Customers.addCustomer(customerResult);
+            Customers.addCustomerId(customerId);
         }
 
     }
@@ -86,6 +87,8 @@ public class CustomersDao {
         ps.setInt(1, customerId);
         ps.executeUpdate();
     }
+
+
 
 
 }

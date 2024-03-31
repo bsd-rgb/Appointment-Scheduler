@@ -16,9 +16,25 @@ public class UsersDao {
 
     }
 
+    public static void selectUsers() throws SQLException {
+        String sql = "SELECT * FROM users";
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        Users userResult;
+
+        while(rs.next()){
+            int userId = rs.getInt("User_ID");
+            String userName = rs.getString("User_Name");
+            String password = rs.getString("Password");
+            userResult = new Users(userId, userName, password);
+            Users.addUsers(userResult);
+            Users.addUserIds(userId);
+        }
+    }
 
 
-    public static Users selectUser(String userName, String password) throws SQLException {
+
+    public static Users findUser(String userName, String password) throws SQLException {
 
         String sql = "SELECT * FROM users WHERE User_Name = '" + userName + "' AND Password = '" +password + "'";
 

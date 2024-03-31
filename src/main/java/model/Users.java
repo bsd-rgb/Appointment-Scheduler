@@ -1,6 +1,8 @@
 package model;
 
 import dao.UsersDao;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.time.LocalDateTime;
 
@@ -23,6 +25,28 @@ public class Users {
     public String toString(){
         return userName;
     }
+
+    public static ObservableList<Users> allUsers = FXCollections.observableArrayList();
+    public static ObservableList<Integer> allUserIds = FXCollections.observableArrayList();
+
+    public static void addUsers(Users user) {
+        allUsers.add(user);
+    }
+
+    public static void addUserIds(int id) {
+        allUserIds.add(id);
+    }
+
+    public static ObservableList<Integer> getUserIds() {
+
+        return allUserIds;
+    }
+
+    public static ObservableList<Users> getAllUsers(){
+        return allUsers;
+    }
+
+
 
     public static Users getLoggedInUser() {
         return UsersDao.getCurrentUser();

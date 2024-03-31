@@ -1,8 +1,6 @@
 package com.bd;
 
-import dao.CountriesDao;
-import dao.CustomersDao;
-import dao.DBConnection;
+import dao.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -28,6 +26,9 @@ public class Application extends javafx.application.Application {
         //Locale.setDefault(new Locale("fr"));
         DBConnection.openConnection();
         CountriesDao.selectAllCountries();
+        ContactsDao.selectContacts();
+        CustomersDao.selectCustomers();
+        UsersDao.selectUsers();
         launch();
         DBConnection.closeConnection();
     }

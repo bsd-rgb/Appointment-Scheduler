@@ -1,16 +1,31 @@
 package model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class Contacts {
 
     private int contactId;
     private String contactName;
     private String contactEmail;
+    public static ObservableList<Contacts> allContacts = FXCollections.observableArrayList();
+
+    public static void addContact(Contacts contact) {
+        allContacts.add(contact);
+    }
 
     public Contacts(int contactId, String contactName, String contactEmail) {
         this.contactId = contactId;
         this.contactName = contactName;
         this.contactEmail = contactEmail;
     }
+
+    @Override
+    public String toString(){
+        return contactName;
+    }
+
+
 
     public int getContactId() {
         return contactId;

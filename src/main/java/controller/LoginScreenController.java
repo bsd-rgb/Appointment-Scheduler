@@ -83,7 +83,7 @@ public class LoginScreenController implements Initializable {
             String userName = usernameTxtField.getText();
             String password = passwordTxtField.getText();
 
-            if(UsersDao.selectUser(userName,password) != null ) {
+            if(UsersDao.findUser(userName,password) != null ) {
                 System.out.println(rb.getString("Found"));
                 Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
                 FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("NavigationScreen.fxml"));

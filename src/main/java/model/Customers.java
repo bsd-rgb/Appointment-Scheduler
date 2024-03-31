@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 public class Customers {
 
     private int customerId;
+    private int tempId;
     private String customerName;
     private String address;
     private String postalCode;
@@ -81,7 +82,10 @@ public class Customers {
         this.divisionId = divisionId;
     }
 
+
     public static ObservableList<Customers> customers = FXCollections.observableArrayList();
+    public static ObservableList<Integer> customerIds = FXCollections.observableArrayList();
+
 
     public static void addCustomer(Customers newCustomer) {
 
@@ -93,4 +97,16 @@ public class Customers {
         return customers;
 
     }
+
+    public static void addCustomerId(int id) {
+        customerIds.add(id);
+    }
+
+    public static ObservableList<Integer> getCustomerIds() {
+
+        return customerIds;
+
+    }
+
+
 }

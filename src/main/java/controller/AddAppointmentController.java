@@ -1,5 +1,6 @@
 package controller;
 
+import dao.CustomersDao;
 import helper.TimeUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,12 +9,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 import model.Contacts;
 import model.Customers;
 import model.Users;
 
 import java.net.URL;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 
@@ -38,7 +41,7 @@ public class AddAppointmentController implements Initializable {
     private ComboBox<Contacts> apptContactCombo;
 
     @FXML
-    private ComboBox<Customers> apptCustIdCombo;
+    private ComboBox<Integer> apptCustIdCombo;
 
     @FXML
     private TextField apptLocTxt;
@@ -50,31 +53,22 @@ public class AddAppointmentController implements Initializable {
     private TextField apptTypeTxt;
 
     @FXML
-    private ComboBox<Users> apptUserIdCombo;
+    private ComboBox<Integer> apptUserIdCombo;
 
-    @FXML
-    private ComboBox<?> endAmPmCombo;
 
     @FXML
     private DatePicker endDate;
 
-    @FXML
-    private ComboBox<LocalTime> endHourCombo;
-
-    @FXML
-    private ComboBox<LocalTime> endMinuteCombo;
-
-    @FXML
-    private ComboBox<?> startAmPmCombo;
 
     @FXML
     private DatePicker startDate;
 
     @FXML
-    private ComboBox<LocalTime> startHourCombo;
+    private ComboBox<LocalTime> startTimeCombo;
 
     @FXML
-    private ComboBox<LocalTime> startMinuteCombo;
+    private ComboBox<LocalTime> endTimeCombo;
+
 
     @FXML
     void onActionAddAppointment(ActionEvent event) {
@@ -89,8 +83,50 @@ public class AddAppointmentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        startHourCombo.setItems(TimeUtil.businessHours());
-        startHourCombo.getSelectionModel().selectFirst();
+        final String timePattern = "hh:mm a";
+        final DateTimeFormatter patternFormatter = DateTimeFormatter.ofPattern(timePattern);
+        startTimeCombo.setConverter(new StringConverter<LocalTime>() {
+            @Override
+            public String toString(LocalTime localTime) {
+                if(localTime == null) {
+                    return "";
+                }
+                return patternFormatter.format(localTime);
+            }
+            @Override
+            public LocalTime fromString(String s) {
+                if(s == null || s.isEmpty()) {
+                    return null;
+                }
+                return LocalTime.parse(s, patternFormatter);
+            }
+        });
+        endTimeCombo.setConverter(new StringConverter<LocalTime>() {
+            @Override
+            public String toString(LocalTime localTime) {
+                if(localTime == null) {
+                    return "";
+                }
+                return patternFormatter.format(localTime);
+            }
+            @Override
+            public LocalTime fromString(String s) {
+                if(s == null || s.isEmpty()) {
+                    return null;
+                }
+                return LocalTime.parse(s, patternFormatter);
+            }
+        });
+        startTimeCombo.setItems(TimeUtil.businessHours());
+        endTimeCombo.setItems(TimeUtil.businessHours());
+        startTimeCombo.getSelectionModel().selectFirst();
+        apptContactCombo.setItems(Contacts.allContacts);
+        apptCustIdCombo.setItems(Customers.getCustomerIds());
+        apptUserIdCombo.setItems(Users.getUserIds());
+
+
+
+
 
     }
 }
