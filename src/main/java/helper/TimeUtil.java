@@ -2,6 +2,8 @@ package helper;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.sql.Timestamp;
 import java.time.*;
 import java.util.TimeZone;
 
@@ -13,7 +15,9 @@ public class TimeUtil {
     static final private ZoneId businessZoneId = ZoneId.of("America/New_York");
     static final private ZonedDateTime businessStartZDT = ZonedDateTime.of(LocalDate.now(), businessStartTime, businessZoneId);
     static final private ZonedDateTime businessEndZDT = ZonedDateTime.of(LocalDate.now(), businessEndTime, businessZoneId);
-    static ZoneId localZoneId = ZoneId.of(TimeZone.getDefault().getID());
+    public static ZoneId localZoneId = ZoneId.of(TimeZone.getDefault().getID());
+
+
 
 
     public static ObservableList<LocalTime> businessHours (){
@@ -28,6 +32,12 @@ public class TimeUtil {
         }
         return localTimeList;
     }
+
+   /* public static Instant localTimeToUTC(LocalDateTime ldt) {
+
+
+        //return ldt.toInstant();
+    }*/
 }
 
 

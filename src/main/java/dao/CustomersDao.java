@@ -57,10 +57,6 @@ public class CustomersDao {
         ps.executeUpdate();
     }
 
-    public static boolean deleteCustomer(Customers selectedCustomer) {
-        return false;
-    }
-
         //add the created by and last updated by fields and put that into the project.
     public static int insertCustomer (String customerName, String address, String postalCode,String phone, LocalDateTime createDate,
                                       String createdBy, LocalDateTime lastUpdated, String updatedBy, int divisionId) throws SQLException {

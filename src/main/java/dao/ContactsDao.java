@@ -25,4 +25,18 @@ public class ContactsDao {
         }
 
     }
+
+    public static int getContactIdFromName(String contactName) throws SQLException {
+
+        String sql = "SELECT * FROM contacts WHERE Contact_Name = ?";
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+        ps.setString(1, contactName);
+        ResultSet rs = ps.executeQuery();
+        int contactId;
+        while(rs.next()) {
+            contactId = rs.getInt("Contact_ID");
+            return contactId;
+        }
+        return 0;
+    }
 }

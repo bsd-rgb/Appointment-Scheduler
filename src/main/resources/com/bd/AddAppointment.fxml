@@ -45,18 +45,18 @@
             <TextField fx:id="apptLocTxt" layoutX="202.0" layoutY="53.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="apptTypeTxt" layoutX="202.0" layoutY="90.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <ComboBox fx:id="apptContactCombo" prefHeight="25.0" prefWidth="204.0" promptText="Select Contact" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
-            <TextArea fx:id="appDescTxt" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextArea fx:id="apptDescTxt" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <ComboBox fx:id="apptCustIdCombo" layoutX="348.0" layoutY="204.0" prefHeight="25.0" prefWidth="204.0" promptText="Select Customer ID" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="7" />
             <ComboBox fx:id="apptUserIdCombo" layoutX="348.0" layoutY="417.0" prefHeight="25.0" prefWidth="204.0" promptText="Select User ID" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="8" />
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <children>
-                  <DatePicker fx:id="startDate" prefHeight="25.0" prefWidth="150.0" />
+                  <DatePicker fx:id="startDate" prefHeight="25.0" prefWidth="150.0" promptText="Select Date" />
                   <ComboBox fx:id="startTimeCombo" prefHeight="25.0" prefWidth="115.0" promptText="Select a time" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT" layoutX="175.0" layoutY="278.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <children>
-                  <DatePicker fx:id="endDate" prefHeight="25.0" prefWidth="150.0" />
+                  <DatePicker fx:id="endDate" prefHeight="25.0" prefWidth="150.0" promptText="Select Date" />
                   <ComboBox fx:id="endTimeCombo" prefHeight="25.0" prefWidth="114.0" promptText="Select a time" />
                </children>
             </HBox>

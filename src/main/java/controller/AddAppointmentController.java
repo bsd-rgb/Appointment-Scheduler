@@ -1,21 +1,22 @@
 package controller;
 
+import dao.AppointmentsDao;
+import dao.ContactsDao;
 import dao.CustomersDao;
 import helper.TimeUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.util.StringConverter;
 import model.Contacts;
 import model.Customers;
 import model.Users;
 
 import java.net.URL;
-import java.time.LocalTime;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
@@ -35,7 +36,7 @@ public class AddAppointmentController implements Initializable {
     * */
 
     @FXML
-    private TextArea appDescTxt;
+    private TextArea apptDescTxt;
 
     @FXML
     private ComboBox<Contacts> apptContactCombo;
@@ -68,10 +69,59 @@ public class AddAppointmentController implements Initializable {
 
     @FXML
     private ComboBox<LocalTime> endTimeCombo;
+    Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
 
 
     @FXML
     void onActionAddAppointment(ActionEvent event) {
+
+
+
+        //Create a method in the DAO to insert the appointment
+        //Call that method here
+        //Test
+
+
+        try{
+            LocalDate apptDateStart = startDate.getValue();
+            LocalDate apptDateEnd = endDate.getValue();
+            LocalTime apptStartTime = startTimeCombo.getValue();
+            LocalTime apptEndTime = endTimeCombo.getValue();
+            String contactName = apptContactCombo.getValue().getContactName();
+            ZoneId zoneId = ZoneId.systemDefault();
+
+            //ZoneId.of(TimeZone.getDefault().getID());
+
+
+            LocalDateTime appointmentStart = LocalDateTime.of(apptDateStart, apptStartTime);
+            LocalDateTime appointmentEnd = LocalDateTime.of(apptDateEnd, apptEndTime);
+            ZonedDateTime startUTC = appointmentStart.atZone(zoneId).withZoneSameInstant(ZoneId.of("UTC"));
+            ZonedDateTime endUTC = appointmentEnd.atZone(zoneId).withZoneSameInstant(ZoneId.of("UTC"));
+            Timestamp startTimestampUTC = Timestamp.valueOf(startUTC.toLocalDateTime());
+            Timestamp endTimestampUTC = Timestamp.valueOf(endUTC.toLocalDateTime());
+
+            String title = apptTitleTxt.getText();
+            String description = apptDescTxt.getText();
+            String location = apptLocTxt.getText();
+            String type = apptTypeTxt.getText();
+            int contactId = ContactsDao.getContactIdFromName(contactName);
+            int customerId = apptCustIdCombo.getValue();
+            int userId = apptUserIdCombo.getValue();
+            LocalDateTime createdDate = LocalDateTime.now();
+            LocalDateTime lastUpdated = LocalDateTime.now();
+            String loggedInUser = Users.getLoggedInUser().getUserName();
+
+
+            AppointmentsDao.insertAppointment(title, description, location, type, startTimestampUTC, endTimestampUTC, createdDate, loggedInUser
+                   ,lastUpdated,loggedInUser,customerId,userId,contactId);
+
+            informationAlert.setContentText("Appointment added successfully!");
+            informationAlert.showAndWait();
+
+        }catch (Exception e) {
+            System.out.println("Error: adding appointment.");
+            System.out.println(e.getMessage());
+        }
 
     }
 
@@ -120,13 +170,10 @@ public class AddAppointmentController implements Initializable {
         startTimeCombo.setItems(TimeUtil.businessHours());
         endTimeCombo.setItems(TimeUtil.businessHours());
         startTimeCombo.getSelectionModel().selectFirst();
+        endTimeCombo.getSelectionModel().selectLast();
         apptContactCombo.setItems(Contacts.allContacts);
         apptCustIdCombo.setItems(Customers.getCustomerIds());
         apptUserIdCombo.setItems(Users.getUserIds());
-
-
-
-
 
     }
 }
