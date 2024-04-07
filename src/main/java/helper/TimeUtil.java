@@ -33,11 +33,10 @@ public class TimeUtil {
         return localTimeList;
     }
 
-   /* public static Instant localTimeToUTC(LocalDateTime ldt) {
+   public static ZonedDateTime localToUTC (LocalDateTime localDateTime, ZoneId zoneId) {
 
-
-        //return ldt.toInstant();
-    }*/
+        return localDateTime.atZone(zoneId).withZoneSameInstant(ZoneId.of("UTC"));
+   }
 }
 
 

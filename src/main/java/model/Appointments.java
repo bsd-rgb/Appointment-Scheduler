@@ -1,5 +1,9 @@
 package model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -98,6 +102,8 @@ public class Appointments {
         this.contactId = contactId;
     }
 
+    public static ObservableList<Appointments> allAppointments = FXCollections.observableArrayList();
+
     public Appointments(int appointmentId, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId) {
         this.appointmentId = appointmentId;
         this.title = title;
@@ -109,5 +115,13 @@ public class Appointments {
         this.customerId = customerId;
         this.userId = userId;
         this.contactId = contactId;
+    }
+
+    public static void addAppointment(Appointments appointment){
+        allAppointments.add(appointment);
+    }
+
+    public static ObservableList<Appointments> getAllAppointments(){
+        return allAppointments;
     }
 }

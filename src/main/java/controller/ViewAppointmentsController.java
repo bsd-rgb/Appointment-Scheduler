@@ -6,15 +6,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointments;
+import model.Contacts;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class ViewAppointmentsController implements Initializable {
@@ -30,10 +30,52 @@ public class ViewAppointmentsController implements Initializable {
     @FXML
     private TableView<Appointments> appointmentTable;
 
+    @FXML
+    private TableColumn<String, Contacts> apptContactCol;
+
+    @FXML
+    private TableColumn<Integer, Appointments> apptCustomerIdCol;
+
+    @FXML
+    private TableColumn<String, Appointments> apptDescCol;
+
+    @FXML
+    private TableColumn<LocalDateTime, Appointments> apptEndCol;
+    @FXML
+    private TableColumn<LocalDateTime, Appointments> apptStartCol;
+
+    @FXML
+    private TableColumn<Integer, Appointments> apptIdCol;
+
+    @FXML
+    private TableColumn<String, Appointments> apptLocationCol;
+
+    @FXML
+    private TableColumn<String, Appointments> apptTitleCol;
+
+    @FXML
+    private TableColumn<String, Appointments> apptTypeCol;
+
+    @FXML
+    private TableColumn<Integer, Appointments> apptUserIdCol;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         allAppointments.setSelected(true);
+
+        apptIdCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
+        apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        apptDescCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        apptLocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        apptContactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+        apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        apptStartCol.setCellValueFactory(new PropertyValueFactory<>("start"));
+        apptEndCol.setCellValueFactory(new PropertyValueFactory<>("end"));
+        apptCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        apptUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
+
+        appointmentTable.setItems(Appointments.getAllAppointments());
 
     }
 

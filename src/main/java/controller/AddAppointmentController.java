@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 
 public class AddAppointmentController implements Initializable {
@@ -88,18 +89,16 @@ public class AddAppointmentController implements Initializable {
             LocalTime apptStartTime = startTimeCombo.getValue();
             LocalTime apptEndTime = endTimeCombo.getValue();
             String contactName = apptContactCombo.getValue().getContactName();
-            ZoneId zoneId = ZoneId.systemDefault();
-
-            //ZoneId.of(TimeZone.getDefault().getID());
-
+            ZoneId zoneId = ZoneId.of(TimeZone.getDefault().getID());
 
             LocalDateTime appointmentStart = LocalDateTime.of(apptDateStart, apptStartTime);
             LocalDateTime appointmentEnd = LocalDateTime.of(apptDateEnd, apptEndTime);
-            ZonedDateTime startUTC = appointmentStart.atZone(zoneId).withZoneSameInstant(ZoneId.of("UTC"));
-            ZonedDateTime endUTC = appointmentEnd.atZone(zoneId).withZoneSameInstant(ZoneId.of("UTC"));
+            ZonedDateTime startUTC = TimeUtil.localToUTC(appointmentStart, zoneId);
+            ZonedDateTime endUTC = TimeUtil.localToUTC(appointmentEnd, zoneId);
             Timestamp startTimestampUTC = Timestamp.valueOf(startUTC.toLocalDateTime());
             Timestamp endTimestampUTC = Timestamp.valueOf(endUTC.toLocalDateTime());
 
+            
             String title = apptTitleTxt.getText();
             String description = apptDescTxt.getText();
             String location = apptLocTxt.getText();
@@ -111,7 +110,6 @@ public class AddAppointmentController implements Initializable {
             LocalDateTime lastUpdated = LocalDateTime.now();
             String loggedInUser = Users.getLoggedInUser().getUserName();
 
-
             AppointmentsDao.insertAppointment(title, description, location, type, startTimestampUTC, endTimestampUTC, createdDate, loggedInUser
                    ,lastUpdated,loggedInUser,customerId,userId,contactId);
 
@@ -122,7 +120,6 @@ public class AddAppointmentController implements Initializable {
             System.out.println("Error: adding appointment.");
             System.out.println(e.getMessage());
         }
-
     }
 
     @FXML

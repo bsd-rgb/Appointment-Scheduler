@@ -1,8 +1,8 @@
 package dao;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import model.Appointments;
+
+import java.sql.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,8 +13,8 @@ public class AppointmentsDao {
                                         , LocalDateTime createDate, String createdBy, LocalDateTime lastUpdated, String updatedBy, int customerId, int userId, int contactId) throws SQLException {
 
 
-        final String timePattern = "yyyy-mm-dd HH:mm:ss";
-        final DateTimeFormatter patternFormatter = DateTimeFormatter.ofPattern(timePattern);
+        /*final String timePattern = "yyyy-mm-dd HH:mm:ss";
+        final DateTimeFormatter patternFormatter = DateTimeFormatter.ofPattern(timePattern);*/
         String sql = "INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By" +
                 ", Customer_ID, User_ID, Contact_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
@@ -34,5 +34,45 @@ public class AppointmentsDao {
         ps.setInt(12, userId);
         ps.setInt(13, contactId);
         ps.executeUpdate();
+    }
+
+    /*    private int appointmentId;
+    private String title;
+    private String description;
+    private String location;
+    private String type;
+    private LocalDateTime start;
+    private LocalDateTime end;
+    private int customerId;
+    private int userId;
+    private int contactId;*/
+
+    public static void SelectAppointments() throws SQLException {
+
+        String sql = "SELECT * FROM appointments";
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        Appointments appointmentResult;
+
+        while(rs.next()) {
+
+            int apptId = rs.getInt("Appointment_ID");
+            String apptTitle = rs.getString("Title");
+            String apptDesc = rs.getString("Description");
+            String apptLocation = rs.getString("Location");
+            String apptType = rs.getString("Type");
+            Timestamp apptStart = rs.getTimestamp("Start");
+            Timestamp apptEnd = rs.getTimestamp("End");
+            int apptCustomerId = rs.getInt("Customer_ID");
+            int apptUserId = rs.getInt("User_ID");
+            int apptContactId = rs.getInt("Contact_ID");
+
+            appointmentResult = new Appointments(apptId, apptTitle, apptDesc, apptLocation, apptType, apptStart.toLocalDateTime(), apptEnd.toLocalDateTime(),
+                    apptCustomerId, apptUserId,apptContactId);
+            Appointments.addAppointment(appointmentResult);
+
+        }
+
+
     }
 }

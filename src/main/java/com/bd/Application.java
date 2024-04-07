@@ -29,6 +29,7 @@ public class Application extends javafx.application.Application {
         ContactsDao.selectContacts();
         CustomersDao.selectCustomers();
         UsersDao.selectUsers();
+        AppointmentsDao.SelectAppointments();
         launch();
         DBConnection.closeConnection();
     }
