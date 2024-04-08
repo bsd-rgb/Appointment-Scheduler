@@ -37,6 +37,17 @@ public class TimeUtil {
 
         return localDateTime.atZone(zoneId).withZoneSameInstant(ZoneId.of("UTC"));
    }
+
+   public static ZonedDateTime UTCToLocal() {
+
+        //return a ZonedDateTime and take a ZoneID and a UTC time as a parameter. See example:
+       /*
+       * LocalDateTime appStartDT = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+        ZonedDateTime startUTC = appStartDT.atZone(localZoneId).withZoneSameInstant(ZoneId.of("UTC"));
+        ZonedDateTime UTCToLocal = startUTC.withZoneSameInstant(localZoneId);
+        * */
+        return ZonedDateTime.now();
+   }
 }
 
 

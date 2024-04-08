@@ -76,13 +76,6 @@ public class AddAppointmentController implements Initializable {
     @FXML
     void onActionAddAppointment(ActionEvent event) {
 
-
-
-        //Create a method in the DAO to insert the appointment
-        //Call that method here
-        //Test
-
-
         try{
             LocalDate apptDateStart = startDate.getValue();
             LocalDate apptDateEnd = endDate.getValue();
