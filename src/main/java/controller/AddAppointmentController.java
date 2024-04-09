@@ -82,7 +82,7 @@ public class AddAppointmentController implements Initializable {
             LocalTime apptStartTime = startTimeCombo.getValue();
             LocalTime apptEndTime = endTimeCombo.getValue();
             String contactName = apptContactCombo.getValue().getContactName();
-            ZoneId zoneId = ZoneId.of(TimeZone.getDefault().getID());
+            ZoneId zoneId = TimeUtil.getLocalZoneId();
 
             LocalDateTime appointmentStart = LocalDateTime.of(apptDateStart, apptStartTime);
             LocalDateTime appointmentEnd = LocalDateTime.of(apptDateEnd, apptEndTime);

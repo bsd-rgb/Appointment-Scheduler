@@ -17,6 +17,10 @@ public class TimeUtil {
     static final private ZonedDateTime businessEndZDT = ZonedDateTime.of(LocalDate.now(), businessEndTime, businessZoneId);
     public static ZoneId localZoneId = ZoneId.of(TimeZone.getDefault().getID());
 
+    public static ZoneId getLocalZoneId(){
+        return localZoneId;
+    }
+
 
 
 
@@ -38,16 +42,18 @@ public class TimeUtil {
         return localDateTime.atZone(zoneId).withZoneSameInstant(ZoneId.of("UTC"));
    }
 
-   public static ZonedDateTime UTCToLocal() {
+/*   public static ZonedDateTime ToLocal(LocalDateTime localDateTime) {
 
-        //return a ZonedDateTime and take a ZoneID and a UTC time as a parameter. See example:
-       /*
-       * LocalDateTime appStartDT = LocalDateTime.of(LocalDate.now(), LocalTime.now());
-        ZonedDateTime startUTC = appStartDT.atZone(localZoneId).withZoneSameInstant(ZoneId.of("UTC"));
-        ZonedDateTime UTCToLocal = startUTC.withZoneSameInstant(localZoneId);
-        * */
-        return ZonedDateTime.now();
-   }
+       return localDateTime.atZone(localZoneId).withZoneSameInstant(localZoneId);
+
+   }*/
+
+    public static ZonedDateTime ToLocal(ZonedDateTime zonedDateTime) {
+
+        return zonedDateTime.withZoneSameInstant(localZoneId);
+
+    }
+
 }
 
 

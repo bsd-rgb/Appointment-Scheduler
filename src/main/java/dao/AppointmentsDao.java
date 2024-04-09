@@ -2,9 +2,11 @@ package dao;
 
 import model.Appointments;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class AppointmentsDao {
@@ -36,16 +38,6 @@ public class AppointmentsDao {
         ps.executeUpdate();
     }
 
-    /*    private int appointmentId;
-    private String title;
-    private String description;
-    private String location;
-    private String type;
-    private LocalDateTime start;
-    private LocalDateTime end;
-    private int customerId;
-    private int userId;
-    private int contactId;*/
 
     public static void SelectAppointments() throws SQLException {
 
@@ -67,12 +59,32 @@ public class AppointmentsDao {
             int apptUserId = rs.getInt("User_ID");
             int apptContactId = rs.getInt("Contact_ID");
 
-            appointmentResult = new Appointments(apptId, apptTitle, apptDesc, apptLocation, apptType, apptStart.toLocalDateTime(), apptEnd.toLocalDateTime(),
+       appointmentResult = new Appointments(apptId, apptTitle, apptDesc, apptLocation, apptType, apptStart.toLocalDateTime(), apptEnd.toLocalDateTime(),
                     apptCustomerId, apptUserId,apptContactId);
             Appointments.addAppointment(appointmentResult);
 
         }
 
+    }
 
+    public static void UpdateAppointment(int appointmentId, String title, String description, String location, String type
+    ,Timestamp start, Timestamp end, Timestamp lastUpdated, String lastUpdatedBy, int customerId, int userId, int contactId) throws SQLException {
+
+        String sql = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = ?, Last_Updated_By = ?" +
+                ", Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+        ps.setString(1, title);
+        ps.setString(2, description);
+        ps.setString(3, location);
+        ps.setString(4, type);
+        ps.setTimestamp(5, start);
+        ps.setTimestamp(6, end);
+        ps.setTimestamp(7, lastUpdated);
+        ps.setString(8, lastUpdatedBy);
+        ps.setInt(9, customerId);
+        ps.setInt(10, userId);
+        ps.setInt(11, contactId);
+        ps.setInt(12, appointmentId);
+        ps.executeUpdate();
     }
 }

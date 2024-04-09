@@ -14,6 +14,10 @@ public class Contacts {
         allContacts.add(contact);
     }
 
+    public static void getContacts(){
+
+    }
+
     public Contacts(int contactId, String contactName, String contactEmail) {
         this.contactId = contactId;
         this.contactName = contactName;

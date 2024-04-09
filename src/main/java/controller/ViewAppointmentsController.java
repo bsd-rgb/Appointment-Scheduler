@@ -110,7 +110,6 @@ public class ViewAppointmentsController implements Initializable {
         loader.load();
 
         UpdateAppointmentController updateAppointmentController = loader.getController();
-       // updateAppointmentController.sendAppointment(appointmentTable.getSelectionModel().getSelectedItem());
         updateAppointmentController.SendAppointment(appointmentTable.getSelectionModel().getSelectedItem());
 
         Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
