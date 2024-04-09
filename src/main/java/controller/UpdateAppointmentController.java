@@ -123,6 +123,8 @@ public class UpdateAppointmentController implements Initializable {
         ZonedDateTime lastUpdatedUTC = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("UTC"));
 
         /*Do something similar for the time:
+
+        * Can we change the time util function to accept local date and local time instead of local date time??
         *
         *
         * LocalDateTime appointmentStart = LocalDateTime.of(apptDateStart, apptStartTime);
