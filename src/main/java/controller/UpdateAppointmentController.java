@@ -18,7 +18,6 @@ import model.Users;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -51,8 +50,8 @@ public class UpdateAppointmentController implements Initializable {
     @FXML
     private ComboBox<LocalTime> startTimeCombo;
     Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
-
-
+    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+    Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -98,77 +97,73 @@ public class UpdateAppointmentController implements Initializable {
             }
         });
     }
-
     @FXML
     void onActionCancelAppointment(ActionEvent event) throws IOException {
-
-        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewAppointments.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.show();
-
+        confirmationAlert.setContentText("Are you sure you want to cancel and go back? All entered information will be lost.");
+        confirmationAlert.showAndWait();
+        if(confirmationAlert.getResult() == ButtonType.OK) {
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewAppointments.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.show();
+        }else {
+            return;
+        }
     }
-
     @FXML
-    void onActionUpdateAppointment(ActionEvent event) {
+    void onActionUpdateAppointment(ActionEvent event) throws IOException {
 
-    try {
-        LocalDate start = startDate.getValue();
-        LocalDate end = endDate.getValue();
-        LocalTime startTime = startTimeCombo.getValue();
-        LocalTime endTime = endTimeCombo.getValue();
-        ZonedDateTime apptStartUTC = ZonedDateTime.of(start, startTime, ZoneId.of("UTC"));
-        ZonedDateTime apptEndUTC = ZonedDateTime.of(end, endTime, ZoneId.of("UTC"));
-        ZonedDateTime lastUpdatedUTC = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("UTC"));
+        try {
+            LocalDate start = startDate.getValue();
+            LocalDate end = endDate.getValue();
+            LocalTime startTime = startTimeCombo.getValue();
+            LocalTime endTime = endTimeCombo.getValue();
+            ZonedDateTime apptStartUTC = TimeUtil.localToUTC(start, startTime);
+            ZonedDateTime apptEndUTC = TimeUtil.localToUTC(end, endTime);
+            ZonedDateTime lastUpdatedUTC = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("UTC"));
 
-        /*Do something similar for the time:
+            int id = Integer.parseInt(apptIdTxt.getText());
+            String title = apptTitleTxt.getText();
+            String description = apptDescTxt.getText();
+            String location = apptLocTxt.getText();
+            String type = apptTypeTxt.getText();
+            Timestamp startTimestampUTC = Timestamp.valueOf(apptStartUTC.toLocalDateTime());
+            Timestamp endTimestampUTC = Timestamp.valueOf(apptEndUTC.toLocalDateTime());
+            Timestamp lastUpdatedTimestamp = Timestamp.valueOf(lastUpdatedUTC.toLocalDateTime());
+            String lastUpdatedBy = Users.getLoggedInUser().getUserName();
+            int customerId = apptCustIdCombo.getValue();
+            int userId = apptUserIdCombo.getValue();
+            int contactId = apptContactCombo.getValue().getContactId();
 
-        * Can we change the time util function to accept local date and local time instead of local date time??
-        *
-        *
-        * LocalDateTime appointmentStart = LocalDateTime.of(apptDateStart, apptStartTime);
-            LocalDateTime appointmentEnd = LocalDateTime.of(apptDateEnd, apptEndTime);
-            ZonedDateTime startUTC = TimeUtil.localToUTC(appointmentStart, zoneId);
-            ZonedDateTime endUTC = TimeUtil.localToUTC(appointmentEnd, zoneId);
-            Timestamp startTimestampUTC = Timestamp.valueOf(startUTC.toLocalDateTime());
-            Timestamp endTimestampUTC = Timestamp.valueOf(endUTC.toLocalDateTime());*/
+            if(apptTitleTxt.getText().isEmpty() || apptDescTxt.getText().isEmpty() || apptTypeTxt.getText().isEmpty() || apptLocTxt.getText().isEmpty()){
+            errorAlert.setContentText("One or more fields are empty.");
+            errorAlert.showAndWait();
+            return;
+            }
 
-        int id = Integer.parseInt(apptIdTxt.getText());
-        String title = apptTitleTxt.getText();
-        String description = apptDescTxt.getText();
-        String location = apptLocTxt.getText();
-        String type = apptTypeTxt.getText();
-        Timestamp startTimestampUTC = Timestamp.valueOf(apptStartUTC.toLocalDateTime());
-        Timestamp endTimestampUTC = Timestamp.valueOf(apptEndUTC.toLocalDateTime());
-        Timestamp lastUpdatedTimestamp = Timestamp.valueOf(lastUpdatedUTC.toLocalDateTime());
-        String lastUpdatedBy = Users.getLoggedInUser().getUserName();
-        int customerId = apptCustIdCombo.getValue();
-        int userId = apptUserIdCombo.getValue();
-        int contactId = apptContactCombo.getValue().getContactId();
+        if(apptContactCombo.getSelectionModel().isEmpty() || apptCustIdCombo.getSelectionModel().isEmpty() || apptUserIdCombo.getSelectionModel().isEmpty() ||
+        endTimeCombo.getSelectionModel().isEmpty() || startTimeCombo.getSelectionModel().isEmpty() || startDate.getValue() == null || endDate.getValue() == null){
+            errorAlert.setContentText("One or more selections are empty.");
+            errorAlert.showAndWait();
+            return;
+        }
+            AppointmentsDao.UpdateAppointment(id, title, description, location, type, startTimestampUTC, endTimestampUTC, lastUpdatedTimestamp, lastUpdatedBy
+                    ,customerId, userId, contactId);
 
-       AppointmentsDao.UpdateAppointment(id, title, description, location, type, startTimestampUTC, endTimestampUTC, lastUpdatedTimestamp, lastUpdatedBy
-               ,customerId, userId, contactId);
 
-       infoAlert.setContentText("Appointment updated successfully.");
-       infoAlert.showAndWait();
-
-        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewAppointments.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.show();
     } catch(Exception e){
         System.out.println(e.getMessage());
     }
 
+        infoAlert.setContentText("Appointment updated successfully.");
+        infoAlert.showAndWait();
 
-
-
-
-
-
-
+        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewAppointments.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setScene(scene);
+        stage.show();
 
     }
 

@@ -1,18 +1,23 @@
 package controller;
 
+import com.bd.Application;
 import dao.AppointmentsDao;
 import dao.ContactsDao;
 import dao.CustomersDao;
 import helper.TimeUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import model.Contacts;
 import model.Customers;
 import model.Users;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -24,57 +29,33 @@ import java.util.TimeZone;
 
 public class AddAppointmentController implements Initializable {
 
-    /*
-    *
-    *   LocalTime localTimeStart = LocalTime.parse(addAppointmentStartTime.getValue(), minHourFormat);
-        LocalTime LocalTimeEnd = LocalTime.parse(addAppointmentEndTime.getValue(), minHourFormat);
-        *
-        * Check out this github for guidance:  https://github.com/Lydia-Strough/Lydia-Strough_Java-SQL_Customer-Apt/tree/master
-        *
-        *   startTimeComboBx.setItems(TimeManager.dynamicBusinessHoursInit(osZId, businessZId, startTime, workHours));
-        * endTimeComboBx.setItems(TimeManager.dynamicBusinessHoursInit(osZId, businessZId, LocalTime.of(9, 0), workHours))
-    *
-    * */
-
     @FXML
     private TextArea apptDescTxt;
-
     @FXML
     private ComboBox<Contacts> apptContactCombo;
-
     @FXML
     private ComboBox<Integer> apptCustIdCombo;
-
     @FXML
     private TextField apptLocTxt;
-
     @FXML
     private TextField apptTitleTxt;
-
     @FXML
     private TextField apptTypeTxt;
-
     @FXML
     private ComboBox<Integer> apptUserIdCombo;
-
-
     @FXML
     private DatePicker endDate;
-
-
     @FXML
     private DatePicker startDate;
-
     @FXML
     private ComboBox<LocalTime> startTimeCombo;
-
     @FXML
     private ComboBox<LocalTime> endTimeCombo;
     Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
-
+    Alert addAppointmentAlert = new Alert(Alert.AlertType.NONE);
 
     @FXML
-    void onActionAddAppointment(ActionEvent event) {
+    void onActionAddAppointment(ActionEvent event) throws IOException {
 
         try{
             LocalDate apptDateStart = startDate.getValue();
@@ -82,16 +63,16 @@ public class AddAppointmentController implements Initializable {
             LocalTime apptStartTime = startTimeCombo.getValue();
             LocalTime apptEndTime = endTimeCombo.getValue();
             String contactName = apptContactCombo.getValue().getContactName();
-            ZoneId zoneId = TimeUtil.getLocalZoneId();
 
-            LocalDateTime appointmentStart = LocalDateTime.of(apptDateStart, apptStartTime);
-            LocalDateTime appointmentEnd = LocalDateTime.of(apptDateEnd, apptEndTime);
-            ZonedDateTime startUTC = TimeUtil.localToUTC(appointmentStart, zoneId);
-            ZonedDateTime endUTC = TimeUtil.localToUTC(appointmentEnd, zoneId);
-            Timestamp startTimestampUTC = Timestamp.valueOf(startUTC.toLocalDateTime());
-            Timestamp endTimestampUTC = Timestamp.valueOf(endUTC.toLocalDateTime());
+            ZonedDateTime apptStartUTC = TimeUtil.localToUTC(apptDateStart, apptStartTime);
+            ZonedDateTime apptEndUTC = TimeUtil.localToUTC(apptDateEnd, apptEndTime);
+            ZonedDateTime lastUpdatedUTC = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("UTC"));
+            ZonedDateTime createdDate = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("UTC"));
+            Timestamp startTimestampUTC = Timestamp.valueOf(apptStartUTC.toLocalDateTime());
+            Timestamp endTimestampUTC = Timestamp.valueOf(apptEndUTC.toLocalDateTime());
+            Timestamp lastUpdatedTimestampUTC = Timestamp.valueOf(lastUpdatedUTC.toLocalDateTime());
+            Timestamp createdDateUTC = Timestamp.valueOf(createdDate.toLocalDateTime());
 
-            
             String title = apptTitleTxt.getText();
             String description = apptDescTxt.getText();
             String location = apptLocTxt.getText();
@@ -99,27 +80,54 @@ public class AddAppointmentController implements Initializable {
             int contactId = ContactsDao.getContactIdFromName(contactName);
             int customerId = apptCustIdCombo.getValue();
             int userId = apptUserIdCombo.getValue();
-            LocalDateTime createdDate = LocalDateTime.now();
-            LocalDateTime lastUpdated = LocalDateTime.now();
             String loggedInUser = Users.getLoggedInUser().getUserName();
 
-            AppointmentsDao.insertAppointment(title, description, location, type, startTimestampUTC, endTimestampUTC, createdDate, loggedInUser
-                   ,lastUpdated,loggedInUser,customerId,userId,contactId);
+            if(apptTitleTxt.getText().isEmpty() || apptDescTxt.getText().isEmpty() || apptTypeTxt.getText().isEmpty() || apptLocTxt.getText().isEmpty()){
+                addAppointmentAlert.setAlertType(Alert.AlertType.ERROR);
+                addAppointmentAlert.setContentText("One or more fields are empty.");
+                addAppointmentAlert.showAndWait();
+                return;
+            }
+            if(apptContactCombo.getSelectionModel().isEmpty() || apptCustIdCombo.getSelectionModel().isEmpty() || apptUserIdCombo.getSelectionModel().isEmpty() ||
+                    endTimeCombo.getSelectionModel().isEmpty() || startTimeCombo.getSelectionModel().isEmpty() || startDate.getValue() == null || endDate.getValue() == null){
+                addAppointmentAlert.setAlertType(Alert.AlertType.ERROR);
+                addAppointmentAlert.setContentText("One or more selections are empty.");
+                addAppointmentAlert.showAndWait();
+                return;
+            }
 
-            informationAlert.setContentText("Appointment added successfully!");
-            informationAlert.showAndWait();
-
+            AppointmentsDao.insertAppointment(title, description, location, type, startTimestampUTC, endTimestampUTC, createdDateUTC, loggedInUser
+                    ,lastUpdatedTimestampUTC,loggedInUser,customerId,userId,contactId);
         }catch (Exception e) {
             System.out.println("Error: adding appointment.");
             System.out.println(e.getMessage());
         }
+
+        informationAlert.setContentText("Appointment added successfully!");
+        informationAlert.showAndWait();
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewAppointments.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
-    void onActionCancelAppointment(ActionEvent event) {
+    void onActionCancelAppointment(ActionEvent event) throws IOException {
 
+        addAppointmentAlert.setAlertType(Alert.AlertType.CONFIRMATION);
+        addAppointmentAlert.setContentText("Are you sure you want to cancel and go back? All entered information will be lost.");
+        addAppointmentAlert.showAndWait();
+        if(addAppointmentAlert.getResult() == ButtonType.OK) {
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewAppointments.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.show();
+        }else {
+            return;
+        }
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 

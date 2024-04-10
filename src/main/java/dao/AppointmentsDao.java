@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 public class AppointmentsDao {
 
     public static void insertAppointment(String title, String description, String location, String type, Timestamp start, Timestamp end
-                                        , LocalDateTime createDate, String createdBy, LocalDateTime lastUpdated, String updatedBy, int customerId, int userId, int contactId) throws SQLException {
+                                        , Timestamp createDate, String createdBy, Timestamp lastUpdated, String updatedBy, int customerId, int userId, int contactId) throws SQLException {
 
 
         /*final String timePattern = "yyyy-mm-dd HH:mm:ss";
@@ -28,9 +28,9 @@ public class AppointmentsDao {
         //Use Timestamp for now
         ps.setTimestamp(5, start);
         ps.setTimestamp(6, end);
-        ps.setTimestamp(7, Timestamp.valueOf(createDate));
+        ps.setTimestamp(7, createDate);
         ps.setString(8, createdBy);
-        ps.setTimestamp(9, Timestamp.valueOf(lastUpdated));
+        ps.setTimestamp(9, lastUpdated);
         ps.setString(10, updatedBy);
         ps.setInt(11, customerId);
         ps.setInt(12, userId);
@@ -40,6 +40,8 @@ public class AppointmentsDao {
 
 
     public static void SelectAppointments() throws SQLException {
+
+        Appointments.allAppointments.clear();
 
         String sql = "SELECT * FROM appointments";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);

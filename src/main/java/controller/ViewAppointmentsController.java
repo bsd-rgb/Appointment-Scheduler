@@ -1,6 +1,7 @@
 package controller;
 
 import com.bd.Application;
+import dao.AppointmentsDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -74,6 +75,11 @@ public class ViewAppointmentsController implements Initializable {
         apptUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
 
         allAppointments.setSelected(true);
+        try {
+            AppointmentsDao.SelectAppointments();
+        }catch(Exception e) {
+            System.out.println("Error getting appointments. " + e.getMessage());
+        }
         appointmentTable.setItems(Appointments.getAllAppointments());
     }
 
