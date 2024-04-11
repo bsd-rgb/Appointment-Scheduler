@@ -60,6 +60,7 @@ public class ViewAppointmentsController implements Initializable {
 
     @FXML
     private TableColumn<Integer, Appointments> apptUserIdCol;
+    Alert viewAppointmentsAlert = new Alert(Alert.AlertType.NONE);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -97,6 +98,27 @@ public class ViewAppointmentsController implements Initializable {
     @FXML
     void onActionDeleteAppointment(ActionEvent event) {
 
+        Appointments selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
+        viewAppointmentsAlert.setAlertType(Alert.AlertType.CONFIRMATION);
+        viewAppointmentsAlert.setContentText("Are you sure you want to delete the selected appointment?");
+        ((Button) viewAppointmentsAlert.getDialogPane().lookupButton(ButtonType.OK)).setText("Delete");
+        viewAppointmentsAlert.showAndWait();
+        if(viewAppointmentsAlert.getResult().equals(ButtonType.OK)) {
+
+            try {
+                AppointmentsDao.DeleteAppointment(selectedAppointment.getAppointmentId());
+                AppointmentsDao.SelectAppointments();
+                appointmentTable.setItems(Appointments.getAllAppointments());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            viewAppointmentsAlert.setAlertType(Alert.AlertType.INFORMATION);
+            viewAppointmentsAlert.setContentText("Appointment ID " + selectedAppointment.getAppointmentId() + " of Type " + selectedAppointment.getType() + " has been deleted.");
+            viewAppointmentsAlert.showAndWait();
+
+        } else {
+            return;
+        }
     }
 
     @FXML

@@ -49,11 +49,6 @@ public class TimeUtil {
         return temp.atZone(localZoneId).withZoneSameInstant(ZoneId.of("UTC"));
     }
 
-/*   public static ZonedDateTime ToLocal(LocalDateTime localDateTime) {
-
-       return localDateTime.atZone(localZoneId).withZoneSameInstant(localZoneId);
-
-   }*/
 
     public static ZonedDateTime ToLocal(ZonedDateTime zonedDateTime) {
 

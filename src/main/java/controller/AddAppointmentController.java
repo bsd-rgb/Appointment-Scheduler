@@ -68,10 +68,6 @@ public class AddAppointmentController implements Initializable {
             ZonedDateTime apptEndUTC = TimeUtil.localToUTC(apptDateEnd, apptEndTime);
             ZonedDateTime lastUpdatedUTC = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("UTC"));
             ZonedDateTime createdDate = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("UTC"));
-            Timestamp startTimestampUTC = Timestamp.valueOf(apptStartUTC.toLocalDateTime());
-            Timestamp endTimestampUTC = Timestamp.valueOf(apptEndUTC.toLocalDateTime());
-            Timestamp lastUpdatedTimestampUTC = Timestamp.valueOf(lastUpdatedUTC.toLocalDateTime());
-            Timestamp createdDateUTC = Timestamp.valueOf(createdDate.toLocalDateTime());
 
             String title = apptTitleTxt.getText();
             String description = apptDescTxt.getText();
@@ -96,8 +92,8 @@ public class AddAppointmentController implements Initializable {
                 return;
             }
 
-            AppointmentsDao.insertAppointment(title, description, location, type, startTimestampUTC, endTimestampUTC, createdDateUTC, loggedInUser
-                    ,lastUpdatedTimestampUTC,loggedInUser,customerId,userId,contactId);
+            AppointmentsDao.insertAppointment(title, description, location, type, apptStartUTC.toLocalDateTime(), apptEndUTC.toLocalDateTime(), createdDate.toLocalDateTime(), loggedInUser
+                    ,lastUpdatedUTC.toLocalDateTime(),loggedInUser,customerId,userId,contactId);
         }catch (Exception e) {
             System.out.println("Error: adding appointment.");
             System.out.println(e.getMessage());

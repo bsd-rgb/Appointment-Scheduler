@@ -128,9 +128,6 @@ public class UpdateAppointmentController implements Initializable {
             String description = apptDescTxt.getText();
             String location = apptLocTxt.getText();
             String type = apptTypeTxt.getText();
-            Timestamp startTimestampUTC = Timestamp.valueOf(apptStartUTC.toLocalDateTime());
-            Timestamp endTimestampUTC = Timestamp.valueOf(apptEndUTC.toLocalDateTime());
-            Timestamp lastUpdatedTimestamp = Timestamp.valueOf(lastUpdatedUTC.toLocalDateTime());
             String lastUpdatedBy = Users.getLoggedInUser().getUserName();
             int customerId = apptCustIdCombo.getValue();
             int userId = apptUserIdCombo.getValue();
@@ -148,7 +145,7 @@ public class UpdateAppointmentController implements Initializable {
             errorAlert.showAndWait();
             return;
         }
-            AppointmentsDao.UpdateAppointment(id, title, description, location, type, startTimestampUTC, endTimestampUTC, lastUpdatedTimestamp, lastUpdatedBy
+            AppointmentsDao.UpdateAppointment(id, title, description, location, type, apptStartUTC.toLocalDateTime(), apptEndUTC.toLocalDateTime(), lastUpdatedUTC.toLocalDateTime(), lastUpdatedBy
                     ,customerId, userId, contactId);
 
 

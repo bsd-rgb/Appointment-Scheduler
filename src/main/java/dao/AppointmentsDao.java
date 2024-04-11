@@ -1,5 +1,6 @@
 package dao;
 
+import helper.TimeUtil;
 import model.Appointments;
 
 import javax.xml.transform.Result;
@@ -7,16 +8,14 @@ import java.sql.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class AppointmentsDao {
 
-    public static void insertAppointment(String title, String description, String location, String type, Timestamp start, Timestamp end
-                                        , Timestamp createDate, String createdBy, Timestamp lastUpdated, String updatedBy, int customerId, int userId, int contactId) throws SQLException {
+    public static void insertAppointment(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end
+                                        , LocalDateTime createDate, String createdBy, LocalDateTime lastUpdated, String updatedBy, int customerId, int userId, int contactId) throws SQLException {
 
-
-        /*final String timePattern = "yyyy-mm-dd HH:mm:ss";
-        final DateTimeFormatter patternFormatter = DateTimeFormatter.ofPattern(timePattern);*/
         String sql = "INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By" +
                 ", Customer_ID, User_ID, Contact_ID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
@@ -26,11 +25,11 @@ public class AppointmentsDao {
         ps.setString(4, type);
         //ps.setTimestamp(5,start);
         //Use Timestamp for now
-        ps.setTimestamp(5, start);
-        ps.setTimestamp(6, end);
-        ps.setTimestamp(7, createDate);
+        ps.setTimestamp(5, Timestamp.valueOf(start));
+        ps.setTimestamp(6, Timestamp.valueOf(end));
+        ps.setTimestamp(7, Timestamp.valueOf(createDate));
         ps.setString(8, createdBy);
-        ps.setTimestamp(9, lastUpdated);
+        ps.setTimestamp(9, Timestamp.valueOf(lastUpdated));
         ps.setString(10, updatedBy);
         ps.setInt(11, customerId);
         ps.setInt(12, userId);
@@ -61,7 +60,12 @@ public class AppointmentsDao {
             int apptUserId = rs.getInt("User_ID");
             int apptContactId = rs.getInt("Contact_ID");
 
-       appointmentResult = new Appointments(apptId, apptTitle, apptDesc, apptLocation, apptType, apptStart.toLocalDateTime(), apptEnd.toLocalDateTime(),
+            ZonedDateTime apptStartUTC = apptStart.toLocalDateTime().atZone(ZoneId.of("UTC"));
+            ZonedDateTime apptEndUTC = apptEnd.toLocalDateTime().atZone(ZoneId.of("UTC"));
+            ZonedDateTime apptStartLocal = TimeUtil.ToLocal(apptStartUTC);
+            ZonedDateTime apptEndLocal = TimeUtil.ToLocal(apptEndUTC);
+
+       appointmentResult = new Appointments(apptId, apptTitle, apptDesc, apptLocation, apptType, apptStartLocal.toLocalDateTime(), apptEndLocal.toLocalDateTime(),
                     apptCustomerId, apptUserId,apptContactId);
             Appointments.addAppointment(appointmentResult);
 
@@ -70,7 +74,7 @@ public class AppointmentsDao {
     }
 
     public static void UpdateAppointment(int appointmentId, String title, String description, String location, String type
-    ,Timestamp start, Timestamp end, Timestamp lastUpdated, String lastUpdatedBy, int customerId, int userId, int contactId) throws SQLException {
+    ,LocalDateTime start, LocalDateTime end, LocalDateTime lastUpdated, String lastUpdatedBy, int customerId, int userId, int contactId) throws SQLException {
 
         String sql = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = ?, Last_Updated_By = ?" +
                 ", Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
@@ -79,14 +83,22 @@ public class AppointmentsDao {
         ps.setString(2, description);
         ps.setString(3, location);
         ps.setString(4, type);
-        ps.setTimestamp(5, start);
-        ps.setTimestamp(6, end);
-        ps.setTimestamp(7, lastUpdated);
+        ps.setTimestamp(5, Timestamp.valueOf(start));
+        ps.setTimestamp(6, Timestamp.valueOf(end));
+        ps.setTimestamp(7, Timestamp.valueOf(lastUpdated));
         ps.setString(8, lastUpdatedBy);
         ps.setInt(9, customerId);
         ps.setInt(10, userId);
         ps.setInt(11, contactId);
         ps.setInt(12, appointmentId);
         ps.executeUpdate();
+    }
+
+    public static void DeleteAppointment(int appointmentId) throws SQLException {
+        String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+        ps.setInt(1, appointmentId);
+        ps.executeUpdate();
+
     }
 }
