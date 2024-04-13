@@ -3,13 +3,9 @@ package dao;
 import helper.TimeUtil;
 import model.Appointments;
 
-import javax.xml.transform.Result;
 import java.sql.*;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+
 
 public class AppointmentsDao {
 
@@ -42,7 +38,7 @@ public class AppointmentsDao {
 
         Appointments.allAppointments.clear();
 
-        String sql = "SELECT * FROM appointments";
+        String sql = "SELECT a.*, c.Contact_Name FROM appointments AS a JOIN contacts AS c ON a.Contact_ID = c.Contact_ID ORDER BY a.Appointment_ID";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         Appointments appointmentResult;
@@ -54,25 +50,18 @@ public class AppointmentsDao {
             String apptDesc = rs.getString("Description");
             String apptLocation = rs.getString("Location");
             String apptType = rs.getString("Type");
+            String contactName = rs.getString("Contact_Name");
             Timestamp apptStart = rs.getTimestamp("Start");
             Timestamp apptEnd = rs.getTimestamp("End");
             int apptCustomerId = rs.getInt("Customer_ID");
             int apptUserId = rs.getInt("User_ID");
             int apptContactId = rs.getInt("Contact_ID");
 
-            ZonedDateTime apptStartUTC = apptStart.toLocalDateTime().atZone(ZoneId.of("UTC"));
-            ZonedDateTime apptEndUTC = apptEnd.toLocalDateTime().atZone(ZoneId.of("UTC"));
-            ZonedDateTime apptStartLocal = TimeUtil.ToLocal(apptStartUTC);
-            ZonedDateTime apptEndLocal = TimeUtil.ToLocal(apptEndUTC);
-
-       appointmentResult = new Appointments(apptId, apptTitle, apptDesc, apptLocation, apptType, apptStartLocal.toLocalDateTime(), apptEndLocal.toLocalDateTime(),
-                    apptCustomerId, apptUserId,apptContactId);
+       appointmentResult = new Appointments(apptId, apptTitle, apptDesc, apptLocation, apptType, apptStart.toLocalDateTime(), apptEnd.toLocalDateTime(),
+                    apptCustomerId, apptUserId,apptContactId, contactName);
             Appointments.addAppointment(appointmentResult);
-
         }
-
     }
-
     public static void UpdateAppointment(int appointmentId, String title, String description, String location, String type
     ,LocalDateTime start, LocalDateTime end, LocalDateTime lastUpdated, String lastUpdatedBy, int customerId, int userId, int contactId) throws SQLException {
 

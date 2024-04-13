@@ -115,13 +115,10 @@ public class UpdateAppointmentController implements Initializable {
     void onActionUpdateAppointment(ActionEvent event) throws IOException {
 
         try {
-            LocalDate start = startDate.getValue();
-            LocalDate end = endDate.getValue();
-            LocalTime startTime = startTimeCombo.getValue();
-            LocalTime endTime = endTimeCombo.getValue();
-            ZonedDateTime apptStartUTC = TimeUtil.localToUTC(start, startTime);
-            ZonedDateTime apptEndUTC = TimeUtil.localToUTC(end, endTime);
-            ZonedDateTime lastUpdatedUTC = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("UTC"));
+
+            LocalDateTime appointmentStart = LocalDateTime.of(startDate.getValue(), startTimeCombo.getValue());
+            LocalDateTime appointmentEnd = LocalDateTime.of(endDate.getValue(), endTimeCombo.getValue());
+            LocalDateTime lastUpdate = LocalDateTime.now();
 
             int id = Integer.parseInt(apptIdTxt.getText());
             String title = apptTitleTxt.getText();
@@ -145,7 +142,7 @@ public class UpdateAppointmentController implements Initializable {
             errorAlert.showAndWait();
             return;
         }
-            AppointmentsDao.UpdateAppointment(id, title, description, location, type, apptStartUTC.toLocalDateTime(), apptEndUTC.toLocalDateTime(), lastUpdatedUTC.toLocalDateTime(), lastUpdatedBy
+            AppointmentsDao.UpdateAppointment(id, title, description, location, type, appointmentStart, appointmentEnd, lastUpdate, lastUpdatedBy
                     ,customerId, userId, contactId);
 
 
@@ -171,15 +168,18 @@ public class UpdateAppointmentController implements Initializable {
         ZonedDateTime apptStartLocal = apptStartUTC.withZoneSameInstant(TimeUtil.getLocalZoneId());
         ZonedDateTime apptEndLocal = TimeUtil.ToLocal(apptEndUTC);
 
+        LocalDateTime appointmentStart = LocalDateTime.of(appointment.getStart().toLocalDate(), appointment.getStart().toLocalTime());
+        LocalDateTime appointmentEnd = LocalDateTime.of(appointment.getEnd().toLocalDate(), appointment.getEnd().toLocalTime());
+
         apptIdTxt.setText(String.valueOf(appointment.getAppointmentId()));
         apptTitleTxt.setText(appointment.getTitle());
         apptDescTxt.setText(appointment.getDescription());
         apptLocTxt.setText(appointment.getLocation());
         apptTypeTxt.setText(appointment.getType());
-        startDate.setValue(apptStartLocal.toLocalDate());
-        startTimeCombo.setValue(apptStartLocal.toLocalTime());
-        endDate.setValue(apptEndLocal.toLocalDate());
-        endTimeCombo.setValue(apptEndLocal.toLocalTime());
+        startDate.setValue(appointmentStart.toLocalDate());
+        startTimeCombo.setValue(appointmentStart.toLocalTime());
+        endDate.setValue(appointmentEnd.toLocalDate());
+        endTimeCombo.setValue(appointmentEnd.toLocalTime());
         apptCustIdCombo.setValue(appointment.getCustomerId());
         apptUserIdCombo.setValue(appointment.getUserId());
 

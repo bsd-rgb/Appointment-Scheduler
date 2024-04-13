@@ -58,16 +58,12 @@ public class AddAppointmentController implements Initializable {
     void onActionAddAppointment(ActionEvent event) throws IOException {
 
         try{
-            LocalDate apptDateStart = startDate.getValue();
-            LocalDate apptDateEnd = endDate.getValue();
-            LocalTime apptStartTime = startTimeCombo.getValue();
-            LocalTime apptEndTime = endTimeCombo.getValue();
             String contactName = apptContactCombo.getValue().getContactName();
 
-            ZonedDateTime apptStartUTC = TimeUtil.localToUTC(apptDateStart, apptStartTime);
-            ZonedDateTime apptEndUTC = TimeUtil.localToUTC(apptDateEnd, apptEndTime);
-            ZonedDateTime lastUpdatedUTC = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("UTC"));
-            ZonedDateTime createdDate = ZonedDateTime.now().withZoneSameInstant(ZoneId.of("UTC"));
+            LocalDateTime appointmentStart = LocalDateTime.of(startDate.getValue(), startTimeCombo.getValue());
+            LocalDateTime appointmentEnd = LocalDateTime.of(endDate.getValue(), endTimeCombo.getValue());
+            LocalDateTime lastUpdated = LocalDateTime.now();
+            LocalDateTime createDate = LocalDateTime.now();
 
             String title = apptTitleTxt.getText();
             String description = apptDescTxt.getText();
@@ -92,8 +88,8 @@ public class AddAppointmentController implements Initializable {
                 return;
             }
 
-            AppointmentsDao.insertAppointment(title, description, location, type, apptStartUTC.toLocalDateTime(), apptEndUTC.toLocalDateTime(), createdDate.toLocalDateTime(), loggedInUser
-                    ,lastUpdatedUTC.toLocalDateTime(),loggedInUser,customerId,userId,contactId);
+            AppointmentsDao.insertAppointment(title, description, location, type, appointmentStart, appointmentEnd, createDate, loggedInUser
+                    ,lastUpdated,loggedInUser,customerId,userId,contactId);
         }catch (Exception e) {
             System.out.println("Error: adding appointment.");
             System.out.println(e.getMessage());

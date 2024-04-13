@@ -31,33 +31,24 @@ public class ViewAppointmentsController implements Initializable {
     private RadioButton appointmentWeek;
     @FXML
     private TableView<Appointments> appointmentTable;
-
     @FXML
     private TableColumn<String, Contacts> apptContactCol;
-
     @FXML
     private TableColumn<Integer, Appointments> apptCustomerIdCol;
-
     @FXML
     private TableColumn<String, Appointments> apptDescCol;
-
     @FXML
     private TableColumn<LocalDateTime, Appointments> apptEndCol;
     @FXML
     private TableColumn<LocalDateTime, Appointments> apptStartCol;
-
     @FXML
     private TableColumn<Integer, Appointments> apptIdCol;
-
     @FXML
     private TableColumn<String, Appointments> apptLocationCol;
-
     @FXML
     private TableColumn<String, Appointments> apptTitleCol;
-
     @FXML
     private TableColumn<String, Appointments> apptTypeCol;
-
     @FXML
     private TableColumn<Integer, Appointments> apptUserIdCol;
     Alert viewAppointmentsAlert = new Alert(Alert.AlertType.NONE);
@@ -69,6 +60,7 @@ public class ViewAppointmentsController implements Initializable {
         apptDescCol.setCellValueFactory(new PropertyValueFactory<>("description"));
         apptLocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
         apptContactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+        apptContactCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
         apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         apptStartCol.setCellValueFactory(new PropertyValueFactory<>("start"));
         apptEndCol.setCellValueFactory(new PropertyValueFactory<>("end"));
@@ -78,12 +70,12 @@ public class ViewAppointmentsController implements Initializable {
         allAppointments.setSelected(true);
         try {
             AppointmentsDao.SelectAppointments();
+
         }catch(Exception e) {
             System.out.println("Error getting appointments. " + e.getMessage());
         }
         appointmentTable.setItems(Appointments.getAllAppointments());
     }
-
     @FXML
     void onActionAddAppointment(ActionEvent event) throws IOException {
 
@@ -92,9 +84,7 @@ public class ViewAppointmentsController implements Initializable {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.show();
-
     }
-
     @FXML
     void onActionDeleteAppointment(ActionEvent event) {
 

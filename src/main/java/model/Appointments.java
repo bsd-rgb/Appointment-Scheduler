@@ -17,6 +17,16 @@ public class Appointments {
     private String description;
     private String location;
     private String type;
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    String contactName;
     private LocalDateTime start;
     private LocalDateTime end;
     private int customerId;
@@ -106,7 +116,7 @@ public class Appointments {
 
     public static ObservableList<Appointments> allAppointments = FXCollections.observableArrayList();
 
-    public Appointments(int appointmentId, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId) {
+    public Appointments(int appointmentId, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId, String contactName) {
         this.appointmentId = appointmentId;
         this.title = title;
         this.description = description;
@@ -117,6 +127,7 @@ public class Appointments {
         this.customerId = customerId;
         this.userId = userId;
         this.contactId = contactId;
+        this.contactName = contactName;
     }
 
     public static void addAppointment(Appointments appointment){
