@@ -92,7 +92,7 @@ public class ViewCustomerController implements Initializable {
 
 
         try {
-            if (AppointmentsDao.hasAppointment(customer)) {
+            if (AppointmentsDao.hasAppointment(customer.getCustomerId())) {
                 System.out.println("The customer has an appointment");
                 alert.setAlertType(Alert.AlertType.ERROR);
                 alert.setContentText("Can not delete customer. Delete customer appointments first and then try again.");

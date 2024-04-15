@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import model.Appointments;
 import model.Contacts;
 import model.Customers;
 import model.Users;
@@ -73,35 +74,59 @@ public class AddAppointmentController implements Initializable {
             int customerId = apptCustIdCombo.getValue();
             int userId = apptUserIdCombo.getValue();
             String loggedInUser = Users.getLoggedInUser().getUserName();
+            boolean hasAppointment = false;
 
-            if(apptTitleTxt.getText().isEmpty() || apptDescTxt.getText().isEmpty() || apptTypeTxt.getText().isEmpty() || apptLocTxt.getText().isEmpty()){
-                addAppointmentAlert.setAlertType(Alert.AlertType.ERROR);
-                addAppointmentAlert.setContentText("One or more fields are empty.");
-                addAppointmentAlert.showAndWait();
-                return;
-            }
-            if(apptContactCombo.getSelectionModel().isEmpty() || apptCustIdCombo.getSelectionModel().isEmpty() || apptUserIdCombo.getSelectionModel().isEmpty() ||
-                    endTimeCombo.getSelectionModel().isEmpty() || startTimeCombo.getSelectionModel().isEmpty() || startDate.getValue() == null || endDate.getValue() == null){
-                addAppointmentAlert.setAlertType(Alert.AlertType.ERROR);
-                addAppointmentAlert.setContentText("One or more selections are empty.");
-                addAppointmentAlert.showAndWait();
-                return;
+            if(AppointmentsDao.hasAppointment(customerId)){
+                for(Appointments appointment: Appointments.getAllAppointments()){
+                    if(appointment.getCustomerId() == customerId){
+                        if(Appointments.isOverlap(customerId, appointment.getStart(),appointment.getEnd(), appointmentStart, appointmentEnd)) {
+                            System.out.println("There is an overlap.");
+                            addAppointmentAlert.setAlertType(Alert.AlertType.ERROR);
+                            addAppointmentAlert.setContentText("Unable to add appointment for customer due to overlap with another appointment.");
+                            addAppointmentAlert.showAndWait();
+                            hasAppointment = true;
+                            break;
+                        }
+                        else{
+                            System.out.println("No overlap.");
+                        }
+                    }
+                }
             }
 
-            AppointmentsDao.insertAppointment(title, description, location, type, appointmentStart, appointmentEnd, createDate, loggedInUser
+            if(!hasAppointment) {
+
+                if (apptTitleTxt.getText().isEmpty() || apptDescTxt.getText().isEmpty() || apptTypeTxt.getText().isEmpty() || apptLocTxt.getText().isEmpty()) {
+                    addAppointmentAlert.setAlertType(Alert.AlertType.ERROR);
+                    addAppointmentAlert.setContentText("One or more fields are empty.");
+                    addAppointmentAlert.showAndWait();
+                    return;
+                }
+                if (apptContactCombo.getSelectionModel().isEmpty() || apptCustIdCombo.getSelectionModel().isEmpty() || apptUserIdCombo.getSelectionModel().isEmpty() ||
+                        endTimeCombo.getSelectionModel().isEmpty() || startTimeCombo.getSelectionModel().isEmpty() || startDate.getValue() == null || endDate.getValue() == null) {
+                    addAppointmentAlert.setAlertType(Alert.AlertType.ERROR);
+                    addAppointmentAlert.setContentText("One or more selections are empty.");
+                    addAppointmentAlert.showAndWait();
+                    return;
+                }
+
+                AppointmentsDao.insertAppointment(title, description, location, type, appointmentStart, appointmentEnd, createDate, loggedInUser
                     ,lastUpdated,loggedInUser,customerId,userId,contactId);
+
+                informationAlert.setContentText("Appointment added successfully!");
+                informationAlert.showAndWait();
+                Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewAppointments.fxml"));
+                Scene scene = new Scene(fxmlLoader.load());
+                stage.setScene(scene);
+                stage.show();
+            }
+
         }catch (Exception e) {
             System.out.println("Error: adding appointment.");
             System.out.println(e.getMessage());
         }
 
-        informationAlert.setContentText("Appointment added successfully!");
-        informationAlert.showAndWait();
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewAppointments.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.show();
     }
 
     @FXML

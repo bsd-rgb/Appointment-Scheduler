@@ -129,36 +129,57 @@ public class UpdateAppointmentController implements Initializable {
             int customerId = apptCustIdCombo.getValue();
             int userId = apptUserIdCombo.getValue();
             int contactId = apptContactCombo.getValue().getContactId();
+            boolean hasAppointment = false;
 
-            if(apptTitleTxt.getText().isEmpty() || apptDescTxt.getText().isEmpty() || apptTypeTxt.getText().isEmpty() || apptLocTxt.getText().isEmpty()){
-            errorAlert.setContentText("One or more fields are empty.");
-            errorAlert.showAndWait();
-            return;
+            if(AppointmentsDao.hasAppointment(customerId)){
+                for(Appointments appointment: Appointments.getAllAppointments()){
+                    if(appointment.getCustomerId() == customerId){
+                        if(Appointments.isOverlap(customerId, appointment.getStart(),appointment.getEnd(), appointmentStart, appointmentEnd)) {
+                            System.out.println("There is an overlap.");
+                            errorAlert.setAlertType(Alert.AlertType.ERROR);
+                            errorAlert.setContentText("Unable to add appointment for customer due to overlap with another appointment.");
+                            errorAlert.showAndWait();
+                            hasAppointment = true;
+                            break;
+                        }
+                        else{
+                            System.out.println("No overlap.");
+                        }
+                    }
+                }
             }
+            if(!hasAppointment) {
 
-        if(apptContactCombo.getSelectionModel().isEmpty() || apptCustIdCombo.getSelectionModel().isEmpty() || apptUserIdCombo.getSelectionModel().isEmpty() ||
-        endTimeCombo.getSelectionModel().isEmpty() || startTimeCombo.getSelectionModel().isEmpty() || startDate.getValue() == null || endDate.getValue() == null){
-            errorAlert.setContentText("One or more selections are empty.");
-            errorAlert.showAndWait();
-            return;
-        }
-            AppointmentsDao.UpdateAppointment(id, title, description, location, type, appointmentStart, appointmentEnd, lastUpdate, lastUpdatedBy
-                    ,customerId, userId, contactId);
+
+                if (apptTitleTxt.getText().isEmpty() || apptDescTxt.getText().isEmpty() || apptTypeTxt.getText().isEmpty() || apptLocTxt.getText().isEmpty()) {
+                    errorAlert.setContentText("One or more fields are empty.");
+                    errorAlert.showAndWait();
+                    return;
+                }
+
+                if (apptContactCombo.getSelectionModel().isEmpty() || apptCustIdCombo.getSelectionModel().isEmpty() || apptUserIdCombo.getSelectionModel().isEmpty() ||
+                        endTimeCombo.getSelectionModel().isEmpty() || startTimeCombo.getSelectionModel().isEmpty() || startDate.getValue() == null || endDate.getValue() == null) {
+                    errorAlert.setContentText("One or more selections are empty.");
+                    errorAlert.showAndWait();
+                    return;
+                }
+                AppointmentsDao.UpdateAppointment(id, title, description, location, type, appointmentStart, appointmentEnd, lastUpdate, lastUpdatedBy
+                        , customerId, userId, contactId);
+
+                infoAlert.setContentText("Appointment updated successfully.");
+                infoAlert.showAndWait();
+
+                Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+                FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewAppointments.fxml"));
+                Scene scene = new Scene(fxmlLoader.load());
+                stage.setScene(scene);
+                stage.show();
+            }
 
 
     } catch(Exception e){
         System.out.println(e.getMessage());
     }
-
-        infoAlert.setContentText("Appointment updated successfully.");
-        infoAlert.showAndWait();
-
-        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ViewAppointments.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.show();
-
     }
 
     public void SendAppointment(Appointments appointment) {

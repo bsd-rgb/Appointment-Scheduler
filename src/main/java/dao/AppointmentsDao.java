@@ -103,12 +103,12 @@ public class AppointmentsDao {
 
     }
 
-    public static Boolean hasAppointment(Customers customer) throws SQLException {
+    public static Boolean hasAppointment(int customerId) throws SQLException {
 
         String sql = "SELECT * FROM appointments WHERE Customer_ID = ?";
         //if the result set returns one or more appointments where the customer ID matches, then true else false
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
-        ps.setInt(1, customer.getCustomerId());
+        ps.setInt(1, customerId);
         ResultSet rs = ps.executeQuery();
         if(rs.next()){
             return true;

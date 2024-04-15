@@ -115,6 +115,36 @@ public class Appointments {
     }
 
     public static ObservableList<Appointments> allAppointments = FXCollections.observableArrayList();
+    private static boolean overlap;
+    public static boolean isOverlap(int customerId, LocalDateTime origStartTime, LocalDateTime origEndTime, LocalDateTime newStartTime, LocalDateTime newEndTime) {
+
+        overlap = false;
+
+                if ((newStartTime.isAfter(origStartTime) || newStartTime.equals(origStartTime)) && newStartTime.isBefore(origEndTime)) {
+                    overlap = true;
+                    System.out.println("Overlap variable: " + overlap);
+                    //return overlap;
+
+                    return true;
+                }
+
+                if (newEndTime.isAfter(origStartTime) && (newEndTime.isBefore(origEndTime) || newEndTime.equals(origEndTime))) {
+                    overlap = true;
+                    System.out.println("Overlap variable: " + overlap);
+                    //return overlap;
+                    return true;
+                }
+
+                if ((newStartTime.isBefore(origStartTime) || newStartTime.equals(origStartTime)) && (newEndTime.isAfter(origEndTime) || newEndTime.equals(origEndTime))) {
+                    overlap = true;
+                    System.out.println("Overlap variable: " + overlap);
+                    //return overlap;
+                    return true;
+                }
+                System.out.println("Overlap variable: " + overlap);
+                return false;
+            }
+
 
     public Appointments(int appointmentId, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId, String contactName) {
         this.appointmentId = appointmentId;
