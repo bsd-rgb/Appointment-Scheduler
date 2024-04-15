@@ -1,6 +1,7 @@
 package controller;
 
 import com.bd.Application;
+import dao.AppointmentsDao;
 import dao.CustomersDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,6 +41,7 @@ public class ViewCustomerController implements Initializable {
     @FXML
     private TableColumn<Customers, String> postalCodeCol;
     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+    Alert alert = new Alert(Alert.AlertType.NONE);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -87,23 +89,29 @@ public class ViewCustomerController implements Initializable {
     void onActionDeleteCustomer(ActionEvent event) {
 
         Customers customer = customerTable.getSelectionModel().getSelectedItem();
-        confirmationAlert.setContentText("Are you sure you would like to delete the selected customer?");
-        confirmationAlert.showAndWait();
-        if(confirmationAlert.getResult() == ButtonType.OK) {
-            try {
+
+
+        try {
+            if (AppointmentsDao.hasAppointment(customer)) {
+                System.out.println("The customer has an appointment");
+                alert.setAlertType(Alert.AlertType.ERROR);
+                alert.setContentText("Can not delete customer. Delete customer appointments first and then try again.");
+                alert.showAndWait();
+                return;
+            } else {
+                confirmationAlert.setContentText("Are you sure you would like to delete the selected customer?");
+                confirmationAlert.showAndWait();
+                if (confirmationAlert.getResult() == ButtonType.OK) {
                 CustomersDao.deleteCustomer(customer.getCustomerId());
                 CustomersDao.selectCustomers();
                 customerTable.setItems(Customers.getAllCustomers());
-            }catch(Exception e) {
-                System.out.println("Error deleting customer.\n" + e.getMessage());
+                } else {
+                    return;
+                }
             }
-        } else {
-            return;
+        } catch (Exception e) {
+            System.out.println("Error deleting customer.\n" + e.getMessage());
         }
-
-
-
-
     }
 
     @FXML

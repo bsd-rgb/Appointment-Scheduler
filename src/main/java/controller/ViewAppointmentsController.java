@@ -2,6 +2,8 @@ package controller;
 
 import com.bd.Application;
 import dao.AppointmentsDao;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +18,14 @@ import model.Contacts;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ViewAppointmentsController implements Initializable {
@@ -51,6 +60,8 @@ public class ViewAppointmentsController implements Initializable {
     private TableColumn<String, Appointments> apptTypeCol;
     @FXML
     private TableColumn<Integer, Appointments> apptUserIdCol;
+
+    private ObservableList<Appointments> filteredAppointments = FXCollections.observableArrayList();
     Alert viewAppointmentsAlert = new Alert(Alert.AlertType.NONE);
 
     @Override
@@ -134,5 +145,82 @@ public class ViewAppointmentsController implements Initializable {
         Parent scene = loader.getRoot();
         stage.setScene(new Scene(scene));
         stage.show();
+    }
+
+    void appointmentFilter() {
+
+        filteredAppointments.clear();
+
+        LocalDate currentDate = LocalDate.now();
+        DayOfWeek startDayOfWeek = WeekFields.of(Locale.getDefault()).getFirstDayOfWeek();
+        DayOfWeek lastDayOfWeek = startDayOfWeek.plus(6);
+        LocalDate startCurrentWeek = currentDate.with(TemporalAdjusters.previousOrSame(startDayOfWeek));
+        LocalDate endCurrentWeek = currentDate.with(TemporalAdjusters.nextOrSame(lastDayOfWeek));
+
+        System.out.println("First Day of week: " + startDayOfWeek);
+        System.out.println("Current Week (Start): " + startCurrentWeek);
+        System.out.println("Current Week (End): " + endCurrentWeek);
+
+        if(allAppointments.isSelected()){
+            System.out.println("All appointments selected.");
+            appointmentTable.setItems(Appointments.getAllAppointments());
+        }
+
+     for(Appointments appointments: Appointments.getAllAppointments()){
+         if(appointmentWeek.isSelected()){
+             if(appointments.getStart().isAfter(startCurrentWeek.atStartOfDay())){
+                 filteredAppointments.add(appointments);
+                 appointmentTable.setItems(filteredAppointments);
+             }
+         }
+         if(appointmentMonth.isSelected()){
+             if(appointments.getStart().getMonth().equals(currentDate.getMonth())) {
+                 filteredAppointments.add(appointments);
+                 appointmentTable.setItems(filteredAppointments);
+             }
+         }
+     }
+    }
+
+
+
+
+
+/*        System.out.println("First Day of week: " + startDayOfWeek);
+        System.out.println("Current Week (Start): " + startCurrentWeek);
+        System.out.println("Current Week (End): " + endCurrentWeek);*/
+/*        for (Appointments appointment : Appointments.getAllAppointments()) {
+            if (appointmentFilterToggle.getSelectedToggle() == appointmentMonth) {
+
+                if (appointment.getStart().getMonth().equals(currentDate.getMonth())) {
+                    System.out.println("There are appointment this month: " + currentDate.getMonth());
+                    filteredAppointments.add(appointment);
+                    appointmentTable.setItems(filteredAppointments);
+
+                } else if (appointmentFilterToggle.getSelectedToggle().isSelected(app)) {
+
+                    System.out.println("Appointment week selected.");
+
+                    System.out.println("Appointment Week Test: " + appointment.getStart().toLocalDate().with(startCurrentWeek));
+                   *//* if (appointment.getStart().isAfter(startCurrentWeek.atStartOfDay()) && appointment.getStart().isBefore(endCurrentWeek.atTime(23, 0))) {
+                        System.out.println("The appointment (" + appointment.getAppointmentId() + ") is within the current week.");
+                        filteredAppointments.add(appointment);
+                        appointmentTable.setItems(filteredAppointments);*//*
+
+                    }
+                    if (appointmentFilterToggle.getSelectedToggle() == allAppointments) {
+                        appointmentTable.setItems(Appointments.getAllAppointments());
+                    }
+                }
+            }*/
+
+
+
+
+    @FXML
+    void onActionRadioSelected(ActionEvent event) {
+
+        appointmentFilter();
+
     }
 }

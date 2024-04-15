@@ -50,7 +50,7 @@
             <ComboBox fx:id="apptUserIdCombo" layoutX="348.0" layoutY="417.0" prefHeight="25.0" prefWidth="204.0" promptText="Select User ID" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="8" />
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <children>
-                  <DatePicker fx:id="startDate" prefHeight="25.0" prefWidth="150.0" promptText="Select Date" />
+                  <DatePicker fx:id="startDate" onAction="#onActionStartDateSelected" prefHeight="25.0" prefWidth="150.0" promptText="Select Date" />
                   <ComboBox fx:id="startTimeCombo" prefHeight="25.0" prefWidth="115.0" promptText="Select a time" />
                </children>
             </HBox>

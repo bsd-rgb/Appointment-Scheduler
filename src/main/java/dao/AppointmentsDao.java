@@ -1,8 +1,11 @@
 package dao;
 
+import com.mysql.cj.protocol.Resultset;
 import helper.TimeUtil;
 import model.Appointments;
+import model.Customers;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.time.LocalDateTime;
 
@@ -19,8 +22,6 @@ public class AppointmentsDao {
         ps.setString(2, description);
         ps.setString(3, location);
         ps.setString(4, type);
-        //ps.setTimestamp(5,start);
-        //Use Timestamp for now
         ps.setTimestamp(5, Timestamp.valueOf(start));
         ps.setTimestamp(6, Timestamp.valueOf(end));
         ps.setTimestamp(7, Timestamp.valueOf(createDate));
@@ -90,4 +91,29 @@ public class AppointmentsDao {
         ps.executeUpdate();
 
     }
+
+    public static void filterAppointmentWeek() throws SQLException {
+        String sql = "SELECT * FROM client_schedule.appointments WHERE week(start) = week(current_date())";
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        //I would need to add each appointment to a filtered list
+        while(rs.next()){
+
+        }
+
+    }
+
+    public static Boolean hasAppointment(Customers customer) throws SQLException {
+
+        String sql = "SELECT * FROM appointments WHERE Customer_ID = ?";
+        //if the result set returns one or more appointments where the customer ID matches, then true else false
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+        ps.setInt(1, customer.getCustomerId());
+        ResultSet rs = ps.executeQuery();
+        if(rs.next()){
+            return true;
+        }
+        return false;
+    }
+
 }

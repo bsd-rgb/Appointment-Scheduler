@@ -166,4 +166,11 @@ public class AddAppointmentController implements Initializable {
         apptUserIdCombo.setItems(Users.getUserIds());
 
     }
+
+    @FXML
+    void onActionStartDateSelected(ActionEvent event) {
+
+        endDate.setValue(startDate.getValue());
+
+    }
 }
