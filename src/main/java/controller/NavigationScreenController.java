@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import model.Appointments;
 import model.Customers;
@@ -24,6 +25,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
 
 public class NavigationScreenController implements Initializable {
+
+    @FXML
+    private Label appointmentLbl;
+
     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
 
     @FXML
@@ -103,6 +108,7 @@ public class NavigationScreenController implements Initializable {
         System.out.println("Navigation page initialized.");
         //System.out.println("Logged in User ID: " + UsersDao.getCurrentUser());
         UserIdAppointments(Users.getLoggedInUser().getUserId());
+        appointmentLbl.setText("Setting test text.");
     }
 }
 
