@@ -2,20 +2,28 @@ package controller;
 
 import com.bd.Application;
 import dao.CustomersDao;
+import dao.UsersDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import model.Appointments;
 import model.Customers;
+import model.Users;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ResourceBundle;
 
-public class NavigationScreenController {
+public class NavigationScreenController implements Initializable {
     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
 
     @FXML
@@ -67,5 +75,34 @@ public class NavigationScreenController {
 
     }
 
+    public void UserIdAppointments(int userId){
+
+        LocalDateTime currentTime = LocalDateTime.now();
+
+
+        for(Appointments appointment: Appointments.getAllAppointments()){
+            if(appointment.getUserId() == userId){
+                System.out.println("Appointment found for user");
+
+/*                LocalDateTime appointmentStart = appointment.getStart();
+                Long timeDifference = ChronoUnit.MINUTES.between(appointmentStart, currentTime);
+                System.out.println("Time Difference: "+timeDifference);
+
+                if(timeDifference > 0 && timeDifference <= 15){
+                    System.out.println("There's an upcoming appointment");
+                }else {
+                    System.out.println("No upcoming appointment.");
+                }*/
+            }
+        }
+
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println("Navigation page initialized.");
+        //System.out.println("Logged in User ID: " + UsersDao.getCurrentUser());
+        UserIdAppointments(Users.getLoggedInUser().getUserId());
+    }
 }
 

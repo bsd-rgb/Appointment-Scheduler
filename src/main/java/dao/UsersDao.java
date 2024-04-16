@@ -15,6 +15,11 @@ public class UsersDao {
         return currentUser;
 
     }
+    public static void setCurrentUser(Users user){
+        currentUser = user;
+    }
+
+
 
     public static void selectUsers() throws SQLException {
         String sql = "SELECT * FROM users";

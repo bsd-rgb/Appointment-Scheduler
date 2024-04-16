@@ -52,6 +52,8 @@ public class Users {
         return UsersDao.getCurrentUser();
     }
 
+
+
     public int getUserId() {
         return userId;
     }

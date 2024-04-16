@@ -80,15 +80,11 @@ public class AddAppointmentController implements Initializable {
                 for(Appointments appointment: Appointments.getAllAppointments()){
                     if(appointment.getCustomerId() == customerId){
                         if(Appointments.isOverlap(customerId, appointment.getStart(),appointment.getEnd(), appointmentStart, appointmentEnd)) {
-                            System.out.println("There is an overlap.");
                             addAppointmentAlert.setAlertType(Alert.AlertType.ERROR);
                             addAppointmentAlert.setContentText("Unable to add appointment for customer due to overlap with another appointment.");
                             addAppointmentAlert.showAndWait();
                             hasAppointment = true;
                             break;
-                        }
-                        else{
-                            System.out.println("No overlap.");
                         }
                     }
                 }
