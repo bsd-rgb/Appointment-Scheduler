@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="569.0" prefWidth="468.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NavigationScreenController">
+<AnchorPane prefHeight="569.0" prefWidth="468.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NavigationScreenController">
    <children>
-      <Button layoutX="183.0" layoutY="77.0" mnemonicParsing="false" onAction="#onActionViewCustomers" text="View Customers" />
-      <Button layoutX="174.0" layoutY="151.0" mnemonicParsing="false" onAction="#onActionViewAppointments" text="View Appointments" />
-      <Button layoutX="190.0" layoutY="216.0" mnemonicParsing="false" onAction="#onActionViewReports" text="View Reports" />
+      <Button layoutX="184.0" layoutY="79.0" mnemonicParsing="false" onAction="#onActionViewCustomers" text="View Customers" />
+      <Button layoutX="173.0" layoutY="136.0" mnemonicParsing="false" onAction="#onActionViewAppointments" text="View Appointments" />
+      <Button layoutX="190.0" layoutY="190.0" mnemonicParsing="false" onAction="#onActionViewReports" text="View Reports" />
       <Button layoutX="341.0" layoutY="508.0" mnemonicParsing="false" onAction="#onActionLogOff" text="Log Off" />
       <HBox layoutX="12.0" layoutY="308.0" prefHeight="154.0" prefWidth="442.0">
          <children>

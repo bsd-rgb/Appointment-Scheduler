@@ -88,22 +88,27 @@ public class NavigationScreenController implements Initializable {
         for(Appointments appointment: Appointments.getAllAppointments()){
             if(appointment.getUserId() == userId){
                 System.out.println("Appointment found for user");
-                hasAppointment = true;
 
                 LocalDateTime appointmentStart = appointment.getStart();
                 Long timeDifference = ChronoUnit.MINUTES.between(appointmentStart, currentTime);
-
-               if(timeDifference > 0 && timeDifference <= 15){ //this used to be 15 instead of 2
-                    System.out.println("There's an upcoming appointment(s).");
-                    String defaultLabelTxt = "Appointment ID: " + appointment.getAppointmentId() + " - Start Date: " + appointment.getStart().toLocalDate() + " - Start Time: " + appointment.getStart().toLocalTime() + "\n";
-                    appointmentLbl.setText(appointmentLbl.getText() + defaultLabelTxt);
-                }else {
-                    System.out.println("No upcoming appointment(s).");
+                System.out.println("Time Difference: " + timeDifference);
+                timeDifference = timeDifference * (-1);
+                if(currentTime.isBefore(appointmentStart)) {
+                    if (timeDifference > 0 && timeDifference <= 15) {
+                        System.out.println("There's an upcoming appointment(s).");
+                        String defaultLabelTxt = "Appointment ID: " + appointment.getAppointmentId() + " - Start Date: " + appointment.getStart().toLocalDate() + " - Start Time: " + appointment.getStart().toLocalTime() + "\n";
+                        appointmentLbl.setText(appointmentLbl.getText() + defaultLabelTxt);
+                        hasAppointment = true;
+                    } else {
+                        System.out.println("No upcoming appointment(s).");
+                        System.out.println("Boolean Value: " + hasAppointment);
+                    }
                 }
             }
         }
         if(!hasAppointment){
             appointmentLbl.setText("No upcoming appointment(s).");
+            System.out.println("Boolean Value: " + hasAppointment);
         }
 
     }
