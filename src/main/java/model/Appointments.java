@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 
 public class Appointments {
 
@@ -115,6 +116,7 @@ public class Appointments {
     }
 
     public static ObservableList<Appointments> allAppointments = FXCollections.observableArrayList();
+    public static ObservableList<String> appointmentTypes = FXCollections.observableArrayList();
     private static boolean overlap;
     public static boolean isOverlap(int customerId, LocalDateTime origStartTime, LocalDateTime origEndTime, LocalDateTime newStartTime, LocalDateTime newEndTime) {
 
@@ -164,7 +166,11 @@ public class Appointments {
         allAppointments.add(appointment);
     }
 
+
+
     public static ObservableList<Appointments> getAllAppointments(){
         return allAppointments;
     }
+
+
 }

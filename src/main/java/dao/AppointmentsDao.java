@@ -39,6 +39,7 @@ public class AppointmentsDao {
 
         Appointments.allAppointments.clear();
 
+
         String sql = "SELECT a.*, c.Contact_Name FROM appointments AS a JOIN contacts AS c ON a.Contact_ID = c.Contact_ID ORDER BY a.Appointment_ID";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
@@ -61,6 +62,7 @@ public class AppointmentsDao {
        appointmentResult = new Appointments(apptId, apptTitle, apptDesc, apptLocation, apptType, apptStart.toLocalDateTime(), apptEnd.toLocalDateTime(),
                     apptCustomerId, apptUserId,apptContactId, contactName);
             Appointments.addAppointment(appointmentResult);
+
         }
     }
     public static void UpdateAppointment(int appointmentId, String title, String description, String location, String type
@@ -93,7 +95,7 @@ public class AppointmentsDao {
     }
 
     public static void filterAppointmentWeek() throws SQLException {
-        String sql = "SELECT * FROM client_schedule.appointments WHERE week(start) = week(current_date())";
+        String sql = "SELECT * FROM appointments WHERE week(start) = week(current_date())";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         //I would need to add each appointment to a filtered list
@@ -101,6 +103,22 @@ public class AppointmentsDao {
 
         }
 
+    }
+
+    public static void SelectDistinctApptType() throws SQLException {
+
+        Appointments.appointmentTypes.clear();
+        String sql = "SELECT DISTINCT Type FROM appointments";
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while(rs.next()){
+
+            String type = rs.getString("Type");
+            Appointments.appointmentTypes.add(type);
+
+        }
+        Appointments.appointmentTypes.add("All");
     }
 
     public static Boolean hasAppointment(int customerId) throws SQLException {

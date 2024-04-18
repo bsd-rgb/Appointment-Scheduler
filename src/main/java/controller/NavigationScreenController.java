@@ -76,7 +76,13 @@ public class NavigationScreenController implements Initializable {
         stage.show();
     }
     @FXML
-    void onActionViewReports(ActionEvent event) {
+    void onActionViewReports(ActionEvent event) throws IOException {
+
+        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("ReportViewer.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setScene(scene);
+        stage.show();
 
     }
 
