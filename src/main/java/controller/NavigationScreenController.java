@@ -86,6 +86,7 @@ public class NavigationScreenController implements Initializable {
 
     }
 
+
     public void UserIdAppointments(int userId){
 
         LocalDateTime currentTime = LocalDateTime.now();
@@ -97,6 +98,7 @@ public class NavigationScreenController implements Initializable {
 
                 LocalDateTime appointmentStart = appointment.getStart();
                 Long timeDifference = ChronoUnit.MINUTES.between(appointmentStart, currentTime);
+
                 System.out.println("Time Difference: " + timeDifference);
                 timeDifference = timeDifference * (-1);
                 if(currentTime.isBefore(appointmentStart)) {

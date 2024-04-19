@@ -111,14 +111,17 @@ public class AppointmentsDao {
         String sql = "SELECT DISTINCT Type FROM appointments";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
+        //Appointments.appointmentTypes.add("All");
 
         while(rs.next()){
 
             String type = rs.getString("Type");
             Appointments.appointmentTypes.add(type);
 
+
         }
-        Appointments.appointmentTypes.add("All");
+
+
     }
 
     public static Boolean hasAppointment(int customerId) throws SQLException {
@@ -132,6 +135,55 @@ public class AppointmentsDao {
             return true;
         }
         return false;
+    }
+    //try returning int to get the count
+    public static void SelectMonthAndType(int month, String type) throws SQLException {
+        /*SELECT * FROM client_schedule.appointments WHERE Month(start) = 4 AND Type = 'General'*/
+        String sql = "SELECT * FROM appointments WHERE Month(Start) = ? AND Type = ?";
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+        ps.setInt(1, month);
+        ps.setString(2, type);
+        ResultSet rs = ps.executeQuery();
+        Appointments appointmentResult;
+
+        while(rs.next()){
+
+            int apptId = rs.getInt("Appointment_ID");
+            String apptTitle = rs.getString("Title");
+            String apptDesc = rs.getString("Description");
+            String apptLocation = rs.getString("Location");
+            String apptType = rs.getString("Type");
+            Timestamp apptStart = rs.getTimestamp("Start");
+            Timestamp apptEnd = rs.getTimestamp("End");
+            int apptCustomerId = rs.getInt("Customer_ID");
+            int apptUserId = rs.getInt("User_ID");
+            int apptContactId = rs.getInt("Contact_ID");
+
+            appointmentResult = new Appointments(apptId, apptTitle, apptDesc, apptLocation, apptType, apptStart.toLocalDateTime(), apptEnd.toLocalDateTime(),
+                    apptCustomerId, apptUserId,apptContactId);
+            Appointments.filteredAppointments.add(appointmentResult);
+        }
+    }
+
+    public static void CountAppointmentFilter(String type, int month) throws SQLException {
+
+        //SELECT  COUNT(*) AS Count FROM client_schedule.appointments WHERE Type = 'General' AND Month(Start) = 4  GROUP BY Type
+        Appointments.setAppointmentFilterListCount(0);
+
+        String sql = "SELECT COUNT(*) AS Count FROM client_schedule.appointments WHERE Type = ?  AND Month(Start) = ? GROUP BY Type";
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+
+        ps.setString(1, type);
+        ps.setInt(2, month);
+        ResultSet rs = ps.executeQuery();
+
+
+        if(rs.next()){
+
+            int count = rs.getInt("Count");
+            Appointments.setAppointmentFilterListCount(count);
+        }
+
     }
 
 }

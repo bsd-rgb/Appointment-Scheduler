@@ -35,6 +35,17 @@ public class Appointments {
     private int contactId;
 
 
+
+    public static int appointmentFilterListCount;
+
+    public static int getAppointmentFilterListCount() {
+        return appointmentFilterListCount;
+    }
+
+    public static void setAppointmentFilterListCount(int appointmentFilterListCount) {
+        Appointments.appointmentFilterListCount = appointmentFilterListCount;
+    }
+
     public int getAppointmentId() {
         return appointmentId;
     }
@@ -111,12 +122,14 @@ public class Appointments {
         return contactId;
     }
 
+
     public void setContactId(int contactId) {
         this.contactId = contactId;
     }
 
     public static ObservableList<Appointments> allAppointments = FXCollections.observableArrayList();
     public static ObservableList<String> appointmentTypes = FXCollections.observableArrayList();
+    public static ObservableList<Appointments> filteredAppointments = FXCollections.observableArrayList();
     private static boolean overlap;
     public static boolean isOverlap(int customerId, LocalDateTime origStartTime, LocalDateTime origEndTime, LocalDateTime newStartTime, LocalDateTime newEndTime) {
 
@@ -160,6 +173,20 @@ public class Appointments {
         this.userId = userId;
         this.contactId = contactId;
         this.contactName = contactName;
+    }
+
+    public Appointments(int appointmentId, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId) {
+        this.appointmentId = appointmentId;
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.type = type;
+        this.start = start;
+        this.end = end;
+        this.customerId = customerId;
+        this.userId = userId;
+        this.contactId = contactId;
+
     }
 
     public static void addAppointment(Appointments appointment){
