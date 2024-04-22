@@ -4,33 +4,134 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="786.0" prefWidth="1053.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportViewerController">
+<AnchorPane prefHeight="862.0" prefWidth="1053.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportViewerController">
    <children>
       <Label layoutX="466.0" layoutY="37.0" text="Report Viewer" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="83.0" layoutY="119.0" prefHeight="20.0" prefWidth="299.0" text="Appointment Count by Month and Type" textAlignment="CENTER" underline="true">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <TextField fx:id="apptMonthTypeReportTxt" alignment="TOP_LEFT" editable="false" layoutX="25.0" layoutY="303.0" prefHeight="100.0" prefWidth="415.0">
-         <padding>
-            <Insets left="15.0" top="15.0" />
-         </padding></TextField>
-      <Pane layoutX="44.0" layoutY="154.0" prefHeight="132.0" prefWidth="378.0">
-         <children>
-            <ComboBox fx:id="monthCombo" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="137.0" promptText="Month" />
-            <ComboBox fx:id="apptTypeCombo" layoutX="14.0" layoutY="46.0" prefHeight="25.0" prefWidth="168.0" promptText="Appointment Type" />
-            <Button layoutX="96.0" layoutY="106.0" mnemonicParsing="false" onAction="#onActionGenerateReportOne" prefHeight="25.0" prefWidth="187.0" text="Generate Report Results" />
-         </children>
-      </Pane>
+      <BorderPane layoutX="35.0" layoutY="120.0" prefHeight="355.0" prefWidth="344.0" style="-fx-border-color: black; -fx-border-radius: 10px;">
+         <top>
+            <Label prefHeight="20.0" prefWidth="299.0" text="Appointment Count by Month and Type" textAlignment="CENTER" underline="true" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets top="10.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
+         <center>
+            <VBox alignment="CENTER" prefHeight="232.0" prefWidth="720.0" spacing="15.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ComboBox fx:id="monthCombo" prefHeight="25.0" prefWidth="187.0" promptText="Month" />
+                  <ComboBox fx:id="apptTypeCombo" prefHeight="25.0" prefWidth="188.0" promptText="Appointment Type" />
+                  <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#onActionGenerateReportOne" prefHeight="25.0" prefWidth="192.0" text="Generate Report Result(s)">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </center>
+         <bottom>
+            <TextField fx:id="apptMonthTypeReportTxt" alignment="TOP_LEFT" editable="false" prefHeight="100.0" prefWidth="415.0" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets left="15.0" top="15.0" />
+               </padding>
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets bottom="15.0" left="10.0" right="10.0" />
+               </BorderPane.margin>
+            </TextField>
+         </bottom>
+      </BorderPane>
+      <BorderPane layoutX="35.0" layoutY="494.0" prefHeight="347.0" prefWidth="984.0" style="-fx-border-radius: 10px; -fx-border-color: black;">
+         <top>
+            <Label text="Contact Schedule" underline="true" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets top="10.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
+         <center>
+            <VBox alignment="CENTER" prefHeight="102.0" prefWidth="208.0" spacing="15.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ComboBox fx:id="contactCombo" prefWidth="150.0" promptText="Select Contact">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </ComboBox>
+                  <Button mnemonicParsing="false" onAction="#onActionGenerateContactSchedule" text="Generate Report Result(s)">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </center>
+         <bottom>
+            <TableView fx:id="contactApptTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+              <columns>
+                <TableColumn fx:id="apptIdCol" editable="false" prefWidth="108.0" text="Appointment ID" />
+                <TableColumn fx:id="titleCol" prefWidth="174.0" text="Title" />
+                  <TableColumn fx:id="descriptionCol" prefWidth="179.0" text="Description" />
+                  <TableColumn fx:id="typeCol" prefWidth="114.0" text="Type" />
+                  <TableColumn fx:id="startCol" prefWidth="150.0" text="Start Date &amp; Time" />
+                  <TableColumn fx:id="endCol" prefWidth="141.0" text="End Date &amp; Time" />
+                  <TableColumn fx:id="customerIdCol" prefWidth="103.0" text="Customer ID" />
+              </columns>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </BorderPane.margin>
+            </TableView>
+         </bottom>
+      </BorderPane>
+      <BorderPane layoutX="650.0" layoutY="120.0" prefHeight="355.0" prefWidth="369.0" style="-fx-border-color: black; -fx-border-radius: 10px;">
+         <top>
+            <Label text="Appointment Count by Country" underline="true" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets top="10.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
+         <center>
+            <VBox alignment="CENTER" prefHeight="83.0" prefWidth="199.0" spacing="15.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ComboBox fx:id="countryCombo" prefWidth="150.0" promptText="Select Country" />
+                  <Button mnemonicParsing="false" onAction="#onActionGenerateCountCountry" text="Generate Report Result(s)">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </center>
+         <bottom>
+            <TextField fx:id="countCountryTxt" editable="false" prefHeight="61.0" prefWidth="344.0" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" />
+               </BorderPane.margin>
+            </TextField>
+         </bottom>
+      </BorderPane>
+      <Button layoutX="35.0" layoutY="38.0" mnemonicParsing="false" onAction="#onActionGoBack" prefHeight="25.0" prefWidth="102.0" text="Go Back" />
    </children>
 </AnchorPane>

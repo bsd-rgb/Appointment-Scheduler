@@ -6,6 +6,7 @@ import model.Appointments;
 import model.Customers;
 
 import javax.xml.transform.Result;
+import java.nio.file.ReadOnlyFileSystemException;
 import java.sql.*;
 import java.time.LocalDateTime;
 
@@ -185,5 +186,48 @@ public class AppointmentsDao {
         }
 
     }
+
+    public static void SelectAppointmentCountryCount(int countryId) throws SQLException {
+
+        Appointments.setAppointmentFilterListCount(0);
+        String sql = "SELECT cntry.Country,Count(*) as Appointment_Count FROM client_schedule.appointments a JOIN client_schedule.customers c ON a.Customer_ID = c.Customer_ID JOIN client_schedule.first_level_divisions fld ON c.Division_ID = fld.Division_ID JOIN client_schedule.countries cntry ON fld.Country_ID = cntry.Country_ID WHERE cntry.Country_ID = ? GROUP BY cntry.Country";
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+        ps.setInt(1, countryId);
+        ResultSet rs = ps.executeQuery();
+
+        if(rs.next()){
+            int count = rs.getInt("Appointment_Count");
+            Appointments.setAppointmentFilterListCount(count);
+        }
+    }
+
+    public static void SelectAppointmentByContact(int contactId) throws SQLException {
+        Appointments.filteredAppointments.clear();
+
+        String sql = "SELECT * FROM appointments WHERE Contact_ID = ?";
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+        ps.setInt(1, contactId);
+        ResultSet rs = ps.executeQuery();
+        Appointments appointmentResult;
+
+        while(rs.next()){
+            int apptId = rs.getInt("Appointment_ID");
+            String apptTitle = rs.getString("Title");
+            String apptDesc = rs.getString("Description");
+            String apptLocation = rs.getString("Location");
+            String apptType = rs.getString("Type");
+            Timestamp apptStart = rs.getTimestamp("Start");
+            Timestamp apptEnd = rs.getTimestamp("End");
+            int apptCustomerId = rs.getInt("Customer_ID");
+            int apptUserId = rs.getInt("User_ID");
+            int apptContactId = rs.getInt("Contact_ID");
+
+            appointmentResult = new Appointments(apptId, apptTitle, apptDesc, apptLocation, apptType, apptStart.toLocalDateTime(), apptEnd.toLocalDateTime(),
+                    apptCustomerId, apptUserId,apptContactId);
+            Appointments.filteredAppointments.add(appointmentResult);
+        }
+    }
+
+
 
 }
