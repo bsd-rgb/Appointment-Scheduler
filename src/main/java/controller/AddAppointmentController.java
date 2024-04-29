@@ -106,6 +106,20 @@ public class AddAppointmentController implements Initializable {
                     return;
                 }
 
+                if(appointmentEnd.isBefore(appointmentStart)){
+                    addAppointmentAlert.setAlertType(Alert.AlertType.ERROR);
+                    addAppointmentAlert.setContentText("The end time cannot be before the start time.");
+                    addAppointmentAlert.showAndWait();
+                    return;
+                }
+
+                if(appointmentStart.isAfter(appointmentEnd)){
+                    addAppointmentAlert.setAlertType(Alert.AlertType.ERROR);
+                    addAppointmentAlert.setContentText("The start time cannot be after the end time.");
+                    addAppointmentAlert.showAndWait();
+                    return;
+                }
+
                 AppointmentsDao.insertAppointment(title, description, location, type, appointmentStart, appointmentEnd, createDate, loggedInUser
                     ,lastUpdated,loggedInUser,customerId,userId,contactId);
 

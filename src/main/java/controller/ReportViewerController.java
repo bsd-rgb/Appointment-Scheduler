@@ -57,12 +57,31 @@ public class ReportViewerController implements Initializable {
     private TextField countCountryTxt;
     @FXML
     private ComboBox<Countries> countryCombo;
+    @FXML
+    private Button contactScheduleBtn;
 
 
     private static final ObservableList<String> allMonths = FXCollections.observableArrayList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        contactScheduleBtn.setOnAction((event) ->{
+            int selectedContactId = contactCombo.getSelectionModel().getSelectedItem().getContactId();
+            try{
+                AppointmentsDao.SelectAppointmentByContact(selectedContactId);
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+                return;
+            }
+            if(Appointments.filteredAppointments.size() > 0){
+                contactApptTable.setItems(Appointments.filteredAppointments);
+            } else{
+                contactApptTable.setPlaceholder(new Label("No results."));
+            }
+        });
+
+
 
         apptIdCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -85,6 +104,8 @@ public class ReportViewerController implements Initializable {
         contactCombo.setItems(Contacts.allContacts);
         countryCombo.setItems(Countries.allCountries);
     }
+
+
 
     @FXML
     void onActionGenerateReportOne(ActionEvent event) {
@@ -119,7 +140,9 @@ public class ReportViewerController implements Initializable {
             System.out.println("TEST: " +titleCase(selectedMonth) + " - " + selectedType + " - " + Appointments.getAppointmentFilterListCount());
     }
 
-    @FXML
+
+
+/*    @FXML
     void onActionGenerateContactSchedule(ActionEvent event) {
 
         //get the contact from the combo box
@@ -142,7 +165,7 @@ public class ReportViewerController implements Initializable {
             contactApptTable.setPlaceholder(new Label("No results."));
         }
 
-    }
+    }*/
 
     @FXML
     void onActionGenerateCountCountry(ActionEvent event) {

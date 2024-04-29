@@ -108,12 +108,15 @@ public class LoginScreenController implements Initializable {
 
     @FXML
     void onActionExitProgram(ActionEvent event) {
-
+    //Lambda here
         ((Button) confirmationAlert.getDialogPane().lookupButton(ButtonType.OK)).setText("Exit");
         confirmationAlert.setContentText(rb.getString("ExitProgram"));
-        confirmationAlert.showAndWait();
-        if(confirmationAlert.getResult() == ButtonType.OK) {
-            System.exit(0);
-        } else return;
+        confirmationAlert.showAndWait().ifPresent((response -> {
+            if(response == ButtonType.OK){
+                System.exit(0);
+            }else{
+                return;
+            }
+        }));
     }
 }

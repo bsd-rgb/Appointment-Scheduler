@@ -133,7 +133,7 @@ public class UpdateAppointmentController implements Initializable {
 
             if(AppointmentsDao.hasAppointment(customerId)){
                 for(Appointments appointment: Appointments.getAllAppointments()){
-                    if(appointment.getCustomerId() == customerId){
+                    if((appointment.getCustomerId() == customerId) && (appointment.getAppointmentId() != id)){
                         if(Appointments.isOverlap(customerId, appointment.getStart(),appointment.getEnd(), appointmentStart, appointmentEnd)) {
                             System.out.println("There is an overlap.");
                             errorAlert.setAlertType(Alert.AlertType.ERROR);
@@ -160,6 +160,18 @@ public class UpdateAppointmentController implements Initializable {
                 if (apptContactCombo.getSelectionModel().isEmpty() || apptCustIdCombo.getSelectionModel().isEmpty() || apptUserIdCombo.getSelectionModel().isEmpty() ||
                         endTimeCombo.getSelectionModel().isEmpty() || startTimeCombo.getSelectionModel().isEmpty() || startDate.getValue() == null || endDate.getValue() == null) {
                     errorAlert.setContentText("One or more selections are empty.");
+                    errorAlert.showAndWait();
+                    return;
+                }
+
+                if(appointmentEnd.isBefore(appointmentStart)){
+                    errorAlert.setContentText("The end time cannot be before the start time.");
+                    errorAlert.showAndWait();
+                    return;
+                }
+
+                if(appointmentStart.isAfter(appointmentEnd)){
+                    errorAlert.setContentText("The start time cannot be after the end time.");
                     errorAlert.showAndWait();
                     return;
                 }
