@@ -1,0 +1,2 @@
+[2024-04-30 09:56:27 MDT] - [User] test - [Login Successful] true
+[2024-04-30 09:57:40 MDT] - [User] test - [Login Successful] true

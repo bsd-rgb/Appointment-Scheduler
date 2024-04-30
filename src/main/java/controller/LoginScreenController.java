@@ -1,7 +1,9 @@
 package controller;
 
 import com.bd.Application;
+import dao.DBConnection;
 import dao.UsersDao;
+import helper.IOUtil;
 import helper.LocaleHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -86,12 +88,15 @@ public class LoginScreenController implements Initializable {
             if(UsersDao.findUser(userName,password) != null ) {
                 System.out.println(rb.getString("Found"));
                 UsersDao.setCurrentUser(new Users(UsersDao.findUser(userName,password).getUserId(),UsersDao.findUser(userName,password).getUserName(), UsersDao.findUser(userName,password).getPassword()));
+                IOUtil.appendLogin(Users.getLoggedInUser().getUserName(), true);
+
                 Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
                 FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("NavigationScreen.fxml"));
                 Scene scene = new Scene(fxmlLoader.load());
                 stage.setScene(scene);
                 stage.show();
             } else {
+                IOUtil.appendLogin(userName, false);
                     errorAlert.setTitle(rb.getString("Error"));
                     errorAlert.setContentText(rb.getString("Incorrect"));
                     passwordTxtField.clear();
@@ -113,6 +118,7 @@ public class LoginScreenController implements Initializable {
         confirmationAlert.setContentText(rb.getString("ExitProgram"));
         confirmationAlert.showAndWait().ifPresent((response -> {
             if(response == ButtonType.OK){
+                DBConnection.closeConnection();
                 System.exit(0);
             }else{
                 return;

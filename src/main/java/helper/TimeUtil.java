@@ -21,6 +21,11 @@ public class TimeUtil {
         return localZoneId;
     }
 
+    public static ZonedDateTime getLocalZonedDateTime(){
+        return ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault());
+
+    }
+
 
 
 
