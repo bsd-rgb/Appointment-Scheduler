@@ -1,45 +1,32 @@
 package helper;
 
 import java.io.*;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class IOUtil  {
+/** The IOUtil class provides a method that writes the login activity to the login_activity.txt file.
+ *
+ * @author Brandi Davis
+ * */
 
-    private String fileName = "login_activity.txt";
-    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z");
-    File file = new File(fileName);
-    Scanner inputFile = new Scanner(file);
+public class IOUtil {
 
-    static FileWriter fwriter;
+    /** Appends username and login result to the login_activity.txt file.
+     *
+     * @param loggedInUser string result of the current user attempting to log in
+     * @param loginResult boolean result of login attempt
+     * @throws IOException in the even the file is not found an exception will be thrown
+     * */
+    public static void appendLogin(String loggedInUser, boolean loginResult) throws IOException {
 
-    static {
-        try {
-            fwriter = new FileWriter("login_activity.txt", true);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    static PrintWriter outputFile = new PrintWriter(fwriter);
-
-    /*- You can then use print() or println() methods to append data to the file
-		- Use close() method to close the file*/
-
-    //what should go in this method below?
-    public static void appendLogin(String loggedInUser, boolean loginResult){
+        String fileName = "login_activity.txt";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z");
+        File file = new File(fileName);
+        Scanner inputFile = new Scanner(file);
+        FileWriter fwriter = new FileWriter("login_activity.txt", true);
+        PrintWriter outputFile = new PrintWriter(fwriter);
 
         outputFile.println("[" + TimeUtil.getLocalZonedDateTime().format(formatter) + "]" + " - [User] " + loggedInUser + " - [Login Successful] " + loginResult);
-        System.out.println("[" + TimeUtil.getLocalZonedDateTime().format(formatter) + "]" + " - [User] " + loggedInUser + " - [Login Successful] " + loginResult);
         outputFile.close();
-
-    }
-
-
-    public IOUtil() throws IOException {
-        System.out.printf("File not found.");
     }
 }

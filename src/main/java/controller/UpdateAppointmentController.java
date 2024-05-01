@@ -23,6 +23,11 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
+/** The UpdateAppointmentController is used to update the selected appointment from the ViewAppointmentsController.
+ *
+ * @author Brandi Davis
+ * */
+
 public class UpdateAppointmentController implements Initializable {
 
     @FXML
@@ -53,6 +58,13 @@ public class UpdateAppointmentController implements Initializable {
     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
 
+    //Next java doc here
+    /** Initializes the UpdateAppointmentController, disables ID field, and sets combo box data for time, contact, customer, and user.
+     *
+     * The setConverter method is used to update the format of the time in the start time and end time combo boxes.
+     * @param url The location used to resolve relative paths for root object
+     * @param resourceBundle The resources used to localize the root object
+     * */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         apptIdTxt.setDisable(true);
@@ -111,6 +123,14 @@ public class UpdateAppointmentController implements Initializable {
             return;
         }
     }
+
+    /** Updates the appointment information by using methods from AppointmentsDao and Appointment class. Returns to the ViewAppointmentsController.
+     *
+     * There are multiple error checks for empty fields and incorrect time inputs. Uses the hasAppointment() method from AppointmentsDao and isOverlap method from Appointments class to check for customer appointment overlap.
+     * Uses updateAppointment() method from AppointmentsDao class.
+     * @param event on action update button
+     * @throws IOException from FXMLLoader in the event of an error loading the ViewAppointmentsController
+     * */
     @FXML
     void onActionUpdateAppointment(ActionEvent event) throws IOException {
 
@@ -156,20 +176,17 @@ public class UpdateAppointmentController implements Initializable {
                     errorAlert.showAndWait();
                     return;
                 }
-
                 if (apptContactCombo.getSelectionModel().isEmpty() || apptCustIdCombo.getSelectionModel().isEmpty() || apptUserIdCombo.getSelectionModel().isEmpty() ||
                         endTimeCombo.getSelectionModel().isEmpty() || startTimeCombo.getSelectionModel().isEmpty() || startDate.getValue() == null || endDate.getValue() == null) {
                     errorAlert.setContentText("One or more selections are empty.");
                     errorAlert.showAndWait();
                     return;
                 }
-
                 if(appointmentEnd.isBefore(appointmentStart)){
                     errorAlert.setContentText("The end time cannot be before the start time.");
                     errorAlert.showAndWait();
                     return;
                 }
-
                 if(appointmentStart.isAfter(appointmentEnd)){
                     errorAlert.setContentText("The start time cannot be after the end time.");
                     errorAlert.showAndWait();
@@ -187,19 +204,21 @@ public class UpdateAppointmentController implements Initializable {
                 stage.setScene(scene);
                 stage.show();
             }
-
-
     } catch(Exception e){
         System.out.println(e.getMessage());
-    }
+        }
     }
 
+    /**  Sends the selected appointment information from the ViewAppointmentController to the Update Appointment Screen.
+     *
+     * @param appointment the appointment that will be sent to the Update Appointment Screen
+     * */
     public void SendAppointment(Appointments appointment) {
 
-        ZonedDateTime apptStartUTC = ZonedDateTime.of(appointment.getStart().toLocalDate(), appointment.getStart().toLocalTime(), ZoneId.of("UTC"));
+        /*ZonedDateTime apptStartUTC = ZonedDateTime.of(appointment.getStart().toLocalDate(), appointment.getStart().toLocalTime(), ZoneId.of("UTC"));
         ZonedDateTime apptEndUTC = ZonedDateTime.of(appointment.getEnd().toLocalDate(), appointment.getEnd().toLocalTime(), ZoneId.of("UTC"));
         ZonedDateTime apptStartLocal = apptStartUTC.withZoneSameInstant(TimeUtil.getLocalZoneId());
-        ZonedDateTime apptEndLocal = TimeUtil.ToLocal(apptEndUTC);
+        ZonedDateTime apptEndLocal = TimeUtil.ToLocal(apptEndUTC);*/
 
         LocalDateTime appointmentStart = LocalDateTime.of(appointment.getStart().toLocalDate(), appointment.getStart().toLocalTime());
         LocalDateTime appointmentEnd = LocalDateTime.of(appointment.getEnd().toLocalDate(), appointment.getEnd().toLocalTime());

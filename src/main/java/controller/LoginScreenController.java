@@ -19,6 +19,11 @@ import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/** The LoginScreenController is used to log login activity and allows navigation through the program on successful authentication.
+ *
+ * @author Brandi Davis
+ * */
+
 public class LoginScreenController implements Initializable {
 
     @FXML
@@ -49,6 +54,14 @@ public class LoginScreenController implements Initializable {
     ResourceBundle rb = ResourceBundle.getBundle("com.bd/Nat", Locale.getDefault());
 
 
+    /** Initializes the LoginScreenController.
+     *
+     * Retrieves the system default Zone ID and displays the timezone
+     * Checks if the French language is detected on local OS
+     * If OS language is French it will set the main text to French
+     * @param url The location used to resolve relative paths for root object
+     * @param resourceBundle The resources used to localize the root object
+     * */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -58,7 +71,6 @@ public class LoginScreenController implements Initializable {
        if(Locale.getDefault().getLanguage().equals("fr")) {
            french = true;
        }
-
        if(french) {
            try {
                usernameLbl.setText(rb.getString("Username"));
@@ -72,6 +84,13 @@ public class LoginScreenController implements Initializable {
        }
     }
 
+    /** Logs the user into the program if credentials are found and displays error for invalid login.
+     *
+     * There are error checks for empty fields. Uses the findUser() method from the UsersDao to authenticate login.
+     * Writes login result to login_activity.txt file.
+     * Navigates to the NavigationScreenController on successful login
+     * @param event on action login button
+     * */
     @FXML
     void onActionLogin(ActionEvent event) {
 
@@ -111,6 +130,12 @@ public class LoginScreenController implements Initializable {
         }
     }
 
+    /** Exits the program.
+     *
+     * Uses lambda to exit the program.
+     * Displays confirmation dialog to confirm program exit
+     * @param event on action exit button
+     * */
     @FXML
     void onActionExitProgram(ActionEvent event) {
     //Lambda here
