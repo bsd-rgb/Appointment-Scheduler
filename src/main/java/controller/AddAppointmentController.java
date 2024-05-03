@@ -27,9 +27,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
 
-
+/** The AddAppointmentController is used to create a new appointment and add it to the database.
+ *
+ * @author Brandi Davis
+ * */
 public class AddAppointmentController implements Initializable {
-
     @FXML
     private TextArea apptDescTxt;
     @FXML
@@ -55,9 +57,67 @@ public class AddAppointmentController implements Initializable {
     Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
     Alert addAppointmentAlert = new Alert(Alert.AlertType.NONE);
 
+    /** Initializes the AddAppointmentController.
+     *
+     * Sets the items in the time, userId, customerId, and contact combo boxes
+     * The setConverter method is used to update the format of the time in the start time and end time combo boxes
+     * @param url The location used to resolve relative paths for root object
+     * @param resourceBundle The resources used to localize the root object
+     * */
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        final String timePattern = "hh:mm a";
+        final DateTimeFormatter patternFormatter = DateTimeFormatter.ofPattern(timePattern);
+        startTimeCombo.setConverter(new StringConverter<LocalTime>() {
+            @Override
+            public String toString(LocalTime localTime) {
+                if(localTime == null) {
+                    return "";
+                }
+                return patternFormatter.format(localTime);
+            }
+            @Override
+            public LocalTime fromString(String s) {
+                if(s == null || s.isEmpty()) {
+                    return null;
+                }
+                return LocalTime.parse(s, patternFormatter);
+            }
+        });
+        endTimeCombo.setConverter(new StringConverter<LocalTime>() {
+            @Override
+            public String toString(LocalTime localTime) {
+                if(localTime == null) {
+                    return "";
+                }
+                return patternFormatter.format(localTime);
+            }
+            @Override
+            public LocalTime fromString(String s) {
+                if(s == null || s.isEmpty()) {
+                    return null;
+                }
+                return LocalTime.parse(s, patternFormatter);
+            }
+        });
+        startTimeCombo.setItems(TimeUtil.businessHours());
+        endTimeCombo.setItems(TimeUtil.businessHours());
+        startTimeCombo.getSelectionModel().selectFirst();
+        endTimeCombo.getSelectionModel().selectLast();
+        apptContactCombo.setItems(Contacts.allContacts);
+        apptCustIdCombo.setItems(Customers.getCustomerIds());
+        apptUserIdCombo.setItems(Users.getUserIds());
+    }
+
+    /** Saves the appointment information by calling the insert method from the AppointmentsDao.
+     *
+     *  There are multiple error alerts for invalid input
+     *  Does a verification check to see if there's an overlapping appointment when attempting to save
+     *  On success, navigates back to the ViewAppointmentsController
+     * @param event on action save appointment button
+     * */
     @FXML
     void onActionAddAppointment(ActionEvent event) throws IOException {
-
         try{
             String contactName = apptContactCombo.getValue().getContactName();
 
@@ -139,6 +199,11 @@ public class AddAppointmentController implements Initializable {
 
     }
 
+    /** Displays confirmation dialog and either stays on the AddAppointmentController or navigates to ViewAppointmentsController.
+     *
+     * @param event on action cancel button
+     * @throws IOException from FXMLLoader in the event of an error loading the ViewAppointmentsController
+     * */
     @FXML
     void onActionCancelAppointment(ActionEvent event) throws IOException {
 
@@ -155,57 +220,14 @@ public class AddAppointmentController implements Initializable {
             return;
         }
     }
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        final String timePattern = "hh:mm a";
-        final DateTimeFormatter patternFormatter = DateTimeFormatter.ofPattern(timePattern);
-        startTimeCombo.setConverter(new StringConverter<LocalTime>() {
-            @Override
-            public String toString(LocalTime localTime) {
-                if(localTime == null) {
-                    return "";
-                }
-                return patternFormatter.format(localTime);
-            }
-            @Override
-            public LocalTime fromString(String s) {
-                if(s == null || s.isEmpty()) {
-                    return null;
-                }
-                return LocalTime.parse(s, patternFormatter);
-            }
-        });
-        endTimeCombo.setConverter(new StringConverter<LocalTime>() {
-            @Override
-            public String toString(LocalTime localTime) {
-                if(localTime == null) {
-                    return "";
-                }
-                return patternFormatter.format(localTime);
-            }
-            @Override
-            public LocalTime fromString(String s) {
-                if(s == null || s.isEmpty()) {
-                    return null;
-                }
-                return LocalTime.parse(s, patternFormatter);
-            }
-        });
-        startTimeCombo.setItems(TimeUtil.businessHours());
-        endTimeCombo.setItems(TimeUtil.businessHours());
-        startTimeCombo.getSelectionModel().selectFirst();
-        endTimeCombo.getSelectionModel().selectLast();
-        apptContactCombo.setItems(Contacts.allContacts);
-        apptCustIdCombo.setItems(Customers.getCustomerIds());
-        apptUserIdCombo.setItems(Users.getUserIds());
 
-    }
-
+    /** When the start date is selected, it automatically sets the end date to the same date.
+     *
+     * @param event on action start date selected
+     * */
     @FXML
     void onActionStartDateSelected(ActionEvent event) {
-
         endDate.setValue(startDate.getValue());
-
     }
 }

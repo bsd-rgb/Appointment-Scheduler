@@ -23,36 +23,28 @@ import java.util.ResourceBundle;
  *
  * @author Brandi Davis
  * */
-
 public class LoginScreenController implements Initializable {
 
     @FXML
     private Button exitBtn;
-
     @FXML
     private Label locationLbl;
-
     @FXML
     private Label passwordLbl;
-
     @FXML
     private TextField passwordTxtField;
-
     @FXML
     private Button submitBtn;
-
     @FXML
     private Label usernameLbl;
     @FXML
     private Label timeZoneLbl;
-
     @FXML
     private TextField usernameTxtField;
     private boolean french = false;
     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
     ResourceBundle rb = ResourceBundle.getBundle("com.bd/Nat", Locale.getDefault());
-
 
     /** Initializes the LoginScreenController.
      *
@@ -64,7 +56,6 @@ public class LoginScreenController implements Initializable {
      * */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         ZoneId zoneId = ZoneId.systemDefault();
         locationLbl.setText(zoneId.toString());
 

@@ -27,9 +27,7 @@ import java.util.ResourceBundle;
  *
  * @author Brandi Davis
  * */
-
 public class UpdateAppointmentController implements Initializable {
-
     @FXML
     private ComboBox<Contacts> apptContactCombo;
     @FXML
@@ -58,7 +56,6 @@ public class UpdateAppointmentController implements Initializable {
     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
 
-    //Next java doc here
     /** Initializes the UpdateAppointmentController, disables ID field, and sets combo box data for time, contact, customer, and user.
      *
      * The setConverter method is used to update the format of the time in the start time and end time combo boxes.

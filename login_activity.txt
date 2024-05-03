@@ -1,3 +1,4 @@
 [2024-04-30 09:56:27 MDT] - [User] test - [Login Successful] true
 [2024-04-30 09:57:40 MDT] - [User] test - [Login Successful] true
 [2024-04-30 13:05:15 CDT] - [User] test - [Login Successful] true
+[2024-05-03 17:20:10 CDT] - [User] test - [Login Successful] true

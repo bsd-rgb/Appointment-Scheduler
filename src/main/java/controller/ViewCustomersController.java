@@ -19,7 +19,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class ViewCustomerController implements Initializable {
+public class ViewCustomersController implements Initializable {
 
     @FXML
     private TableColumn<Customers, String> customerNameCol;
