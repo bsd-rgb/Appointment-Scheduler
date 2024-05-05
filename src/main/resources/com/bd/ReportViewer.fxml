@@ -35,7 +35,7 @@
                <children>
                   <ComboBox fx:id="monthCombo" prefHeight="25.0" prefWidth="187.0" promptText="Month" />
                   <ComboBox fx:id="apptTypeCombo" prefHeight="25.0" prefWidth="188.0" promptText="Appointment Type" />
-                  <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#onActionGenerateReportOne" prefHeight="25.0" prefWidth="192.0" text="Generate Report Result(s)">
+                  <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#onActionGenerateMonthType" prefHeight="25.0" prefWidth="192.0" text="Generate Report Result(s)">
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin>

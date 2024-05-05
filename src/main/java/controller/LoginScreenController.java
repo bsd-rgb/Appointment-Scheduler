@@ -24,7 +24,6 @@ import java.util.ResourceBundle;
  * @author Brandi Davis
  * */
 public class LoginScreenController implements Initializable {
-
     @FXML
     private Button exitBtn;
     @FXML
@@ -44,6 +43,8 @@ public class LoginScreenController implements Initializable {
     private boolean french = false;
     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+
+    /** Resource bundle object for the default locale. */
     ResourceBundle rb = ResourceBundle.getBundle("com.bd/Nat", Locale.getDefault());
 
     /** Initializes the LoginScreenController.
@@ -77,8 +78,9 @@ public class LoginScreenController implements Initializable {
 
     /** Logs the user into the program if credentials are found and displays error for invalid login.
      *
-     * There are error checks for empty fields. Uses the findUser() method from the UsersDao to authenticate login.
-     * Writes login result to login_activity.txt file.
+     * There are error checks for empty fields
+     * Uses the findUser() method from the UsersDao to authenticate login
+     * Writes login result to login_activity.txt file
      * Navigates to the NavigationScreenController on successful login
      * @param event on action login button
      * */

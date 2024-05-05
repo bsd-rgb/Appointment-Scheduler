@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
 
-/** The NavigationScreenController is used to navigate to the Customer page, appointment page, and report page after login.
+/** The NavigationScreenController is used to navigate to the customer page, appointment page, or report page after successful login.
  *
  * @author Brandi Davis
  * */
@@ -32,7 +32,6 @@ public class NavigationScreenController implements Initializable {
     /** Initializes the NavigationScreenController.
      *
      * Runs the UserIdAppointment method (see method information for details)
-     *
      * @param url The location used to resolve relative paths for root object
      * @param resourceBundle The resources used to localize the root object
      * */
@@ -41,7 +40,7 @@ public class NavigationScreenController implements Initializable {
         UserIdAppointments(Users.getLoggedInUser().getUserId());
     }
 
-    /** Used to log off and returns to the LoginScreenController.
+    /** Used to log off and return to the LoginScreenController.
      *
      * Renames the OK button to "Log off"
      * @param event on action log off button
@@ -63,7 +62,7 @@ public class NavigationScreenController implements Initializable {
         }
     }
 
-    /** Used to navigate to the ViewAppointmentsController.
+    /** Navigates to the ViewAppointmentsController.
      *
      * @param event on action view appointments button
      * @throws IOException from FXMLLoader in the event of an error loading the ViewAppointmentsController
@@ -110,7 +109,6 @@ public class NavigationScreenController implements Initializable {
      *
      * If there is an upcoming appointment, the appointment information will be displayed in a label on the screen. If there are no upcoming appointments, it will display that in the label.
      * @param userId the user ID of the user that is logged in
-     *
      * */
     public void UserIdAppointments(int userId){
         LocalDateTime currentTime = LocalDateTime.now();

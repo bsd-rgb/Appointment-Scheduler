@@ -53,9 +53,9 @@ public class AddCustomerController implements Initializable {
     }
 
 
-    /** Used to add a customer to the database.
+    /** Attempts to add a customer to the database.
      *
-     * There is an error alert that will display if any of the fields are empty
+     * An error will display if any of the fields are empty
      * Uses the insertCustomer() method from the CustomersDao
      * Navigates to the ViewCustomersController on success
      * @param event on action add customer button

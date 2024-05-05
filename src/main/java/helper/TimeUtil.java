@@ -5,6 +5,9 @@ import javafx.collections.ObservableList;
 
 import java.sql.Timestamp;
 import java.time.*;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class TimeUtil {
@@ -16,6 +19,11 @@ public class TimeUtil {
     static final private ZonedDateTime businessStartZDT = ZonedDateTime.of(LocalDate.now(), businessStartTime, businessZoneId);
     static final private ZonedDateTime businessEndZDT = ZonedDateTime.of(LocalDate.now(), businessEndTime, businessZoneId);
     public static ZoneId localZoneId = ZoneId.of(TimeZone.getDefault().getID());
+    public static LocalDate localCurrentDate = LocalDate.now();
+    private static final DayOfWeek startDayOfWeek = WeekFields.of(Locale.getDefault()).getFirstDayOfWeek();
+    private static final DayOfWeek lastDayOfWeek = startDayOfWeek.plus(6);
+    private static final LocalDate startCurrentWeek = localCurrentDate.with(TemporalAdjusters.previousOrSame(startDayOfWeek));
+    private static final LocalDate endCurrentWeek = localCurrentDate.with(TemporalAdjusters.nextOrSame(lastDayOfWeek));
 
     public static ZoneId getLocalZoneId(){
         return localZoneId;
@@ -24,6 +32,18 @@ public class TimeUtil {
     public static ZonedDateTime getLocalZonedDateTime(){
         return ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault());
 
+    }
+
+    public static LocalDate getStartCurrentWeek(){
+        return startCurrentWeek;
+    }
+
+    public static LocalDate getEndCurrentWeek(){
+        return endCurrentWeek;
+    }
+
+    public static LocalDate getLocalCurrentDate(){
+        return localCurrentDate;
     }
 
 

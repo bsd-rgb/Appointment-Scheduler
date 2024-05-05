@@ -3,7 +3,6 @@ package controller;
 import com.bd.Application;
 import dao.AppointmentsDao;
 import dao.ContactsDao;
-import dao.CustomersDao;
 import helper.TimeUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,14 +19,12 @@ import model.Users;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
-import java.util.TimeZone;
 
-/** The AddAppointmentController is used to create a new appointment and add it to the database.
+
+/** The AddAppointmentController is used add appointments to the database. 
  *
  * @author Brandi Davis
  * */
@@ -112,9 +109,10 @@ public class AddAppointmentController implements Initializable {
     /** Saves the appointment information by calling the insert method from the AppointmentsDao.
      *
      *  There are multiple error alerts for invalid input
-     *  Does a verification check to see if there's an overlapping appointment when attempting to save
+     *  Performs verification check for overlapping appointment(s) when attempting to save
      *  On success, navigates back to the ViewAppointmentsController
      * @param event on action save appointment button
+     * @throws IOException from FXMLLoader in the event of an error loading the ViewAppointmentsController
      * */
     @FXML
     void onActionAddAppointment(ActionEvent event) throws IOException {
@@ -206,7 +204,6 @@ public class AddAppointmentController implements Initializable {
      * */
     @FXML
     void onActionCancelAppointment(ActionEvent event) throws IOException {
-
         addAppointmentAlert.setAlertType(Alert.AlertType.CONFIRMATION);
         addAppointmentAlert.setContentText("Are you sure you want to cancel and go back? All entered information will be lost.");
         addAppointmentAlert.showAndWait();

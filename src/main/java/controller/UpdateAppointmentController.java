@@ -18,7 +18,6 @@ import model.Users;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
@@ -106,6 +105,13 @@ public class UpdateAppointmentController implements Initializable {
             }
         });
     }
+
+    /** Navigates to the ViewAppointmentsController when OK is selected from the dialog window.
+     *
+     * Returns to the screen when Cancel is selected from the dialog window
+     * @param event on action cancel appointment button
+     * @throws IOException from FXMLLoader in the event of an error loading the ViewAppointmentsController
+     * */
     @FXML
     void onActionCancelAppointment(ActionEvent event) throws IOException {
         confirmationAlert.setContentText("Are you sure you want to cancel and go back? All entered information will be lost.");
@@ -130,7 +136,6 @@ public class UpdateAppointmentController implements Initializable {
      * */
     @FXML
     void onActionUpdateAppointment(ActionEvent event) throws IOException {
-
         try {
 
             LocalDateTime appointmentStart = LocalDateTime.of(startDate.getValue(), startTimeCombo.getValue());
@@ -206,17 +211,11 @@ public class UpdateAppointmentController implements Initializable {
         }
     }
 
-    /**  Sends the selected appointment information from the ViewAppointmentController to the Update Appointment Screen.
+    /**  Sends the selected appointment information from the ViewAppointmentsController to the Update Appointment Screen.
      *
      * @param appointment the appointment that will be sent to the Update Appointment Screen
      * */
     public void SendAppointment(Appointments appointment) {
-
-        /*ZonedDateTime apptStartUTC = ZonedDateTime.of(appointment.getStart().toLocalDate(), appointment.getStart().toLocalTime(), ZoneId.of("UTC"));
-        ZonedDateTime apptEndUTC = ZonedDateTime.of(appointment.getEnd().toLocalDate(), appointment.getEnd().toLocalTime(), ZoneId.of("UTC"));
-        ZonedDateTime apptStartLocal = apptStartUTC.withZoneSameInstant(TimeUtil.getLocalZoneId());
-        ZonedDateTime apptEndLocal = TimeUtil.ToLocal(apptEndUTC);*/
-
         LocalDateTime appointmentStart = LocalDateTime.of(appointment.getStart().toLocalDate(), appointment.getStart().toLocalTime());
         LocalDateTime appointmentEnd = LocalDateTime.of(appointment.getEnd().toLocalDate(), appointment.getEnd().toLocalTime());
 
@@ -238,5 +237,4 @@ public class UpdateAppointmentController implements Initializable {
             }
         }
     }
-
 }
