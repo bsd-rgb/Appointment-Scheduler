@@ -2,25 +2,29 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 public class DBConnection {
 
+    /** The protocol used to connect to the database. */
     private static final String protocol = "jdbc";
+    /** The database vendor to be used, MySQL in this instance. */
     private static final String vendor = ":mysql:";
+    /** The location of the database. */
     private static final String location = "//localhost/";
+    /** The name of the database to connect to. */
     private static final String databaseName = "client_schedule";
+    /** The constructed URL for database connection using local time. */
     private static final String jdbcUrl = protocol + vendor + location + databaseName + "?connectionTimeZone = SERVER"; // LOCAL
-    private static final String driver = "com.mysql.cj.jdbc.Driver"; // Driver reference
-    private static final String userName = "sqlUser"; // Username
-    private static String password = "Passw0rd!"; // Password
+    /** The database driver reference. */
+    private static final String driver = "com.mysql.cj.jdbc.Driver";
+    /** The username used to connect to the database. */
+    private static final String userName = "sqlUser";
+    /** The password used to connect to the database. */
+    private static String password = "Passw0rd!";
+    /** The connection interface is used to perform several database functions. */
     public static Connection connection;  // Connection Interface
 
-    private static String sql;
-    private static PreparedStatement ps;
-    private static ResultSet result;
-
+   /** Establishes a connection to the database. */
     public static void openConnection()
     {
         try {
@@ -35,6 +39,7 @@ public class DBConnection {
         }
     }
 
+    /** Closes connection to the database. */
     public static void closeConnection() {
         try {
             connection.close();
@@ -44,16 +49,5 @@ public class DBConnection {
         {
             System.out.println("Error:" + e.getMessage());
         }
-    }
-
-    public static void createQuery(String query) {
-
-        sql = query;
-        try {
-            ps = (PreparedStatement) connection.createStatement();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
     }
 }

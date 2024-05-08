@@ -1,8 +1,5 @@
 package dao;
 
-import controller.AddCustomerController;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import model.Customers;
 
 import java.sql.PreparedStatement;
@@ -11,11 +8,18 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+/** Handles data manipulation and retrieval from the Customers database table.
+ *
+ * @author Brandi Davis
+ * */
 public class CustomersDao {
 
-
+    /** Selects all customers from the database.
+     *
+     * Adds customers and customer IDs in Observable lists in the Customers class
+     * @throws SQLException in the event of an error when executing the query
+     * */
     public static void selectCustomers() throws SQLException {
-
         Customers.customers.clear();
 
         String sql = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID FROM customers";
@@ -24,7 +28,6 @@ public class CustomersDao {
         Customers customerResult;
 
         while(rs.next()) {
-
             int customerId = rs.getInt("Customer_ID");
             String customerName = rs.getString("Customer_Name");
             String customerAddress = rs.getString("Address");
@@ -36,16 +39,24 @@ public class CustomersDao {
             Customers.addCustomer(customerResult);
             Customers.addCustomerId(customerId);
         }
-
     }
 
-
-    public static void updateCustomer(int id, String customerName, String address, String postalCode,String phone, LocalDateTime lastUpdated, String updatedBy, int divisionId) throws SQLException {
-
-        //String sql = "UPDATE fruits SET Fruit_Name = ? WHERE Fruit_ID = ?";
+    /** Updates customer information in the database.
+     *
+     * @param id the customer ID to update
+     * @param customerName the name of the customer
+     * @param address the address of the customer
+     * @param postalCode the postal code of the customer
+     * @param phone the phone number of the customer
+     * @param lastUpdated the local date time when the customer record was last updated
+     * @param updatedBy the user who last updated the customer record
+     * @param divisionId the division ID of the customer record
+     * @throws SQLException in the event of an error when executing update statement
+     * */
+    public static void updateCustomer(int id, String customerName, String address, String postalCode,String phone,
+                                      LocalDateTime lastUpdated, String updatedBy, int divisionId) throws SQLException {
         String sql = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
-
         ps.setString(1, customerName);
         ps.setString(2, address);
         ps.setString(3, postalCode);
@@ -57,10 +68,21 @@ public class CustomersDao {
         ps.executeUpdate();
     }
 
-        //add the created by and last updated by fields and put that into the project.
-    public static int insertCustomer (String customerName, String address, String postalCode,String phone, LocalDateTime createDate,
+    /** Inserts customer record into the database.
+     *
+     * @param customerName the name of the customer
+     * @param address the address of the customer
+     * @param postalCode the postal code of the customer
+     * @param phone the phone number of the customer
+     * @param createDate the creation date and time of the customer record
+     * @param createdBy the user that created the customer record
+     * @param lastUpdated the date and time of when the customer record was last updated
+     * @param updatedBy the user that last updated the customer record
+     * @param divisionId the division ID of the customer record
+     * @throws SQLException in the event of an error when executing insert statement
+     * */
+    public static void insertCustomer (String customerName, String address, String postalCode,String phone, LocalDateTime createDate,
                                       String createdBy, LocalDateTime lastUpdated, String updatedBy, int divisionId) throws SQLException {
-
         String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) VALUES(?, ?, ?, ?, ?,?,?,?,?)";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ps.setString(1, customerName);
@@ -72,19 +94,17 @@ public class CustomersDao {
         ps.setTimestamp(7, Timestamp.valueOf(lastUpdated));
         ps.setString(8, updatedBy);
         ps.setInt(9, divisionId);
-        int rowsAffected = ps.executeUpdate();
-        return rowsAffected;
-
     }
 
+    /** Deletes customer record from the database.
+     *
+     * @param customerId the customer ID to be deleted
+     * @throws SQLException in the event of an error when executing delete statement
+     * */
     public static void deleteCustomer(int customerId) throws SQLException {
         String sql = "DELETE FROM customers WHERE Customer_ID = ?";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ps.setInt(1, customerId);
         ps.executeUpdate();
     }
-
-
-
-
 }

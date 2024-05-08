@@ -2,13 +2,21 @@ package dao;
 
 import model.FirstLevelDivisions;
 
-import javax.xml.transform.Result;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/** Handles data retrieval from the First Level Divisions database table.
+ *
+ * @author Brandi Davis
+ * */
 public class FirstLevelDivisionsDao {
 
+    /** Selects division(s) for the specified country.
+     *
+     * @param countryId the country ID to query
+     * @throws SQLException in the event of an error when executing the query
+     * */
     public static void selectDivisionFromCountry(int countryId) throws SQLException {
         String sql = "SELECT * FROM first_level_divisions WHERE Country_ID = ?";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
@@ -23,12 +31,10 @@ public class FirstLevelDivisionsDao {
 
             divisionResult = new FirstLevelDivisions(divisionId, division, newCountryId);
             FirstLevelDivisions.addDivisions(divisionResult);
-
         }
-
     }
 
-    public static int getDivisionId(String selectedDivision) throws SQLException {
+/*   public static int getDivisionId(String selectedDivision) throws SQLException {
         String sql = "SELECT * FROM first_level_divisions WHERE Division = ?";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ps.setString(1, selectedDivision);
@@ -42,8 +48,14 @@ public class FirstLevelDivisionsDao {
 
         }
         return 0;
-    }
+    }*/
 
+    /** Selects the country ID from the division ID.
+     *
+     * @param divisionId the division ID to query
+     * @return the country ID if found and 0 if not found
+     * @throws SQLException in the event of an error when executing the query
+     * */
     public static int getCountryIdFromDivision(int divisionId) throws SQLException {
         //query against first level divisions to get the country ID
         String sql = "SELECT Country_ID FROM first_level_divisions where Division_ID = ?";
@@ -58,6 +70,4 @@ public class FirstLevelDivisionsDao {
         }
         return 0;
     }
-
-
 }
