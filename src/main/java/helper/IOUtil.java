@@ -8,7 +8,6 @@ import java.util.Scanner;
  *
  * @author Brandi Davis
  * */
-
 public class IOUtil {
 
     /** Appends username and login result to the login_activity.txt file.
