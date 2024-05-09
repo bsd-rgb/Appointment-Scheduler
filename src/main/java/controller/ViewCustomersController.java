@@ -113,10 +113,14 @@ public class ViewCustomersController implements Initializable {
             } else {
                 confirmationAlert.setContentText("Are you sure you would like to delete the selected customer?");
                 confirmationAlert.showAndWait();
+
                 if (confirmationAlert.getResult() == ButtonType.OK) {
                 CustomersDao.deleteCustomer(customer.getCustomerId());
                 CustomersDao.selectCustomers();
                 customerTable.setItems(Customers.getAllCustomers());
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setContentText("Customer successfully deleted.");
+                alert.showAndWait();
                 } else {
                     return;
                 }
