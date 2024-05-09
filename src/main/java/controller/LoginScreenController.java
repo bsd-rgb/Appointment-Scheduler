@@ -124,13 +124,12 @@ public class LoginScreenController implements Initializable {
 
     /** Exits the program.
      *
-     * Uses lambda to exit the program.
+     * LAMBDA JUSTIFICATION: With this lambda, you get immediate context and clear intent of what the lambda is performing
      * Displays confirmation dialog to confirm program exit
      * @param event on action exit button
      * */
     @FXML
     void onActionExitProgram(ActionEvent event) {
-    //Lambda here
         ((Button) confirmationAlert.getDialogPane().lookupButton(ButtonType.OK)).setText("Exit");
         confirmationAlert.setContentText(rb.getString("ExitProgram"));
         confirmationAlert.showAndWait().ifPresent((response -> {

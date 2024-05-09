@@ -64,7 +64,7 @@ public class ViewAppointmentsController implements Initializable {
     /** Initializes the ViewAppointmentsController and sets the cell value data for the appointment Tableview.
      *
      * Sets the items for the appointment Tableview
-     * Uses lambda functions for report filtering using the on action events for each radio button
+     * LAMBDA JUSTIFICATION: Uses lambda functions for report filtering by setting the on action for each radio button. This is useful for readability but also to keep the related filtering logic together.
      * @param url The location used to resolve relative paths for root object
      * @param resourceBundle The resources used to localize the root object
      * */
