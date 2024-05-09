@@ -79,7 +79,7 @@ public class NavigationScreenController implements Initializable {
 
     /** Navigates to the ViewCustomersController.
      *
-     * @param event on action view customers button
+     * @param event on action view allCustomers button
      * @throws IOException from FXMLLoader in the event of an error loading the ViewCustomersController
      * */
     @FXML

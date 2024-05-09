@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 
 /** The ViewCustomersController displays customer information in a Tableview.
  *
- * The page contains buttons to add, edit, and delete customers.
+ * The page contains buttons to add, edit, and delete allCustomers.
  * @author Brandi Davis
  * */
 public class ViewCustomersController implements Initializable {
