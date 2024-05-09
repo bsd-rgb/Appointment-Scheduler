@@ -171,7 +171,20 @@ public class Appointments {
         return contactId;
     }
 
-    //next javadoc here
+    /** A constructor for the Appointments class used for appointment retrieval.
+     *
+     * @param appointmentId the ID of the appointment
+     * @param title the title of the appointment
+     * @param description the description of the appointment
+     * @param location the location of the appointment
+     * @param type the type of appointment
+     * @param start the start date and time of the appointment
+     * @param end the end date and time of the appointment
+     * @param customerId the customer ID associated with the appointment
+     * @param userId the user ID associated with the appointment
+     * @param contactId the user ID associated with the appointment
+     * @param contactName the name of the contact associated with the appointment
+     * */
     public Appointments(int appointmentId, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId, String contactName) {
         this.appointmentId = appointmentId;
         this.title = title;
@@ -186,6 +199,19 @@ public class Appointments {
         this.contactName = contactName;
     }
 
+    /** A constructor for the Appointments class used for appointment creation.
+     *
+     * @param appointmentId the ID of the appointment
+     * @param title the title of the appointment
+     * @param description the description of the appointment
+     * @param location the location of the appointment
+     * @param type the type of appointment
+     * @param start the start date and time of the appointment
+     * @param end the end date and time of the appointment
+     * @param customerId the customer ID associated with the appointment
+     * @param userId the user ID associated with the appointment
+     * @param contactId the user ID associated with the appointment
+     * */
     public Appointments(int appointmentId, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId) {
         this.appointmentId = appointmentId;
         this.title = title;
@@ -200,49 +226,65 @@ public class Appointments {
 
     }
 
-
-
+    /** Checks to see if there are any overlaps for customer appointment times.
+     *
+     * @param customerId the ID of the customer to check for appointment overlap
+     * @param origStartTime the first start time and date of the customer's appointment
+     * @param origEndTime the first end time and date of the customer's appointment
+     * @param newStartTime the second start time and date of the customer's appointment
+     * @param newEndTime the second end time and date of the customer's appointment
+     * @return boolean value depending on if there is an overlap or not
+     * */
     public static boolean isOverlap(int customerId, LocalDateTime origStartTime, LocalDateTime origEndTime, LocalDateTime newStartTime, LocalDateTime newEndTime) {
-
         overlap = false;
 
-                if ((newStartTime.isAfter(origStartTime) || newStartTime.equals(origStartTime)) && newStartTime.isBefore(origEndTime)) {
-                    overlap = true;
-                    System.out.println("Overlap variable: " + overlap);
-                    //return overlap;
+        if ((newStartTime.isAfter(origStartTime) || newStartTime.equals(origStartTime)) && newStartTime.isBefore(origEndTime)) {
+            overlap = true;
+            //return overlap;
+            return true;
+        }
 
-                    return true;
-                }
+        if (newEndTime.isAfter(origStartTime) && (newEndTime.isBefore(origEndTime) || newEndTime.equals(origEndTime))) {
+            overlap = true;
+            return true;
+        }
 
-                if (newEndTime.isAfter(origStartTime) && (newEndTime.isBefore(origEndTime) || newEndTime.equals(origEndTime))) {
-                    overlap = true;
-                    System.out.println("Overlap variable: " + overlap);
-                    //return overlap;
-                    return true;
-                }
+        if ((newStartTime.isBefore(origStartTime) || newStartTime.equals(origStartTime)) && (newEndTime.isAfter(origEndTime) || newEndTime.equals(origEndTime))) {
+            overlap = true;
+            return true;
+        }
+        return false;
+    }
 
-                if ((newStartTime.isBefore(origStartTime) || newStartTime.equals(origStartTime)) && (newEndTime.isAfter(origEndTime) || newEndTime.equals(origEndTime))) {
-                    overlap = true;
-                    System.out.println("Overlap variable: " + overlap);
-                    //return overlap;
-                    return true;
-                }
-                System.out.println("Overlap variable: " + overlap);
-                return false;
-            }
-
+    /** Adds an appointment to the all appointments Observable list.
+     *
+     * @param appointment the appointment to be added
+     * */
     public static void addAppointment(Appointments appointment){
         allAppointments.add(appointment);
     }
+
+    /** Retrieves all appointments.
+     *
+     * @return all appointments from the all appointments Observable list
+     * */
     public static ObservableList<Appointments> getAllAppointments(){
         return allAppointments;
     }
+
+    /** Retrieves the appointment list filter count.
+     *
+     * @return the count of filtered appointments
+     * */
     public static int getAppointmentFilterListCount() {
         return appointmentFilterListCount;
     }
 
+    /** Sets the appointment list filter count.
+     *
+     * @param appointmentFilterListCount the count of filtered records
+     * */
     public static void setAppointmentFilterListCount(int appointmentFilterListCount) {
         Appointments.appointmentFilterListCount = appointmentFilterListCount;
     }
-
 }
