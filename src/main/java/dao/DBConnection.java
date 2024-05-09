@@ -22,14 +22,14 @@ public class DBConnection {
     /** The password used to connect to the database. */
     private static String password = "Passw0rd!";
     /** The connection interface is used to perform several database functions. */
-    public static Connection connection;  // Connection Interface
+    public static Connection connection;
 
    /** Establishes a connection to the database. */
     public static void openConnection()
     {
         try {
             Class.forName(driver); // Locate Driver
-            connection = DriverManager.getConnection(jdbcUrl, userName, password); // Reference Connection object
+            connection = DriverManager.getConnection(jdbcUrl, userName, password);
             System.out.println("Connection successful!");
         }
         catch(Exception e)

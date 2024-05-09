@@ -82,7 +82,7 @@ public class AppointmentsDao {
         }
     }
 
-    /** Updates an appointment in the database.
+    /** Updates an appointment record in the database.
      *
      * @param appointmentId the selected appointment ID to update
      * @param title the title of the appointment
@@ -118,7 +118,7 @@ public class AppointmentsDao {
         ps.executeUpdate();
     }
 
-    /** Deletes appointment from the database.
+    /** Deletes appointment record from the database.
      *
      * @param appointmentId the appointment to be deleted
      * @throws SQLException in the event of an error executing the delete statement
@@ -225,7 +225,7 @@ public class AppointmentsDao {
      * */
     public static void SelectAppointmentCountryCount(int countryId) throws SQLException {
         Appointments.setAppointmentFilterListCount(0);
-        String sql = "SELECT cntry.Country,Count(*) as Appointment_Count FROM client_schedule.appointments a JOIN client_schedule.allCustomers c ON a.Customer_ID = c.Customer_ID JOIN client_schedule.first_level_divisions fld ON c.Division_ID = fld.Division_ID JOIN client_schedule.countries cntry ON fld.Country_ID = cntry.Country_ID WHERE cntry.Country_ID = ? GROUP BY cntry.Country";
+        String sql = "SELECT cntry.Country,Count(*) as Appointment_Count FROM client_schedule.appointments a JOIN client_schedule.customers c ON a.Customer_ID = c.Customer_ID JOIN client_schedule.first_level_divisions fld ON c.Division_ID = fld.Division_ID JOIN client_schedule.countries cntry ON fld.Country_ID = cntry.Country_ID WHERE cntry.Country_ID = ? GROUP BY cntry.Country";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ps.setInt(1, countryId);
         ResultSet rs = ps.executeQuery();

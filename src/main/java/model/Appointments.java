@@ -107,6 +107,18 @@ public class Appointments {
         this.location = location;
     }
 
+    /** Retrieves the contact name.
+     *
+     * @return the name of the contact
+     * */
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
     /** Retrieves the type of the appointment.
      *
      * @return the appointment type

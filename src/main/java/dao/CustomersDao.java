@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * */
 public class CustomersDao {
 
-    /** Selects all allCustomers from the database.
+    /** Selects all customers from the database.
      *
      * Adds allCustomers and customer IDs in Observable lists in the Customers class
      * @throws SQLException in the event of an error when executing the query
@@ -22,7 +22,7 @@ public class CustomersDao {
     public static void selectCustomers() throws SQLException {
         Customers.allCustomers.clear();
 
-        String sql = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID FROM allCustomers";
+        String sql = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID FROM customers";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         Customers customerResult;
@@ -55,7 +55,7 @@ public class CustomersDao {
      * */
     public static void updateCustomer(int id, String customerName, String address, String postalCode,String phone,
                                       LocalDateTime lastUpdated, String updatedBy, int divisionId) throws SQLException {
-        String sql = "UPDATE allCustomers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?";
+        String sql = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ps.setString(1, customerName);
         ps.setString(2, address);
@@ -83,7 +83,7 @@ public class CustomersDao {
      * */
     public static void insertCustomer (String customerName, String address, String postalCode,String phone, LocalDateTime createDate,
                                       String createdBy, LocalDateTime lastUpdated, String updatedBy, int divisionId) throws SQLException {
-        String sql = "INSERT INTO allCustomers (Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) VALUES(?, ?, ?, ?, ?,?,?,?,?)";
+        String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) VALUES(?, ?, ?, ?, ?,?,?,?,?)";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ps.setString(1, customerName);
         ps.setString(2, address);
@@ -94,6 +94,7 @@ public class CustomersDao {
         ps.setTimestamp(7, Timestamp.valueOf(lastUpdated));
         ps.setString(8, updatedBy);
         ps.setInt(9, divisionId);
+        ps.executeUpdate();
     }
 
     /** Deletes customer record from the database.
@@ -102,7 +103,7 @@ public class CustomersDao {
      * @throws SQLException in the event of an error when executing delete statement
      * */
     public static void deleteCustomer(int customerId) throws SQLException {
-        String sql = "DELETE FROM allCustomers WHERE Customer_ID = ?";
+        String sql = "DELETE FROM customers WHERE Customer_ID = ?";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ps.setInt(1, customerId);
         ps.executeUpdate();

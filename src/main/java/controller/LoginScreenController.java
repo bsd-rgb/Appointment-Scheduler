@@ -30,8 +30,6 @@ public class LoginScreenController implements Initializable {
     @FXML
     private Label passwordLbl;
     @FXML
-    private TextField passwordTxtField;
-    @FXML
     private Button submitBtn;
     @FXML
     private Label usernameLbl;
@@ -39,6 +37,8 @@ public class LoginScreenController implements Initializable {
     private Label timeZoneLbl;
     @FXML
     private TextField usernameTxtField;
+    @FXML
+    private PasswordField passwordField;
     private boolean french = false;
     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -50,7 +50,7 @@ public class LoginScreenController implements Initializable {
      *
      * Retrieves the system default Zone ID and displays the timezone
      * Checks if the French language is detected on local OS
-     * If OS language is French it will set the main text to French
+     * If OS language is French it will set the text to French
      * @param url The location used to resolve relative paths for root object
      * @param resourceBundle The resources used to localize the root object
      * */
@@ -75,7 +75,7 @@ public class LoginScreenController implements Initializable {
        }
     }
 
-    /** Logs the user into the program if credentials are found and displays error for invalid login.
+    /** Logs the user into the program if credentials are found and displays error on invalid login.
      *
      * There are error checks for empty fields
      * Uses the findUser() method from the UsersDao to authenticate login
@@ -86,7 +86,7 @@ public class LoginScreenController implements Initializable {
     @FXML
     void onActionLogin(ActionEvent event) {
 
-            if (usernameTxtField.getText().isEmpty() || passwordTxtField.getText().isEmpty()) {
+            if (usernameTxtField.getText().isEmpty() || passwordField.getText().isEmpty()) {
                 errorAlert.setTitle(rb.getString("Error"));
                 errorAlert.setContentText(rb.getString("Blank"));
                 errorAlert.showAndWait();
@@ -94,7 +94,7 @@ public class LoginScreenController implements Initializable {
             }
         try {
             String userName = usernameTxtField.getText();
-            String password = passwordTxtField.getText();
+            String password = passwordField.getText();
 
             if(UsersDao.findUser(userName,password) != null ) {
                 System.out.println(rb.getString("Found"));
@@ -110,12 +110,12 @@ public class LoginScreenController implements Initializable {
                 IOUtil.appendLogin(userName, false);
                     errorAlert.setTitle(rb.getString("Error"));
                     errorAlert.setContentText(rb.getString("Incorrect"));
-                    passwordTxtField.clear();
+                    passwordField.clear();
                     errorAlert.showAndWait();
                     return;
             }
             usernameTxtField.clear();
-            passwordTxtField.clear();
+            passwordField.clear();
 
         }catch (Exception e) {
             System.out.println(e.getMessage());
@@ -124,7 +124,7 @@ public class LoginScreenController implements Initializable {
 
     /** Exits the program.
      *
-     * LAMBDA JUSTIFICATION: With this lambda, you get immediate context and clear intent of what the lambda is performing
+     * LAMBDA JUSTIFICATION: With this lambda, you get immediate context and clear intent of what the lambda is performing. This is good use for this simple code
      * Displays confirmation dialog to confirm program exit
      * @param event on action exit button
      * */

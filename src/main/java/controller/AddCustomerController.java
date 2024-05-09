@@ -53,7 +53,7 @@ public class AddCustomerController implements Initializable {
     }
 
 
-    /** Attempts to add a customer to the database.
+    /** Adds customer to the database.
      *
      * An error will display if any of the fields are empty
      * Uses the insertCustomer() method from the CustomersDao
@@ -97,7 +97,7 @@ public class AddCustomerController implements Initializable {
         }
     }
 
-    /** Used to select the appropriate First Level Divisions for the selected Country.
+    /** Selects the appropriate First Level Divisions for the selected Country.
      *
      * Uses the selectDivisionFromCountry() method from the FirstLevelDivisionsDao
      * Displays the first item in the Division combo box
@@ -118,7 +118,7 @@ public class AddCustomerController implements Initializable {
         divisionCombo.setItems(FirstLevelDivisions.selectedDivisions);
     }
 
-    /** Used to cancel the input and navigate back to the ViewCustomersController.
+    /** Cancels the input and navigate back to the ViewCustomersController.
      *
      * There is a confirmation alert to confirm cancellation
      * @param event on action cancel button

@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 
 /** The ViewAppointmentsController displays appointment information in a Tableview.
  *
- * The page contains buttons to add, edit, and delete appointments.
+ * The page contains button links to add, modify, and delete appointments.
  * @author Brandi Davis
  * */
 public class ViewAppointmentsController implements Initializable {
@@ -64,7 +64,7 @@ public class ViewAppointmentsController implements Initializable {
     /** Initializes the ViewAppointmentsController and sets the cell value data for the appointment Tableview.
      *
      * Sets the items for the appointment Tableview
-     * LAMBDA JUSTIFICATION: Uses lambda functions for report filtering by setting the on action for each radio button. This is useful for readability but also to keep the related filtering logic together.
+     * LAMBDA JUSTIFICATION: Uses lambda functions for report filtering by setting the on action for each radio button. This is useful for code readability but also to keep the related filtering logic together.
      * @param url The location used to resolve relative paths for root object
      * @param resourceBundle The resources used to localize the root object
      * */

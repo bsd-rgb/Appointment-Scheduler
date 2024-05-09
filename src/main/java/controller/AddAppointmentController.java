@@ -197,8 +197,9 @@ public class AddAppointmentController implements Initializable {
 
     }
 
-    /** Displays confirmation dialog and either stays on the AddAppointmentController or navigates to ViewAppointmentsController.
+    /** Navigates to the ViewAppointmentsController.
      *
+     * There is a confirmation dialog that prompts to confirm cancellation
      * @param event on action cancel button
      * @throws IOException from FXMLLoader in the event of an error loading the ViewAppointmentsController
      * */

@@ -4,13 +4,14 @@ import dao.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.Countries;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
+/** The main application.
+ *
+ * @author Brandi Davis
+ * */
 public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
@@ -20,10 +21,17 @@ public class Application extends javafx.application.Application {
         stage.show();
     }
 
+    /** Loads initial data from the database and launches the program.
+     *
+     * Opens the connection to the database
+     * Initializes several variables by selecting all countries, contacts, customers, users, and appointments from the database
+     * Closes the connection once the application is closed
+     * @throws SQLException in the event of an error selecting all countries, contacts, customers, users, and appointments from the database
+     * */
     public static void main(String[] args) throws SQLException {
 
-        //For testing purposes
         //Locale.setDefault(new Locale("fr"));
+        //System.out.println("Java FX Version: " + System.getProperty("javafx.runtime.version"));
         DBConnection.openConnection();
         CountriesDao.selectAllCountries();
         ContactsDao.selectContacts();
@@ -32,6 +40,7 @@ public class Application extends javafx.application.Application {
         AppointmentsDao.SelectAppointments();
 
         launch();
+
         DBConnection.closeConnection();
     }
 }

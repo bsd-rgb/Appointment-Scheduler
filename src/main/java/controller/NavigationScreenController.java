@@ -31,7 +31,7 @@ public class NavigationScreenController implements Initializable {
 
     /** Initializes the NavigationScreenController.
      *
-     * Runs the UserIdAppointment method (see method information for details)
+     * Runs the UserIdAppointment method to get the user that is logged in (see method information for details)
      * @param url The location used to resolve relative paths for root object
      * @param resourceBundle The resources used to localize the root object
      * */

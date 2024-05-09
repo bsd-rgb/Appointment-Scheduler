@@ -62,7 +62,7 @@ public class ReportViewerController implements Initializable {
 
     /** Initializes the ReportViewerController.
      *
-     * A lambda function is initialized here. The lambda will generate the contact schedule by selection the button to generate the report for the selected contact
+     * The lambda will generate the contact schedule by selection the button to generate the report for the selected contact
      * Sets the cell value data for the Contact appointment Tableview
      * Generates a list of appointment types for the Appointment Count by Month and Type report
      * Sets the combo box data for appointment type, month, contact, and country
@@ -72,6 +72,13 @@ public class ReportViewerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         contactScheduleBtn.setOnAction((event) ->{
+            if(contactCombo.getSelectionModel().isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("A contact must be selected.");
+                alert.showAndWait();
+                return;
+            }
+
             int selectedContactId = contactCombo.getSelectionModel().getSelectedItem().getContactId();
             try{
                 AppointmentsDao.SelectAppointmentByContact(selectedContactId);
@@ -119,6 +126,13 @@ public class ReportViewerController implements Initializable {
     void onActionGenerateMonthType(ActionEvent event) {
         apptMonthTypeReportTxt.clear();
 
+        if(monthCombo.getSelectionModel().isEmpty() || apptTypeCombo.getSelectionModel().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("The type and month must be selected.");
+            alert.showAndWait();
+            return;
+        }
+
         String selectedMonth = monthCombo.getSelectionModel().getSelectedItem().toUpperCase();
         int monthInt = Month.valueOf(selectedMonth).getValue();
         String selectedType = apptTypeCombo.getSelectionModel().getSelectedItem();
@@ -136,30 +150,6 @@ public class ReportViewerController implements Initializable {
         }
     }
 
-    /** Generates the appointment schedule for the selected contact.
-     *
-     * Uses SelectAppointmentByContact() method from AppointmentsDao to query the appointments for the selected contact
-     * Displays message if no results are found
-     * @param event on action generate report results button
-     * */
-   @FXML
-    void onActionGenerateContactSchedule(ActionEvent event) {
-        int selectedContactId = contactCombo.getSelectionModel().getSelectedItem().getContactId();
-
-        try{
-            AppointmentsDao.SelectAppointmentByContact(selectedContactId);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            return;
-        }
-
-        if(Appointments.filteredAppointments.size() > 0){
-            contactApptTable.setItems(Appointments.filteredAppointments);
-        } else{
-            contactApptTable.setPlaceholder(new Label("No results."));
-        }
-    }
-
     /** Generates the appointment count from the selected country.
      *
      * Uses the SelectAppointmentCountryCount() method from AppointmentsDao to query the count by country ID
@@ -168,6 +158,13 @@ public class ReportViewerController implements Initializable {
      * */
     @FXML
     void onActionGenerateCountCountry(ActionEvent event) {
+        if(countryCombo.getSelectionModel().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("A country must be selected.");
+            alert.showAndWait();
+            return;
+        }
+
         try{
             int countryId = countryCombo.getSelectionModel().getSelectedItem().getCountryId();
             AppointmentsDao.SelectAppointmentCountryCount(countryId);
@@ -177,7 +174,7 @@ public class ReportViewerController implements Initializable {
         }
 
         if(Appointments.getAppointmentFilterListCount() > 0){
-            countCountryTxt.setText(countryCombo.getSelectionModel().getSelectedItem().getCountry() + " - Appoinments: " + Appointments.getAppointmentFilterListCount());
+            countCountryTxt.setText(countryCombo.getSelectionModel().getSelectedItem().getCountry() + " - Appointments: " + Appointments.getAppointmentFilterListCount());
         }
         else{
             countCountryTxt.setText("No results found.");
@@ -187,7 +184,7 @@ public class ReportViewerController implements Initializable {
     /** Navigates to the NavigationScreenController.
      *
      * @param event on action back button
-     * @throws IOException from FXMLLoader in the event of an error leading the NavigationScreenController
+     * @throws IOException from FXMLLoader in the event of an error loading the NavigationScreenController
      * */
     @FXML
     void onActionGoBack(ActionEvent event) throws IOException {

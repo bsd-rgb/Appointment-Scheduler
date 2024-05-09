@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 
 /** The ViewCustomersController displays customer information in a Tableview.
  *
- * The page contains buttons to add, edit, and delete allCustomers.
+ * The page contains button links to add, modify, and delete customers.
  * @author Brandi Davis
  * */
 public class ViewCustomersController implements Initializable {
@@ -81,7 +81,7 @@ public class ViewCustomersController implements Initializable {
 
     /** Navigates to the NavigationScreenController.
      *
-     * @param event on action go back button
+     * @param event on action back button
      * @throws IOException from FXMLLoader in the event of an error loading the NavigationScreenController
      * */
     @FXML
