@@ -5,6 +5,8 @@ import dao.AppointmentsDao;
 import helper.TimeUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
+import java.util.logging.Filter;
 
 /** The ViewAppointmentsController displays appointment information in a Tableview.
  *
@@ -56,6 +59,8 @@ public class ViewAppointmentsController implements Initializable {
     private TableColumn<String, Appointments> apptTypeCol;
     @FXML
     private TableColumn<Integer, Appointments> apptUserIdCol;
+    @FXML
+    private TextField apptSearchTxt;
 
     /** An Observable list that holds filtered appointment data. */
     private ObservableList<Appointments> filteredAppointments = FXCollections.observableArrayList();
@@ -113,6 +118,8 @@ public class ViewAppointmentsController implements Initializable {
              }
              appointmentTable.setItems(filteredAppointments);
          });
+
+        SearchAppointment();
     }
 
     /** Navigates to the AddAppointmentController.
@@ -192,6 +199,37 @@ public class ViewAppointmentsController implements Initializable {
         Parent scene = loader.getRoot();
         stage.setScene(new Scene(scene));
         stage.show();
+    }
+
+    public void SearchAppointment(){
+
+        //search by ID, title, description, location, type, time and date?
+
+        FilteredList<Appointments> filteredAppointments = new FilteredList<>(Appointments.getAllAppointments());
+        apptSearchTxt.textProperty().addListener((observalbe, oldValue, newValue) -> filteredAppointments.setPredicate(appointment -> {
+
+            if(newValue == null || newValue.isEmpty()){
+                return true;
+            }
+            if(String.valueOf(appointment.getAppointmentId()).contains(newValue)){
+                return true;
+            }else if(appointment.getTitle().contains(newValue) ||appointment.getTitle().toLowerCase().contains(newValue)){
+                return true;
+            }else if(appointment.getDescription().contains(newValue) || appointment.getDescription().toLowerCase().contains(newValue)){
+                return true;
+            }else if(appointment.getLocation().contains(newValue) || appointment.getLocation().toLowerCase().contains(newValue)){
+                return true;
+            }else if(appointment.getType().contains(newValue) ||appointment.getType().toLowerCase().contains(newValue)){
+                return true;
+            }else if(String.valueOf(appointment.getStart()).contains(newValue) || String.valueOf(appointment.getEnd()).contains(newValue)){
+                return true;
+            }
+            return false;
+        }));
+        SortedList<Appointments> sortedAppointments = new SortedList<>(filteredAppointments);
+        sortedAppointments.comparatorProperty().bind(appointmentTable.comparatorProperty());
+        appointmentTable.setItems(sortedAppointments);
+
     }
 }
 

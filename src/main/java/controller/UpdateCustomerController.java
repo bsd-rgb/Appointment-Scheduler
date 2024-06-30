@@ -12,10 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import model.Countries;
-import model.Customers;
-import model.FirstLevelDivisions;
-import model.Users;
+import model.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -42,6 +39,12 @@ public class UpdateCustomerController implements Initializable {
     private TextField updateCustPhone;
     @FXML
     private TextField updateCustPostalCode;
+    @FXML
+    private RadioButton commercialRadio;
+    @FXML
+    private RadioButton residentialRadio;
+    @FXML
+    private TextArea customerTypeTxtArea;
     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
     Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -119,12 +122,19 @@ public class UpdateCustomerController implements Initializable {
                 String address = updateCustAddress.getText();
                 String postalCode = updateCustPostalCode.getText();
                 String phone = updateCustPhone.getText();
+                String customerType;
                 int divisionId = updateCustDivision.getValue().getDivisionId();
                 int customerId = Integer.parseInt(updateCustId.getText());
                 LocalDateTime lastUpdated = LocalDateTime.now();
                 String loggedInUser = Users.getLoggedInUser().getUserName();
+                if(residentialRadio.isSelected()){
+                    customerType = residentialRadio.getText();
+                    CustomersDao.updateCustomer(customerId, customerName, address, postalCode, phone, lastUpdated, loggedInUser, divisionId, customerType);
+                }else if(commercialRadio.isSelected()){
+                    customerType = commercialRadio.getText();
+                    CustomersDao.updateCustomer(customerId, customerName, address, postalCode, phone, lastUpdated, loggedInUser, divisionId, customerType);
+                }
 
-                CustomersDao.updateCustomer(customerId, customerName, address, postalCode, phone, lastUpdated, loggedInUser, divisionId);
                 informationAlert.setContentText("Customer updated successfully.");
                 informationAlert.showAndWait();
 
@@ -175,5 +185,25 @@ public class UpdateCustomerController implements Initializable {
         }catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        if(customer instanceof ResidentialCustomer residentialCustomer){
+            residentialRadio.setSelected(true);
+            customerTypeTxtArea.setText("Lawn Care Package: " + residentialCustomer.getLawnCarePackage());
+        }else if(customer instanceof CommercialCustomer commercialCustomer){
+            commercialRadio.setSelected(true);
+            customerTypeTxtArea.setText("Contract Type: " + commercialCustomer.getContractType());
+        }
     }
+
+    @FXML
+    void onActionCommercialSelected(ActionEvent event) {
+        residentialRadio.setSelected(false);
+        customerTypeTxtArea.setVisible(false);
+
+    }
+    @FXML
+    void onActionResidentialSelected(ActionEvent event) {
+        commercialRadio.setSelected(false);
+        customerTypeTxtArea.setVisible(false);
+    }
+
 }

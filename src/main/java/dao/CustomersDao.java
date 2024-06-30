@@ -1,7 +1,11 @@
 package dao;
 
+import com.mysql.cj.protocol.Resultset;
+import model.CommercialCustomer;
 import model.Customers;
+import model.ResidentialCustomer;
 
+import javax.xml.transform.Result;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +26,7 @@ public class CustomersDao {
     public static void selectCustomers() throws SQLException {
         Customers.allCustomers.clear();
 
-        String sql = "SELECT Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID FROM customers";
+        String sql = "SELECT * FROM customers";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         Customers customerResult;
@@ -34,9 +38,18 @@ public class CustomersDao {
             String postalCode = rs.getString("Postal_Code");
             String phoneNumber = rs.getString("Phone");
             int divisionId = rs.getInt("Division_ID");
+            String customerType = rs.getString("Customer_Type");
 
-            customerResult = new Customers(customerId,customerName, customerAddress, postalCode, phoneNumber, divisionId);
-            Customers.addCustomer(customerResult);
+            if(customerType.equalsIgnoreCase("residential")){
+                String defaultPackage = "Basic";
+                customerResult = new ResidentialCustomer(customerId,customerName, customerAddress, postalCode, phoneNumber, divisionId, customerType, defaultPackage);
+                Customers.addCustomer(customerResult);
+            }else if(customerType.equalsIgnoreCase("commercial")){
+                String defaultContract = "Annual";
+                customerResult = new CommercialCustomer(customerId,customerName, customerAddress, postalCode, phoneNumber, divisionId, customerType, defaultContract);
+                Customers.addCustomer(customerResult);
+            }
+
             Customers.addCustomerId(customerId);
         }
     }
@@ -54,8 +67,8 @@ public class CustomersDao {
      * @throws SQLException in the event of an error when executing update statement
      * */
     public static void updateCustomer(int id, String customerName, String address, String postalCode,String phone,
-                                      LocalDateTime lastUpdated, String updatedBy, int divisionId) throws SQLException {
-        String sql = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?";
+                                      LocalDateTime lastUpdated, String updatedBy, int divisionId, String customerType) throws SQLException {
+        String sql = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ?, Customer_Type = ? WHERE Customer_ID = ?";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ps.setString(1, customerName);
         ps.setString(2, address);
@@ -64,7 +77,8 @@ public class CustomersDao {
         ps.setTimestamp(5, Timestamp.valueOf(lastUpdated));
         ps.setString(6, updatedBy);
         ps.setInt(7, divisionId);
-        ps.setInt(8, id);
+        ps.setString(8, customerType);
+        ps.setInt(9, id);
         ps.executeUpdate();
     }
 
@@ -82,8 +96,8 @@ public class CustomersDao {
      * @throws SQLException in the event of an error when executing insert statement
      * */
     public static void insertCustomer (String customerName, String address, String postalCode,String phone, LocalDateTime createDate,
-                                      String createdBy, LocalDateTime lastUpdated, String updatedBy, int divisionId) throws SQLException {
-        String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) VALUES(?, ?, ?, ?, ?,?,?,?,?)";
+                                      String createdBy, LocalDateTime lastUpdated, String updatedBy, int divisionId, String customerType) throws SQLException {
+        String sql = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID, Customer_Type) VALUES(?, ?, ?, ?, ?,?,?,?,?,?)";
         PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
         ps.setString(1, customerName);
         ps.setString(2, address);
@@ -94,6 +108,7 @@ public class CustomersDao {
         ps.setTimestamp(7, Timestamp.valueOf(lastUpdated));
         ps.setString(8, updatedBy);
         ps.setInt(9, divisionId);
+        ps.setString(10, customerType);
         ps.executeUpdate();
     }
 
@@ -108,4 +123,30 @@ public class CustomersDao {
         ps.setInt(1, customerId);
         ps.executeUpdate();
     }
+
+    public static void SelectDistinctCustomerType() throws SQLException {
+        Customers.customerTypes.clear();
+        String sql = "SELECT DISTINCT Customer_Type from customers";
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while(rs.next()){
+            String type = rs.getString("Customer_Type");
+            Customers.customerTypes.add(type);
+        }
+    }
+    public static void CountCustomerTypeFilter(String customerType) throws SQLException {
+        Customers.setCustomerFilterListCount(0);
+
+        String sql = "SELECT COUNT(*) AS Count FROM client_schedule.customers WHERE Customer_Type = ?";
+        PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+        ps.setString(1, customerType);
+        ResultSet rs = ps.executeQuery();
+
+        if(rs.next()){
+            int count = rs.getInt("Count");
+            Customers.setCustomerFilterListCount(count);
+        }
+    }
+
 }

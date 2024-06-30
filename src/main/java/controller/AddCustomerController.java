@@ -37,6 +37,10 @@ public class AddCustomerController implements Initializable {
     private TextField phoneTxtField;
     @FXML
     private TextField postalCodeTxtField;
+    @FXML
+    private RadioButton commercialRadio;
+    @FXML
+    private RadioButton residentialRadio;
     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
     Alert errorAlert = new Alert(Alert.AlertType.ERROR);
     Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -64,12 +68,13 @@ public class AddCustomerController implements Initializable {
     void onActionAddCustomer(ActionEvent event) {
         //add the statement to see if the text fields are empty
         if (customerNameTxtField.getText().isEmpty() || addressTxtField.getText().isEmpty() || phoneTxtField.getText().isEmpty() || postalCodeTxtField.getText().isEmpty()
-                || divisionCombo.getValue() == null) {
+                || divisionCombo.getValue() == null || ((! commercialRadio.isSelected()) && (! residentialRadio.isSelected()))) {
 
             errorAlert.setContentText("ERROR: One or more fields are empty. Please check values and try again.");
             errorAlert.showAndWait();
         } else {
             try {
+                String customerType;
                 String customerName = customerNameTxtField.getText();
                 String address = addressTxtField.getText();
                 String phone = phoneTxtField.getText();
@@ -78,8 +83,14 @@ public class AddCustomerController implements Initializable {
                 LocalDateTime createdDate = LocalDateTime.now();
                 LocalDateTime lastUpdated = LocalDateTime.now();
                 String loggedInUser = Users.getLoggedInUser().getUserName();
+                if(residentialRadio.isSelected()){
+                    customerType = residentialRadio.getText();
+                    CustomersDao.insertCustomer(customerName, address, postalCode, phone, createdDate, loggedInUser, lastUpdated, loggedInUser, divisionId, customerType);
+                }else if(commercialRadio.isSelected()){
+                    customerType = commercialRadio.getText();
+                    CustomersDao.insertCustomer(customerName, address, postalCode, phone, createdDate, loggedInUser, lastUpdated, loggedInUser, divisionId, customerType);
+                }
 
-                CustomersDao.insertCustomer(customerName, address, postalCode, phone, createdDate, loggedInUser, lastUpdated, loggedInUser, divisionId);
                 CustomersDao.selectCustomers();
 
                 informationAlert.setContentText("Customer successfully added.");

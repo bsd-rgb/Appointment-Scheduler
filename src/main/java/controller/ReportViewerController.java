@@ -2,6 +2,7 @@ package controller;
 
 import com.bd.Application;
 import dao.AppointmentsDao;
+import dao.CustomersDao;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +16,7 @@ import javafx.stage.Stage;
 import model.Appointments;
 import model.Contacts;
 import model.Countries;
+import model.Customers;
 
 import java.io.IOException;
 import java.net.URL;
@@ -55,6 +57,10 @@ public class ReportViewerController implements Initializable {
     private TextField countCountryTxt;
     @FXML
     private ComboBox<Countries> countryCombo;
+    @FXML
+    private ComboBox<String> customerTypeCombo;
+    @FXML
+    private TextField customerTypeTxt;
     @FXML
     private Button contactScheduleBtn;
     /** An Observable list that holds the months of the year.  */
@@ -109,7 +115,14 @@ public class ReportViewerController implements Initializable {
             System.out.println(e.getMessage());
         }
 
+        try{
+            CustomersDao.SelectDistinctCustomerType();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
         apptTypeCombo.setItems(Appointments.appointmentTypes);
+        customerTypeCombo.setItems(Customers.customerTypes);
         monthCombo.setItems(allMonths);
         contactCombo.setItems(Contacts.allContacts);
         countryCombo.setItems(Countries.allCountries);
@@ -194,6 +207,27 @@ public class ReportViewerController implements Initializable {
         stage.setScene(scene);
         stage.show();
 
+    }
+    @FXML
+    void onActionGenerateCustomerType(ActionEvent event) {
+        if(customerTypeCombo.getSelectionModel().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("A customer type must be selected.");
+            alert.showAndWait();
+            return;
+        }
+        String customerType = customerTypeCombo.getSelectionModel().getSelectedItem();
+        try{
+            CustomersDao.CountCustomerTypeFilter(customerType);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        if(Customers.getCustomerFilterListCount() > 0 ){
+            customerTypeTxt.setText((titleCase(customerType) + " Customers: " + Customers.getCustomerFilterListCount()));
+        }else {
+            customerTypeTxt.setText("No results found.");
+        }
     }
 
     /** Converts a string value from whichever case to title case.

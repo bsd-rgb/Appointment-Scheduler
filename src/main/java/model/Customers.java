@@ -27,8 +27,13 @@ public class Customers {
     /** The division ID of the customer. */
     private int divisionId;
 
+    public static int customerFilterListCount;
+
+    private String customerType;
+
     /** An Observable list to hold all customers. */
     public static ObservableList<Customers> allCustomers = FXCollections.observableArrayList();
+    public static ObservableList<String> customerTypes = FXCollections.observableArrayList();
 
     /** An Observable list to hold all customer IDs. */
     public static ObservableList<Integer> customerIds = FXCollections.observableArrayList();
@@ -42,13 +47,15 @@ public class Customers {
      * @param phone the customer's phone number
      * @param divisionId the first level division ID of the customer
      * */
-    public Customers(int customerId, String customerName, String address, String postalCode, String phone, int divisionId) {
+    public Customers(int customerId, String customerName, String address, String postalCode, String phone, int divisionId, String customerType) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
         this.postalCode = postalCode;
         this.phone = phone;
         this.divisionId = divisionId;
+        this.customerType = customerType;
+
     }
 
     /** A constructor for the Customers class used for customer creation.
@@ -59,12 +66,13 @@ public class Customers {
      * @param phone the customer's phone number
      * @param divisionId the first level division ID of the customer
      * */
-    public Customers( String customerName, String address, String postalCode, String phone, int divisionId) {
+    public Customers( String customerName, String address, String postalCode, String phone, int divisionId, String customerType) {
         this.customerName = customerName;
         this.address = address;
         this.postalCode = postalCode;
         this.phone = phone;
         this.divisionId = divisionId;
+        this.customerType = customerType;
     }
 
     /** Retrieves customer phone number.
@@ -107,6 +115,14 @@ public class Customers {
         return postalCode;
     }
 
+    public String getCustomerType() {
+        return customerType;
+    }
+
+    public void setCustomerType(String customerType) {
+        this.customerType = customerType;
+    }
+
     /** Returns the first level division ID of the customer.
      *
      * @return the division ID
@@ -145,5 +161,13 @@ public class Customers {
      * */
     public static ObservableList<Integer> getCustomerIds() {
         return customerIds;
+    }
+
+    public static void setCustomerFilterListCount(int customerFilterListCount) {
+        Customers.customerFilterListCount = customerFilterListCount;
+    }
+
+    public static int getCustomerFilterListCount() {
+        return customerFilterListCount;
     }
 }

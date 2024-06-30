@@ -42,3 +42,17 @@
 [2024-05-09 13:53:59 CDT] - [User] test - [Login Successful] true
 [2024-05-09 13:55:42 CDT] - [User] test - [Login Successful] true
 [2024-05-09 14:27:34 CDT] - [User] test - [Login Successful] true
+[2024-06-25 20:24:24 CDT] - [User] test - [Login Successful] true
+[2024-06-25 20:48:58 CDT] - [User] test - [Login Successful] true
+[2024-06-25 20:59:07 CDT] - [User] test - [Login Successful] true
+[2024-06-25 21:00:15 CDT] - [User] test - [Login Successful] true
+[2024-06-25 21:01:55 CDT] - [User] test - [Login Successful] true
+[2024-06-25 21:13:49 CDT] - [User] test - [Login Successful] true
+[2024-06-25 21:48:48 CDT] - [User] test - [Login Successful] true
+[2024-06-26 21:18:28 CDT] - [User] test - [Login Successful] true
+[2024-06-30 12:45:19 CDT] - [User] test - [Login Successful] true
+[2024-06-30 12:52:24 CDT] - [User] test - [Login Successful] true
+[2024-06-30 12:53:08 CDT] - [User] test - [Login Successful] true
+[2024-06-30 13:46:00 CDT] - [User] test - [Login Successful] true
+[2024-06-30 13:47:58 CDT] - [User] test - [Login Successful] true
+[2024-06-30 13:51:29 CDT] - [User] test - [Login Successful] true

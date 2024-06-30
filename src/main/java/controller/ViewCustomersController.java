@@ -3,6 +3,8 @@ package controller;
 import com.bd.Application;
 import dao.AppointmentsDao;
 import dao.CustomersDao;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,6 +41,11 @@ public class ViewCustomersController implements Initializable {
     private TableColumn<Customers, String> phoneCol;
     @FXML
     private TableColumn<Customers, String> postalCodeCol;
+    @FXML
+    private TableColumn<Customers, String> customerTypeCol;
+
+    @FXML
+    private TextField customerSearchTxt;
     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
     Alert alert = new Alert(Alert.AlertType.NONE);
 
@@ -50,12 +57,6 @@ public class ViewCustomersController implements Initializable {
      * */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-        addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
-        postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
-        phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        divisionCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
 
         try {
             CustomersDao.selectCustomers();
@@ -63,7 +64,17 @@ public class ViewCustomersController implements Initializable {
             System.out.println(e.getMessage());
         }
         customerTable.setItems(Customers.getAllCustomers());
+        SearchCustomer();
+        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+        postalCodeCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        divisionCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
+        customerTypeCol.setCellValueFactory(new PropertyValueFactory<>("customerType"));
     }
+
+
 
     /** Navigates to the AddCustomerController.
      *
@@ -152,6 +163,31 @@ public class ViewCustomersController implements Initializable {
         Parent scene = loader.getRoot();
         stage.setScene(new Scene(scene));
         stage.show();
+    }
+
+    public void SearchCustomer(){
+        FilteredList<Customers> filteredList = new FilteredList<>(Customers.getAllCustomers());
+
+        customerSearchTxt.textProperty().addListener((observable, oldValue, newValue) -> {filteredList.setPredicate(customer -> {
+
+            if(newValue == null || newValue.isEmpty()){
+                return true;
+            }
+            if(String.valueOf(customer.getCustomerId()).contains(newValue)){
+                return true;
+            } else if(customer.getCustomerName().contains(newValue) || customer.getCustomerName().toLowerCase().contains(newValue)) {
+                return true;
+            } else if(customer.getAddress().contains(newValue) || customer.getAddress().toLowerCase().contains(newValue)){
+                return true;
+            } else if(customer.getPostalCode().contains(newValue) || customer.getPostalCode().toLowerCase().contains(newValue)){
+                return true;
+            }
+            return false;
+        });});
+        //create sorted list here
+        SortedList<Customers> sortedCustomers = new SortedList<>(filteredList);
+        sortedCustomers.comparatorProperty().bind(customerTable.comparatorProperty());
+        customerTable.setItems(sortedCustomers);
     }
 }
 
