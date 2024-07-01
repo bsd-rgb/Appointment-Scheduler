@@ -181,6 +181,10 @@ public class ViewCustomersController implements Initializable {
                 return true;
             } else if(customer.getPostalCode().contains(newValue) || customer.getPostalCode().toLowerCase().contains(newValue)){
                 return true;
+            }else if(customer.getCustomerType().contains(newValue) || customer.getCustomerType().toLowerCase().contains(newValue)) {
+                return true;
+            }else if(customer.getPhone().contains(newValue)) {
+                return true;
             }
             return false;
         });});

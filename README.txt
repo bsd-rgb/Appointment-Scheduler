@@ -29,9 +29,9 @@ Once logged in, you will land on the navigation page. This page will show any up
 
 - On the View Customers screen you will see all customers(if any). Here you can add, delete, or modify customer records. 
 
-- On the View Appointments scren you will see all appointments(if any). Here you can add, delete, or modify appointment records. 
+- On the View Appointments screen you will see all appointments(if any). Here you can add, delete, or modify appointment records. 
 
-- On the View Reports sreen you will see three reports sectioned off on one page. Each report has a "Generate" button to display report results.
+- On the View Reports screen you will see three reports sectioned off on one page. Each report has a "Generate" button to display report results.
 
 Description of report:
 The additional report that was added is the count of appointments per country.
