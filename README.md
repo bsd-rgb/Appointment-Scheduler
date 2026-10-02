@@ -2,6 +2,12 @@
 
 A desktop application built with Java, JavaFX, and MySQL for managing customer information and scheduling appointments. Users can add, modify, or delete customer and appointment records and view pre-built reports. 
 
+![Customer management view](./app-images/customer-view.png)
+
+*Customer Management View*
+
+![Appointment management view](./app-images/appointment-view.png)
+*Appointment Management View*
 
 ## Features
 - Login screen that detects the user's locale and displays French text when a French locale is detected. 
@@ -11,6 +17,15 @@ A desktop application built with Java, JavaFX, and MySQL for managing customer i
 	- If the customer has an overlapping appointment, an error will appear and prevent the appointment from being added. 
 - A dedicated page with the following reports: Appointment count by month and type, appointment by country, customer count by type (commercial or residential), and appointment schedule by contact. 
 - Displays any upcoming appointments associated with the signed-in user.
+
+![Add appointment screen](./app-images/addAppointment-view.png)
+
+*Creating an appointment and associating it with a customer/contact*
+
+![Reporting screen](./app-images/report-view.png)
+
+*Reporting Screen*
+
 
 ## Technologies 
 - Java
